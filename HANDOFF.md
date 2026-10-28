@@ -107,3 +107,13 @@ npm run verify
 npm audit
 
 See DEPLOYMENT.md for staging and production procedures. Staging is deployed and externally tested; broader calibration and production setup remain before a public-beta release.
+
+
+## Rate-limit incident — investigation and implementation (2026-10-28)
+
+Confirmed with live Cloudflare settings: production and staging have ADMIN_TOKEN and IP_HASH_SECRET but no GITHUB_TOKEN. Separate coordinator namespace IDs confirm isolated app quotas/cache. The old RATE_LIMITED code originates in GitHub response handling, distinct from internal CAPACITY. Historical responses did not retain upstream rate headers, so the original incident's primary/secondary classification cannot be reconstructed from stored metrics alone.
+
+Implemented safe admin response diagnostics, explicit upstream/local/authentication errors with retry deadlines, persistent credential-scoped cooldowns and exponential secondary backoff across submissions, zero automatic retries, and 60-second version/profile-specific recent-head pointers to existing immutable exact-commit reports. Kept all configured quotas, file/byte/request budgets, concurrency, secret handling and payment configuration. Tests include missing-auth diagnostics, primary/secondary exhaustion, no-request cooldown enforcement, unavailable-upstream cached rescans, changed-commit invalidation after head expiry, existing coalescing and quota tests. Staging verification and production outcome will be recorded below after live tests. Token provisioning requires the owner's secure Worker-secret input; no personal CLI token has been reused.
+
+
+Live staging reproduced the incident at 2026-10-28T22:59:06Z: GitHub 403, primary remaining 0 / limit 60, reset 1793229640 (23:20:40Z), retry-after absent, authentication false, one actual request, zero retries. The owner is configuring the missing GITHUB_TOKEN secrets securely. Full local verification passes: 306 unit tests, 45 mocked Worker assertions and 8 desktop/mobile Playwright tests; TypeScript/Vite and Wrangler dry-run pass. The fixture cold scan measures 8 calls; recent rescan 0; secondary backoff growth and profile isolation are tested. Final staging code revision c11240f6-025f-435d-a601-be1b485a6bc2. Production is unchanged pending authenticated staging success. Live smoke now verifies authentication and measures original/repeat request deltas via protected metrics without sending the admin credential to page JavaScript.
