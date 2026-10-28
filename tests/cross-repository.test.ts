@@ -7,5 +7,6 @@ describe('manually labeled cross-repository matrix',()=>{
   if(fixture.expectedProfile)it('detects the expected profile',()=>expect(report.detectedProfile).toBe(fixture.expectedProfile));
   for(const [id,state] of Object.entries(fixture.expected))it(id+' = '+state,()=>expect(report.checks.find(c=>c.rule.id===id)!.state).toBe(state));
   it('repeats score, range, gains and evidence for a fixed snapshot',()=>expect(analyze(fixture.after,fixture.profile,'fixed')).toEqual(report));
+  it('accounts for UTF-8 bytes of all supplied inspected text',()=>expect(report.inspection.bytes).toBe(Object.values(fixture.after.files).reduce((sum,text)=>sum+new TextEncoder().encode(text).byteLength,0)));
  });
 });
