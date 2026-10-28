@@ -4,9 +4,11 @@
 
 An independent, zero-AI public GitHub repository health analyzer. React/Vite frontend, TypeScript Worker, and one SQLite-backed Durable Object. No Python backend, OAuth, accounts, repository code execution, or Cursiv package dependencies.
 
+U2 candidate: analyzer 0.2.0 / rules 2.0.0 now report structural practices, evidence levels and an uncertainty interval. See [accuracy audit](docs/SCORING-AUDIT.md), [Cursiv investigation](docs/CURSIV-671-INVESTIGATION.md) and [cross-repository results](docs/VALIDATION-RESULTS.md). Frozen v1 definitions and historical report versions are preserved. Existing public staging still runs the previous version pending the requested rollout approval.
+
 ## Included
 
-- 24 versioned deterministic rules across seven categories, scored out of 1000.
+- 24 stable versioned checks (22 scored, two informational), across seven categories, scored out of 1000.
 - Five profiles, explicit applicability, weighted evidence coverage, and insufficient-evidence results.
 - Commit-pinned findings, partial credit, effective-weight point gains, and overlapping-license recommendation merging.
 - Deterministic Roast / Serious commentary with instant local switching.
@@ -37,7 +39,9 @@ npm run verify
 npm audit
 ```
 
-verify runs 103 unit tests, TypeScript/build checks, 31 Worker integration assertions in Miniflare, and 8 desktop/mobile Edge Playwright tests. Tests mock GitHub and need no API access. Browser tests run axe accessibility checks on the landing page and results. If Edge is unavailable, install it using `npx playwright install --with-deps msedge`.
+verify runs the unit/scoring/cross-language/security/payment regression suite, TypeScript/build checks, 34 Worker integration assertions in Miniflare, and 8 desktop/mobile Edge Playwright tests. Tests mock GitHub and need no API access. Browser tests run axe accessibility checks on the landing page and results. If Edge is unavailable, install it using `npx playwright install --with-deps msedge`.
+
+`npm run validate:scoring` regenerates the scoring specification, Cursiv investigation, before/after comparison and labeled-check error rates from pinned fixtures. `npm run test:scoring` and `npm run test:premium` run isolated suites. `npm run generate:example` refreshes precomputed browser example data. Premium preparation is test-only and disabled; see [readiness](docs/PREMIUM-READINESS.md). No live checkout is connected.
 
 `npm run smoke:live` is a separate opt-in check of octocat/Hello-World using unauthenticated GitHub requests. It is not run in CI and publishes nothing. Its local report is ignored under .wrangler/smoke.
 
@@ -51,7 +55,9 @@ verify runs 103 unit tests, TypeScript/build checks, 31 Worker integration asser
 
 ## Deployment status
 
-Staging is live: https://reporoast-staging.joshua-1993-winkler.workers.dev
+Existing v1 staging is live: https://reporoast-staging.joshua-1993-winkler.workers.dev
+
+The U2 staging smoke attempt reached a GitHub API rate limit (HTTP 429); full live scanning/share verification could not complete in that run. Local mocked and browser checks pass. No U2 revision was deployed publicly. The production domain configuration is prepared separately; DNS inventory permissions and owner approval are still required. See [domain preparation](docs/CUSTOM-DOMAIN.md).
 
 Live scans are enabled on staging with limits of 10 submissions/IP/day, 30 globally/day and 2 concurrent scans. A real browser smoke verified scanning, modes, desktop/mobile accessibility, downloads, explicit sharing and removal. Run `npm run smoke:staging` to repeat it; the script consumes a small number of GitHub requests and creates/removes one temporary test share.
 

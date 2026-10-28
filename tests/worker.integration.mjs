@@ -15,17 +15,19 @@ const mock=async request=>{
  throw new Error('Unexpected GitHub path '+u.pathname);
 };
 const bindings={SCANS_ENABLED:'true',DAILY_LIMIT:'4',IP_LIMIT:'3',MAX_CONCURRENT:'2',PUBLIC_ORIGIN:origin,IP_HASH_SECRET:'i'.repeat(40),ADMIN_TOKEN:'a'.repeat(40)};
-const mf=new Miniflare(convertV4MiniflareOptions({name:'test',unsafeInspectDurableObjects:true,modules:true,scriptPath:'.wrangler/dry-run/index.js',compatibilityDate:'2026-10-01',bindings,durableObjects:{COORDINATOR:{className:'Coordinator',useSQLite:true}},serviceBindings:{ASSETS:()=>new Response('static')},outboundService:mock}));
+const mf=new Miniflare(convertV4MiniflareOptions({name:'test',unsafeInspectDurableObjects:true,modules:true,scriptPath:'.wrangler/dry-run/index.js',compatibilityDate:'2026-10-01',bindings,durableObjects:{COORDINATOR:{className:'Coordinator',useSQLite:true}},serviceBindings:{ASSETS:()=>new Response('<!doctype html><html><head></head><body>Static fixture</body></html>',{headers:{'content-type':'text/html'}})},outboundService:mock}));
 let checks=0;
 const ok=(condition,message)=>{assert.ok(condition,message);checks++;};
 async function call(path,body,options={}){const method=options.method||(body?'POST':'GET');return mf.dispatchFetch(origin+path,{method,headers:{origin, ...(body?{'content-type':'application/json'}:{}),...options.headers},...(body?{body:JSON.stringify(body)}:{})});}
 try{
  const health=await call('/api/health');ok(health.status===200,'health');
+ const homepage=await call('/');ok((await homepage.text()).includes('rel="canonical" href="http://localhost/"'),'environment-specific canonical homepage');
  ok((await call('/api/scan',{url:'https://evil.test/a/b'})).status===400,'URL SSRF validation');
  ok((await call('/api/scan',{url:'https://github.com/demo/project'},{headers:{origin:'https://evil.test'}})).status===403,'origin protection');
  ok((await call('/api/admin/metrics')).status===401,'admin authorization');
  const [a,b]=await Promise.all([call('/api/scan',{url:'https://github.com/demo/project'}),call('/api/scan',{url:'https://github.com/demo/project'})]);assert.equal(a.status,200,await a.clone().text());assert.equal(b.status,200,await b.clone().text());const report=await a.json();ok((await b.json()).id===report.id,'duplicate coalescing');
- ok(requests===2+1+paths.filter(p=>p!=='src/main.js'&&p!=='tests/main.test.js').length,'bounded API requests');
+ ok(requests>0&&requests<=30&&report.inspection.inspected.includes('tests/main.test.js'),'bounded requests and sampled test evidence');
+ ok(report.ruleVersion==='2.0.0'&&report.evidenceSummary.executionChecks===0,'versioned structural-only scoring');
  ok(!JSON.stringify(report).includes('ghp_'),'metadata secrets redacted');
  ok(!('files' in report),'no source response');
  ok(report.sha===commit&&report.findings.every(f=>f.evidence.every(e=>e.url.includes(commit))),'commit evidence');
@@ -49,6 +51,10 @@ try{
  ok((await direct('third')).status===429,'atomic global daily quota');
  // Exercise expiration at the storage layer without changing the host clock.
  const storage=await mf.unsafeGetDurableObjectStorage('test','Coordinator',{name:'global-v1'});
+ const historicalId='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+ await storage.exec('INSERT OR REPLACE INTO records(key,data,expires) VALUES(?,?,?)','share:'+historicalId,JSON.stringify({summary:{...summary,score:671,ruleVersion:'1.0.0',analyzerVersion:'0.1.0',scoreRange:undefined},removalHash:'old-hash'}),Date.now()+60000);
+ const historical=await (await call('/api/share/'+historicalId)).json();
+ ok(historical.score===671&&historical.ruleVersion==='1.0.0','historical share score/version preserved without rescoring');
  await storage.exec('UPDATE records SET expires=0');
  ok((await call('/api/share',{reportId:report.id,consent:true})).status===410,'expired report cannot be shared');
  await storage.exec('DELETE FROM quotas');

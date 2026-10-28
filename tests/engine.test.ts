@@ -1,5 +1,5 @@
 import { describe,it,expect } from 'vitest';
-import { analyze, RULES, WEIGHTS, commentary, PROFILES, tier } from '../src/shared/engine';
+import { analyze, RULES, WEIGHTS, commentary, PROFILES, tier } from '../src/shared/legacy/v1';
 import { exampleInspection } from '../src/shared/example';
 import { evidenceUrl, parseRepository } from '../src/shared/url';
 describe('URL validation',()=>{

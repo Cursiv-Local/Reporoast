@@ -2,6 +2,8 @@
 
 React 19 + Vite + Tailwind 4 frontend; a TypeScript Worker serves static assets and a small same-origin JSON API. No accounts, AI, Python backend, queues, D1, KV, or source-code execution.
 
+U2 (candidate 0.2.0/rules 2.0.0): src/shared/inspection-facts.ts parses bounded YAML/TOML/JSON5 data and traces declared commands without executing them. src/shared/rules-v2.ts evaluates the documented structural rubric; src/shared/legacy/v1.ts freezes historical behavior for audit/regression. The browser imports presentation helpers and a precomputed fictional example, so parsers and payment preparation are not in the frontend runtime. worker/premium.ts is an unconnected test-only payment domain, disabled by default, and never imports scoring.
+
 Static requests normally bypass the Worker. Their security headers are therefore defined in public/_headers (copied by Vite to dist), while API/share responses attach headers in worker/index.ts. The live staging smoke asserts the homepage CSP to catch deployment-routing gaps. See https://developers.cloudflare.com/workers/static-assets/headers/.
 
 ## Why one Durable Object
@@ -18,7 +20,7 @@ GitHub metadata is a timestamped API snapshot, not a historical Git object: desc
 
 ## Limits and evidence
 
-5,000 tree entries; 24 selected blobs; 48,000 bytes/file; 400,000 inspected bytes; 30 HTTP API requests including redirect hops (up to 4 hops per logical request); 2 MB decoded JSON response cap; 20-second abort timer. Generated/dependency/binary paths and lockfile contents are skipped. A lockfile path is sufficient for its presence rule. No arbitrary source file is needed by the initial rules. Unavailable blobs are tracked separately. Truncation prevents negative tree claims. A large response is rejected; smaller truncated trees produce partial evidence.
+5,000 tree entries; 24 selected blobs; 96,000 bytes/file; 400,000 inspected bytes; 30 HTTP API requests including redirect hops (up to 4 hops per logical request); 2 MB decoded JSON response cap; 20-second abort timer. Generated/dependency/binary paths are skipped. Selected text lockfiles, supported configuration, root/contributor documents, four representative test files and bounded literal local script references are inspected. Required missing bodies are unknown; a filename is not full configuration credit. No arbitrary code is executed. Unavailable blobs are tracked separately. Invalid/truncated trees cannot establish missing paths. A large response is rejected; smaller truncated trees produce partial evidence.
 
 JSON includes inspected/skipped/unavailable paths, byte counts, truncation, SHA, and logical API use. Raw file bodies live only in scan memory. Source manifests can affect applicability and profile detection; unrecognized ecosystems fall back to general.
 

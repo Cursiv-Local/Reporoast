@@ -1,5 +1,7 @@
 # Deployment
 
+U2 is a review candidate, not the currently deployed version. See docs/CUSTOM-DOMAIN.md for the inactive production example, canonical URL/redirect behavior and read-only route/DNS inventory. Existing staging live smoke was attempted during U2 but blocked by upstream GitHub HTTP 429; do not treat the earlier success below as a successful external U2 verification. No U2 deployment, DNS change or payment activation was performed.
+
 Staging is deployed at https://reporoast-staging.joshua-1993-winkler.workers.dev with scans enabled, generated HMAC/admin secrets, and test limits of 10 submissions/IP/day, 30 globally/day and 2 concurrent scans. A live Edge smoke passed for HTTPS/CSP, GitHub ingestion, modes, desktop/mobile accessibility, PNG download, explicit sharing/OG, removal, and mobile layout. Test shares were removed. Repeat with npm run smoke:staging.
 
 No production service, Cloudflare account plan, DNS record, or cursiv.us configuration was changed. The application deploys independently of Cursiv. The current OAuth login could not read account subscription details (403); no plan or billing change was attempted. Review account billing in the dashboard before increasing test capacity.

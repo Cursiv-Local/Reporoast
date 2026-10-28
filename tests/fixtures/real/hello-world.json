@@ -1,0 +1,38 @@
+{
+  "provenance": {
+    "repository": "octocat/Hello-World",
+    "commit": "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+    "note": "Pinned real small public repository; no popularity inputs."
+  },
+  "inspection": {
+    "metadata": {
+      "id": 1296269,
+      "fullName": "octocat/Hello-World",
+      "description": "My first repository on GitHub!",
+      "language": null,
+      "defaultBranch": "master",
+      "license": null,
+      "archived": false
+    },
+    "sha": "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+    "tree": [
+      {
+        "path": "README",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "980a0d5f19a64b4b30a87d4206aade58726b60e3",
+        "size": 13,
+        "url": "https://api.github.com/repos/octocat/Hello-World/git/blobs/980a0d5f19a64b4b30a87d4206aade58726b60e3"
+      }
+    ],
+    "treeComplete": true,
+    "files": {
+      "README": "Hello World!\n"
+    },
+    "skipped": [],
+    "unavailable": [],
+    "bytes": 13,
+    "requests": 0,
+    "truncated": false
+  }
+}

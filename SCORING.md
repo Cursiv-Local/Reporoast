@@ -1,357 +1,240 @@
-# Scoring specification
+# Scoring specification — 2.0.0
 
-Analyzer 0.1.0 · Rule set 1.0.0. The source of truth is src/shared/engine.ts. Scores measure recognized repository practices, not code correctness, security, popularity, or project size. No AI. No code execution.
+Analyzer 0.2.0. A deterministic **structural practices score**, not code quality, execution evidence, security certification or a test result. The frozen 1.0.0 specification remains in docs/history/SCORING-v1.0.0.md and its engine in src/shared/legacy/v1.ts.
 
-## Formula and evidence
+## Evidence and interpretation
 
-Base category budgets: Documentation 200; Testing and CI 200; Project Structure 150; Security Hygiene 150; Maintainability 150; Contributor Readiness 100; Repository Metadata 50 (total 1000).
+Presence means a path exists. Configuration means a bounded data parser or stated text rubric inspected structure. Invocation means configuration/docs reference a recognized command; it has not run. Actual execution evidence and verified behavior are not ingested and both remain zero. GitHub metadata is a scan-time API snapshot, not historical commit settings. The README section rubric measures content length/structure, not adequate teaching. Test declarations do not prove passing tests. Workflow parsing is a supported structural subset, not full GitHub schema validation or service activation.
 
-1. Determine profile from observable evidence or accept an explicit supported override.
-2. Exclude not-applicable rules. An unknown rule stays applicable for coverage.
-3. Within each nonempty category, redistribute its budget proportionally to eligible rules' base maxima. If a category is entirely ineligible, redistribute its category budget across remaining categories proportionally to their original budgets.
-4. All apportionments use largest remainders: floor each exact allocation, then award remaining whole points by descending fractional remainder, ties by stable category/rule order. Coverage weights sum to 1000.
-5. Coverage = sum of weights with known evidence / 1000. This is weighted evidence availability, not simply number of executed rules or a fraction of source bytes reviewed.
-6. For a conditional score, exclude unknown checks and proportionally apportion their weights across known checks, again with largest remainders. These effective maxima sum to 1000. Award round(effectiveMaximum × satisfactionRatio) for each known check. Unknown checks have null awards/maxima and never become failures or improvement gains. Show coverage alongside every score.
-7. A numerical total requires at least 80% weighted coverage, 8 known checks, and 3 known categories. Otherwise show “Insufficient evidence”; partial findings remain available. A complete tree is required for negative path claims, not for every positive finding. Individual evidence can remain unknown even with a complete tree.
+## Categories
 
-The conditional score is reproducible for a fixed commit, metadata snapshot, versions, profile, and ingestion outcome. Missing API evidence can change coverage and effective weights, so compare only equivalent evidence snapshots/profiles. Repository description and GitHub license recognition are scan-time metadata rather than commit-pinned historical facts. Links to the analyzed commit provide repository context for those metadata checks.
+- Documentation: 200
+- Testing and CI: 200
+- Project Structure: 150
+- Security Hygiene: 150
+- Maintainability: 150
+- Contributor Readiness: 100
+- Repository Metadata: 50
 
-## Applicability and profiles
+All budgets total 1000. There are 24 stable IDs: 22 scored practices and 2 explicitly unscored informational signals. Largest-remainder allocations use stable category/rule order for ties.
 
-- library: package exports/main/module found in readable root package.json. Lockfile rule MNT03 is excluded because lockfile expectations vary for libraries.
-- cli: root package.json has bin; evaluated before library/application.
-- application: root package.json has start/dev scripts or React/Next dependency evidence.
-- documentation: complete tree is entirely recognized document/static/config extensions, with no recognized package manifest. Heuristic; static sites may need correction.
-- general: fallback for unsupported, ambiguous or unreadable manifests. Users can correct this profile.
+## Deterministic normalization and unknown evidence
 
-Code-scoped checks (TST01–04, STR02, SEC03–04, MNT01–02) and package-scoped checks (SEC02, MNT03) are excluded for documentation. Package-scoped checks apply only if a supported manifest path is observed (package.json, pyproject.toml, Cargo.toml, go.mod, requirements.txt, pom.xml, csproj). No recognized manifest in a complete tree makes them ineligible; incomplete tree makes applicability unknown. Not-applicable rules receive no numerical gains. No scoring inputs use stars, followers, forks, activity or popularity.
+1. Detect profile from parsed Node/Python/Rust/Go metadata, GUI dependencies, entry points and a complete documentation tree. Explicit corrections are visible and scores across profiles are not directly equivalent. Ambiguous projects remain general. There are no owner-name, popularity or payment inputs.
+2. Exclude ineligible rules. Within each category redistribute original maxima over eligible rules; redistribute completely empty categories over remaining category budgets. Every allocation uses floor plus descending fractional remainders, ties in stable rule/category order.
+3. Coverage is the applicable integer weight with known evidence divided by 1000. It is **not** source-code coverage or merely the fraction of checks executed. Unknown rules have null awards, null conditional maxima and no gain. Incomplete trees cannot establish missing paths. Required uninspected/oversized/opaque content remains unknown.
+4. For the headline **conditional score**, apportion 1000 across known weights; award round(effectiveMaximum × satisfactionRatio) per rule and sum. Withhold the number below 80% weighted evidence, 8 known checks or 3 known categories.
+5. Also display the **possible score interval**: minimum = sum(round(originalApplicableWeight × knownRatio)); maximum = minimum + all unknown applicable weights. This interval uses original applicable weights, not the conditional allocation. It exposes uncertainty; it is not a verified behavior guarantee.
+6. Potential gain = conditional effectiveMaximum − conditional awardedPoints. Gains are integers from the same allocation, conditional estimates, and exclude unknown/ineligible rules. Sort importance, gain, effort and stable ID. MET02 is retired, so there is no duplicate licensing gain. Multiple independent practices can change in one commit; each rule is counted once.
 
-## Common evaluation contract (every rule, version 1.0.0)
+## Applicability
 
-Each row below defines stable ID, category, description, base maximum, method, scope, exact recognition pattern, fix, difficulty and security/reliability priority. Rule definitions include professional copy, two deterministic humorous variants and recommended steps. All tests are pattern heuristics, not semantic audits.
+Code checks TST01–04, STR02, SEC02–04 and MNT01–03 are excluded for documentation-only profiles. Dependency rules require observed third-party dependencies in supported manifests/requirements; unavailable applicability is unknown. MNT03 is excluded for library profiles rather than imposing an application lock convention. GitHub-specific TST03/SEC04 are excluded when a complete tree has no GitHub workflow; other CI providers are not penalized for GitHub-only settings. SEC03 applies only when tracked .env or example/template paths show environment-file use. No .env use is assumed from language or repository size. CON03 and MET02 are always unscored; no compulsory community code of conduct or SPDX-recognition penalty.
 
-Tree method: match case-insensitive eligible blob paths (excluding symlinks and vendor/generated/dependency directories). At least one match = pass, ratio 1; no matches in a complete tree = fail, ratio 0; incomplete tree with no match = unknown.
+## Bounded data interpretation
 
-Content method: required matching paths must be readable for negative claims. Match the configured case-insensitive, multiline text expression. One successful inspected file = pass for ordinary content checks. No successful text and all recognized matching files read in a complete tree = fail. No matching path in a complete tree = fail. Unavailable/malformed/oversized/skipped required evidence = unknown. DOC01 requires nonempty content. DOC02–04 and TST04 recognize headings or words anywhere in a README; presence is not a review of their adequacy. Nested READMEs may count. Line references point to the matching line when identifiable; no source snippets are returned.
+YAML 1.2 rejects duplicates, aliases, merges and unknown executable tags. TOML/JSON/JSON5 are parsed as data. Input cap 96 KB/file, 400 KB total, 24 blobs, 30 HTTP calls, 20-second abort. Decoded object traversal caps depth at 40 and nodes at 12000. No repository JS/Python config is imported. Tool scripts are followed only through literal tree-allowlisted references; commands are never run. Script aliases are bounded to depth 5 and cycle checked. Echoes/comments, disabled steps and help/version-only test commands are not test invocation evidence. Reusable/external/dynamic indirection that cannot be resolved remains unknown.
 
-TST03 and SEC04 are excluded when a complete tree has no recognized GitHub Actions workflow. This avoids penalizing alternative CI providers for GitHub-specific settings. Otherwise they are multi-workflow content checks: require a complete tree and every recognized GitHub Actions workflow readable, otherwise unknown. Satisfaction ratio = matching workflows / recognized workflows. Zero = fail; fraction between 0 and 1 = partial; 1 = pass. They recognize textual test references/top-level permission declarations, do not parse all YAML semantics, execute CI or prove least privilege. Valid unsupported alternatives may not match. CI provider presence in TST02 can match GitLab/CircleCI; TST03/SEC04 inspect GitHub Actions only and are ineligible for complete trees without those workflows.
+## Rule rubric
 
-Metadata method: MET01 passes for a nonempty description; MET02 passes for a non-null GitHub SPDX ID other than NOASSERTION. Fail means metadata is observed but unsatisfied; GitHub API failures abort metadata acquisition and never become missing metadata.
+Common conditions: pass = ratio 1; fail = observed supported evidence yields 0 or a required path is absent from a complete tree; partial = explicit fraction; unknown = required evidence unavailable/unsupported; ineligible = documented scope exclusion. Known observations have medium confidence for their limited structural conclusion; unknown has low confidence. Exact blob/tree links pin commits. Line anchors are supplied for direct section/tool/permission matches when identifiable. No source snippets or suspected credentials are displayed.
 
-Known rule evidence confidence is high for the observed pattern only, never for inferred software correctness. Unknown evidence confidence is low. Failed checks are improvement suggestions; incomplete checks are insufficient evidence. Evidence points to exact commit blobs with line ranges when available, or the exact commit tree for a negative path claim. A missing file is never fabricated as a blob link. Rule descriptions explicitly limit claims to recognized patterns. Credential-like filenames fall back to commit-root evidence.
+### DOC01 — Provide a substantive root README
 
-## Rule registry
+Category: Documentation. Base maximum: 40. Method: content. Version: 2.0.0.
 
-### DOC01 — Provide a README
+Root README substantive nonheading prose ≥100 characters; nonempty outline gets 1/4.
 
-Category: Documentation. Base maximum: 60. Method: content. Scope: all profiles. Version: 1.0.0.
+Fix: Describe project purpose and entry points in the root README; replace placeholders with useful prose. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 2/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Path expression: `(^|/)readme(\.[\w-]+)?$`.
+### DOC02 — Describe concrete setup steps
 
-Text/metadata expression: `\S`.
+Category: Documentation. Base maximum: 60. Method: content. Version: 2.0.0.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+Root README or contributor setup/get-started/build section with ≥60 characters of supporting nonheading content; heading-only outline 1/4.
 
-Fix: Add a README describing the project and its purpose.
+Fix: Add concrete prerequisites and setup steps to the root README or contributor guide. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 2/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 2/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+### DOC03 — Explain usage or document navigation
 
-### DOC02 — Document setup or installation
+Category: Documentation. Base maximum: 60. Method: content. Version: 2.0.0.
 
-Category: Documentation. Base maximum: 50. Method: content. Scope: all profiles. Version: 1.0.0.
+Root usage/examples/navigation/what-you-can-do section with ≥60 characters; outline 1/4.
 
-Path expression: `(^|/)readme(\.[\w-]+)?$`.
+Fix: Describe a usage example, get-started workflow or document navigation with supporting content. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 2/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Text/metadata expression: `\b(install(?:ation)?|setup|getting started|prerequisites)\b`.
+### DOC04 — Describe scope or supported requirements
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+Category: Documentation. Base maximum: 40. Method: content. Version: 2.0.0.
 
-Fix: Document setup prerequisites and installation steps in the README.
+Root scope/limits/requirements/platform/privacy section with ≥60 characters; outline 1/4.
 
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 2/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+Fix: Explain supported platforms, requirements, scope or limitations beneath the appropriate heading. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 2/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-### DOC03 — Document usage
+### TST01 — Include recognizable test declarations
 
-Category: Documentation. Base maximum: 50. Method: content. Scope: all profiles. Version: 1.0.0.
+Category: Testing and CI. Base maximum: 40. Method: content. Version: 2.0.0.
 
-Path expression: `(^|/)readme(\.[\w-]+)?$`.
+Selected non-vendor test file has anchored supported Python/JS/Go/Rust/Java test declarations. Uninspected required test content is unknown.
 
-Text/metadata expression: `\b(usage|quick start|example|how to use|reading|navigation)\b`.
+Fix: Include tests with recognizable assertions or declarations. This does not establish that tests pass. Difficulty: Moderate (practice-level estimate, not a code-specific prediction). Priority 4/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+### TST02 — Provide parseable CI job configuration
 
-Fix: Add a concrete usage example or a navigation guide in the README.
+Category: Testing and CI. Base maximum: 30. Method: content. Version: 2.0.0.
 
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 2/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+At least one parsed supported CI config has nonempty trigger/job/step structures; unsupported or malformed configs unknown. GitHub runner declaration required for local-step jobs.
 
-### DOC04 — Document project scope and limitations
+Fix: Provide valid supported CI jobs/steps. Configuration is not evidence of a successful run. Difficulty: Moderate (practice-level estimate, not a code-specific prediction). Priority 4/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Category: Documentation. Base maximum: 40. Method: content. Scope: all profiles. Version: 1.0.0.
+### TST03 — Reference a test invocation in CI
 
-Path expression: `(^|/)readme(\.[\w-]+)?$`.
+Category: Testing and CI. Base maximum: 90. Method: content. Version: 2.0.0.
 
-Text/metadata expression: `\b(limitations?|non-goals?|scope|supported|requirements)\b`.
+At least one recognized test command in inspected relevant run steps; bounded manifest/local-script tracing. Non-test workflows do not enter a test denominator. Unresolved indirection without positive evidence unknown.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
-
-Fix: Explain supported use cases and known limitations in the README.
-
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 2/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
-
-### TST01 — Include recognized test files
-
-Category: Testing and CI. Base maximum: 60. Method: tree. Scope: code. Version: 1.0.0.
-
-Path expression: `(^|/)(__tests__|tests?|spec)/|[._](test|spec)\.[^/]+$`.
-
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
-
-Fix: Add tests covering meaningful project behavior; their presence does not prove they pass.
-
-Difficulty: Moderate, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 4/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
-
-### TST02 — Include a recognized CI configuration
-
-Category: Testing and CI. Base maximum: 50. Method: tree. Scope: code. Version: 1.0.0.
-
-Path expression: `^\.github/workflows/[^/]+\.ya?ml$|^\.gitlab-ci\.yml$|^\.circleci/config\.yml$`.
-
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
-
-Fix: Configure CI for your documented verification commands.
-
-Difficulty: Moderate, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 4/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
-
-### TST03 — Reference tests in GitHub Actions
-
-Category: Testing and CI. Base maximum: 60. Method: content. Scope: code. Version: 1.0.0.
-
-Path expression: `^\.github/workflows/[^/]+\.ya?ml$`.
-
-Text/metadata expression: `\b(npm (?:run )?test|pnpm (?:run )?test|yarn test|pytest|cargo test|go test|vitest|jest|dotnet test|bun test)\b`.
-
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. Multi-workflow partial credit applies.
-
-Fix: Add the actual test command to GitHub Actions. This check does not verify execution.
-
-Difficulty: Moderate, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 4/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+Fix: Reference the actual test command from at least one relevant CI job. Deployment-only workflows do not each need tests. Difficulty: Moderate (practice-level estimate, not a code-specific prediction). Priority 4/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
 ### TST04 — Document verification commands
 
-Category: Testing and CI. Base maximum: 30. Method: content. Scope: code. Version: 1.0.0.
+Category: Testing and CI. Base maximum: 40. Method: content. Version: 2.0.0.
 
-Path expression: `(^|/)readme(\.[\w-]+)?$`.
+Recognized concrete test commands in README or contributor lines/inline code; no uninspected nested README denominator.
 
-Text/metadata expression: `\b(testing|run tests|npm test|pytest|cargo test|go test|verification)\b`.
+Fix: Document concrete verification commands and their prerequisites in the README or contributor guide. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 3/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+### STR01 — Publish substantive root license terms
 
-Fix: Document how contributors run verification locally.
+Category: Project Structure. Base maximum: 80. Method: content. Version: 2.0.0.
 
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 3/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+Substantive root license body ≥150 characters with recognizable terms language; no SPDX or compatibility conclusion.
 
-### STR01 — Include a license file
+Fix: Publish actual root license terms. Review licensing choices yourself; GitHub recognition is not required. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 2/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Category: Project Structure. Base maximum: 60. Method: tree. Scope: all profiles. Version: 1.0.0.
+### STR02 — Declare useful ignore entries
 
-Path expression: `(^|/)(license|licence|copying)(\.[\w-]+)?$`.
+Category: Project Structure. Base maximum: 30. Method: content. Version: 2.0.0.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+Root .gitignore has noncomment entries. Completeness unverified.
 
-Fix: Choose an appropriate license and include its text.
+Fix: Declare relevant noncomment ignore entries for local/generated files used by the project. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 2/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 2/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+### STR03 — Make an implementation entry point discoverable
 
-### STR02 — Include an ignore configuration
+Category: Project Structure. Base maximum: 40. Method: tree. Version: 2.0.0.
 
-Category: Project Structure. Base maximum: 40. Method: tree. Scope: code. Version: 1.0.0.
+Recognized flat or grouped source/document entry point exists. This is the explicitly labeled presence check; flat projects are supported.
 
-Path expression: `(^|/)\.gitignore$`.
+Fix: Expose an implementation or document entry point. A flat layout is valid; do not add directories for points. Difficulty: Moderate (practice-level estimate, not a code-specific prediction). Priority 1/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+### SEC01 — Explain private vulnerability reporting
 
-Fix: Add an ignore configuration appropriate to your tools.
+Category: Security Hygiene. Base maximum: 40. Method: content. Version: 2.0.0.
 
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 2/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+Substantive private vulnerability-reporting guidance with contact/advisory or reporting instructions; service responsiveness unverified.
 
-### STR03 — Group implementation files
+Fix: Describe a private vulnerability-reporting channel and responsible-disclosure instructions. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 5/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Category: Project Structure. Base maximum: 50. Method: tree. Scope: all profiles. Version: 1.0.0.
+### SEC02 — Configure applicable dependency updates
 
-Path expression: `(^|/)(src|lib|app|cmd|internal|packages|docs|content)/`.
+Category: Security Hygiene. Base maximum: 30. Method: content. Version: 2.0.0.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+Supported parsed Dependabot v2 updates cover observed ecosystem names and directory/schedule; partial credit is the fraction of observed ecosystems covered; zero coverage earns zero. Renovate uses a declared extends policy; unsupported dynamic configuration unknown.
 
-Fix: Group related implementation or documentation files in clear directories.
+Fix: Configure supported dependency update tooling for the ecosystems actually used; service activation is not verified. Difficulty: Moderate (practice-level estimate, not a code-specific prediction). Priority 4/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Difficulty: Moderate, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 1/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+### SEC03 — Ignore observed local environment files
 
-### SEC01 — Publish a security reporting policy
+Category: Security Hygiene. Base maximum: 20. Method: content. Version: 2.0.0.
 
-Category: Security Hygiene. Base maximum: 50. Method: tree. Scope: all profiles. Version: 1.0.0.
+Observed environment convention covered by supported ordered .env patterns; exceptions respected; complex negations unknown. Tracked environment paths limit credit to 1/2 even if ignored.
 
-Path expression: `(^|/)security\.md$`.
+Fix: Ignore observed environment-file paths and review ordered exceptions. Ignore rules do not remove already tracked files. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 5/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+### SEC04 — Declare scoped workflow token policies
 
-Fix: Add a SECURITY.md describing a private vulnerability reporting channel.
+Category: Security Hygiene. Base maximum: 60. Method: content. Version: 2.0.0.
 
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 5/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+Every inspected job has a valid known-scope permission map inherited or overridden at job level. Scoped reads/writes/none receive declaration credit; read-all 1/2, write-all 0. Unspecified/malformed defaults unknown, never assumed insecure.
 
-### SEC02 — Configure dependency update tooling
+Fix: Declare workflow or job-level permissions; review broad grants. Scoped release writes are not automatically unsafe. Difficulty: Moderate (practice-level estimate, not a code-specific prediction). Priority 5/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Category: Security Hygiene. Base maximum: 40. Method: tree. Scope: package. Version: 1.0.0.
+### MNT01 — Declare formatting settings or commands
 
-Path expression: `^\.github/dependabot\.ya?ml$|(^|/)(renovate\.json5?|\.renovaterc(\.json)?)$`.
+Category: Maintainability. Base maximum: 30. Method: content. Version: 2.0.0.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+Native formatter invocation or supported parsed formatting settings (including pyproject tool sections). Empty native JSON default configuration 1/2; opaque executable JS unknown.
 
-Fix: Configure dependency update tooling for the package ecosystems you use.
+Fix: Configure native formatting settings or declare a formatting command. Repository JS configuration is never executed. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 1/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Difficulty: Moderate, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 4/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+### MNT02 — Declare static analysis settings or commands
 
-### SEC03 — Ignore local environment files
+Category: Maintainability. Base maximum: 50. Method: content. Version: 2.0.0.
 
-Category: Security Hygiene. Base maximum: 30. Method: content. Scope: code. Version: 1.0.0.
+Native static-analysis invocation or supported parsed settings, including Ruff/mypy/Python sections, TypeScript tsc --noEmit, go vet and cargo clippy. Opaque JS unknown.
 
-Path expression: `(^|/)\.gitignore$`.
+Fix: Declare applicable lint/static-analysis settings or commands, including native ecosystem tools. Difficulty: Moderate (practice-level estimate, not a code-specific prediction). Priority 3/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Text/metadata expression: `^\s*(?:/)?\.env(?:\*|\.\*|/)?\s*$`.
+### MNT03 — Record ecosystem dependency reproducibility
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+Category: Maintainability. Base maximum: 50. Method: content. Version: 2.0.0.
 
-Fix: Ignore local environment files and keep credentials outside version control. This does not detect leaked secrets.
+Ecosystem-specific pins/hashes/checksums in inspected content. Python exact requirements pins 1/2, all declaration hashes full; Rust parsed package version/checksum structure; Go checksum records (not a lockfile); Node declared direct dependency lock entries/integrities. No install or dependency-resolution verification. Unsupported formats/bodies unknown.
 
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 5/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+Fix: Use ecosystem-appropriate dependency pins/hashes/checksums. Their presence does not prove installs succeed. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 3/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-### SEC04 — Declare workflow permissions
+### MNT04 — Record substantive change notes
 
-Category: Security Hygiene. Base maximum: 30. Method: content. Scope: code. Version: 1.0.0.
+Category: Maintainability. Base maximum: 20. Method: content. Version: 2.0.0.
 
-Path expression: `^\.github/workflows/[^/]+\.ya?ml$`.
+Root changelog/change notes have substantive nonheading content ≥100 characters; required unread content unknown.
 
-Text/metadata expression: `^permissions\s*:`.
+Fix: Record concrete changes instead of a placeholder. Required unreadable content remains unknown. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 1/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. Multi-workflow partial credit applies.
+### CON01 — Explain contributor setup or verification
 
-Fix: Declare top-level GitHub Actions token permissions and review least privilege. Presence alone does not prove safety.
+Category: Contributor Readiness. Base maximum: 75. Method: content. Version: 2.0.0.
 
-Difficulty: Moderate, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 5/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+Root README/contributor guidance ≥150 characters describing contributing/development/verification process; no onboarding success claim.
 
-### MNT01 — Include formatter configuration
+Fix: Explain contributor setup, verification and the contribution process using substantive guidance. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 2/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Category: Maintainability. Base maximum: 35. Method: tree. Scope: code. Version: 1.0.0.
+### CON02 — Provide substantive issue templates
 
-Path expression: `(^|/)(\.prettierrc(\.[\w-]+)?|prettier\.config\.[cm]?js|\.editorconfig|rustfmt\.toml|\.rustfmt\.toml|biome\.jsonc?)$`.
+Category: Contributor Readiness. Base maximum: 25. Method: content. Version: 2.0.0.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+Meaningful Markdown issue questions ≥100 characters or parsed named YAML form with labeled input controls.
 
-Fix: Configure a formatter or shared editor settings appropriate to the project.
+Fix: Provide useful issue questions or structured fields. Template presence does not prove responsiveness. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 1/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 1/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+### CON03 — Optional community conduct guidance (unscored)
 
-### MNT02 — Include lint configuration
+Category: Contributor Readiness. Base maximum: 0. Method: tree. Version: 2.0.0.
 
-Category: Maintainability. Base maximum: 40. Method: tree. Scope: code. Version: 1.0.0.
+Optional conduct guidance. Always excluded from numerical score/gains.
 
-Path expression: `(^|/)(eslint\.config\.[cm]?[jt]s|\.eslintrc(\.[\w-]+)?|ruff\.toml|\.golangci\.ya?ml|clippy\.toml|biome\.jsonc?)$`.
+Fix: Community conduct policies are optional and carry no numerical penalty. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 1/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+### MET01 — Provide a repository description snapshot
 
-Fix: Configure suitable static checks and document the command.
+Category: Repository Metadata. Base maximum: 50. Method: metadata. Version: 2.0.0.
 
-Difficulty: Moderate, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 3/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+Nonempty scan-time description ≥12 characters. Contextual metadata only, not technical quality.
 
-### MNT03 — Include a dependency lockfile
+Fix: Provide a concise GitHub repository description; this is mutable scan-time metadata. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 1/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Category: Maintainability. Base maximum: 40. Method: tree. Scope: package. Version: 1.0.0.
+### MET02 — GitHub license recognition (unscored)
 
-Path expression: `(^|/)(package-lock\.json|pnpm-lock\.yaml|yarn\.lock|bun\.lockb?|cargo\.lock|poetry\.lock|uv\.lock|go\.sum)$`.
+Category: Repository Metadata. Base maximum: 0. Method: metadata. Version: 2.0.0.
 
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
+GitHub SPDX recognition recorded informationally only; always excluded from numerical score/gains.
 
-Fix: Use a suitable dependency lockfile where reproducible application installs are expected.
+Fix: GitHub license recognition is informational, unscored and not a legal conclusion. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 2/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 3/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
+## Commentary and tiers
 
-### MNT04 — Record notable changes
+Mode switching is a presentation operation over one report. Template selection uses stable repository identity/commit/rule FNV-1a hash. Unknown findings use professional text. 0–199 Digital Crime Scene; 200–399 Spaghetti Factory; 400–599 Held Together by Hope; 600–749 Certified Spaghetti; 750–899 Actually Pretty Solid; 900–1000 Suspiciously Competent. Labels are entertainment, not certifications.
 
-Category: Maintainability. Base maximum: 35. Method: tree. Scope: all profiles. Version: 1.0.0.
+## Known bounds
 
-Path expression: `(^|/)(changelog|changes|history)(\.[\w-]+)?$|^\.changeset/[^/]+\.md$`.
-
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
-
-Fix: Maintain a concise changelog or change notes.
-
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 1/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
-
-### CON01 — Provide contributor guidance
-
-Category: Contributor Readiness. Base maximum: 40. Method: tree. Scope: all profiles. Version: 1.0.0.
-
-Path expression: `(^|/)contributing(\.[\w-]+)?$`.
-
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
-
-Fix: Document how to propose and verify a contribution.
-
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 2/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
-
-### CON02 — Provide issue templates
-
-Category: Contributor Readiness. Base maximum: 30. Method: tree. Scope: all profiles. Version: 1.0.0.
-
-Path expression: `^\.github/issue_template/[^/]+\.(md|ya?ml)$`.
-
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
-
-Fix: Add focused issue templates for useful bug reports and requests.
-
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 1/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
-
-### CON03 — Provide a code of conduct
-
-Category: Contributor Readiness. Base maximum: 30. Method: tree. Scope: all profiles. Version: 1.0.0.
-
-Path expression: `(^|/)code_of_conduct(\.[\w-]+)?$`.
-
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
-
-Fix: Publish appropriate community participation expectations.
-
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 1/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
-
-### MET01 — Provide a repository description
-
-Category: Repository Metadata. Base maximum: 25. Method: metadata. Scope: all profiles. Version: 1.0.0.
-
-Text/metadata expression: `description`.
-
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
-
-Fix: Add a concise repository description in GitHub settings.
-
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 1/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
-
-### MET02 — Identify a license in GitHub metadata
-
-Category: Repository Metadata. Base maximum: 25. Method: metadata. Scope: all profiles. Version: 1.0.0.
-
-Text/metadata expression: `license`.
-
-Evaluation, applicability, evidence, and pass/fail/partial conditions: common evaluation contract above. No partial credit; known satisfaction ratio is 0 or 1.
-
-Fix: Use a recognizable license and verify GitHub identifies it correctly.
-
-Difficulty: Easy, a rough implementation-effort estimate for this practice, not a repository-specific code-change prediction. Priority: 2/5. Suggested steps: implement this fix with the project’s documented tools; rescan the new commit and review applicability.
-
-## Improvement opportunities and commentary
-
-For each failed/partial check: potentialGain = effectiveMaximum − awardedPoints, both integer values from the same report. Unknown and ineligible checks have no gains. Merged license opportunity combines STR01 and MET02 contributions once; no rule gain is counted twice. Other checks reward distinct observed practices even if one commit satisfies several. Prioritize security/reliability importance, then potential gain, then Easy/Moderate/Advanced effort, then stable rule ID. All current known-evidence confidence levels are equal; future confidence levels must be sorted explicitly after effort.
-
-Even without a total score, available conditional rule gains use the known-evidence allocation and must be presented with the insufficient-evidence warning; they do not predict an authoritative total. Changes may alter other checks, metadata, profiles, weights and coverage. Both modes read identical report numbers. Humor uses a stable FNV-1a hash of numeric repository identity, commit, and rule ID to choose one of two reviewed templates. Unknown findings always use professional uncertainty copy.
-
-## Tiers (entertainment only)
-
-0–199 Digital Crime Scene; 200–399 Spaghetti Factory; 400–599 Held Together by Hope; 600–749 Certified Spaghetti; 750–899 Actually Pretty Solid; 900–1000 Suspiciously Competent. No formal certification or cross-profile ranking is implied.
+This is not a semantic documentation reviewer, a full YAML/CI validator, legal license classifier, dependency resolver, secret scanner or execution verifier. Native/version-specific and monorepo alternatives can remain unsupported. Reviewed fixtures test a finite recognition set, not all projects. Profile corrections are user declarations; disclose them rather than treating cross-profile scores as rankings. Existing reports retain their original versions and retention periods.
