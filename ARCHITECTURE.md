@@ -2,7 +2,9 @@
 
 React 19 + Vite + Tailwind 4 frontend; a TypeScript Worker serves static assets and a small same-origin JSON API. No accounts, AI, Python backend, queues, D1, KV, or source-code execution.
 
-U2 (candidate 0.2.0/rules 2.0.0): src/shared/inspection-facts.ts parses bounded YAML/TOML/JSON5 data and traces declared commands without executing them. src/shared/rules-v2.ts evaluates the documented structural rubric; src/shared/legacy/v1.ts freezes historical behavior for audit/regression. The browser imports presentation helpers and a precomputed fictional example, so parsers and payment preparation are not in the frontend runtime. worker/premium.ts is an unconnected test-only payment domain, disabled by default, and never imports scoring.
+Production 0.2.0/rules 2.0.0: src/shared/inspection-facts.ts parses bounded YAML/TOML/JSON5 data and traces declared commands without executing them. src/shared/rules-v2.ts evaluates the documented structural rubric; src/shared/legacy/v1.ts freezes historical behavior for audit/regression. The browser imports presentation helpers and a precomputed fictional example, so parsers and payment preparation are not in the frontend runtime. worker/premium.ts is an unconnected test-only payment domain, disabled by default, and never imports scoring.
+
+Production reporoast-production serves only roast.cursiv.us. Staging reporoast-staging retains its workers.dev origin and separate secrets/SQLite namespace. No binding points production to staging. The guarded production deployment command requires a terminal to preserve Cloudflare's conflict prompts; no Cursiv source or apex/www Worker is part of this deployment.
 
 Static requests normally bypass the Worker. Their security headers are therefore defined in public/_headers (copied by Vite to dist), while API/share responses attach headers in worker/index.ts. The live staging smoke asserts the homepage CSP to catch deployment-routing gaps. See https://developers.cloudflare.com/workers/static-assets/headers/.
 

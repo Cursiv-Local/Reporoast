@@ -2,7 +2,21 @@
 
 Updated 2026-10-28. Manuscript v3.0. Git origin is https://github.com/Cursiv-Local/Reporoast.git; it was empty at initial inspection. No pre-existing history or Cursiv code was overwritten. Initial implementation was local; the user subsequently authorized pushing, deployment and a real test.
 
-## U2 — accuracy audit and readiness candidate
+## Production deployment — authorized and verified 2026-10-28
+
+Live: https://roast.cursiv.us. Worker: reporoast-production. Version: 8876c7d5-3b25-4b2e-8158-497b28a0df25 (analyzer 0.2.0 / rules 2.0.0). Staging remains reporoast-staging at its existing workers.dev URL and was not redeployed. No Cursiv source, apex/www site or unrelated Worker was changed. Live payments remain disabled.
+
+Cloudflare account/zone were confirmed. Although direct DNS-record reads are denied by OAuth scopes, the supported Custom Domain conflict changeset confirmed one clean addition and zero updated/removed/conflicting records. After a disabled/no-route production bootstrap, fresh independent HMAC/admin secrets were provisioned and the managed roast.cursiv.us DNS/HTTPS binding was attached through interactive Wrangler. No manual/conflicting record, wildcard route or zone-wide SSL/redirect setting was added. The production deployment wrapper now refuses non-TTY operation because installed Wrangler can auto-override conflicts otherwise.
+
+Production and staging have different live SQLite Durable Object namespace IDs; neither uses KV/D1/queues. Production secrets were checked for non-reuse, values never printed, and backups remain Git-ignored. Admin without a token returns 401; actual secret values were absent from public responses. Built assets contain no staging origin. Production quotas are 5/IP/day, 100/day global and 2 concurrent scans; staging retains 10/IP/day and 30/day global.
+
+Live production browser checks passed: valid HTTPS certificate, homepage/canonical/CSP, actual public GitHub scan, immutable cached repeat, both modes, PNG download, production-domain share/OG URL, removal, share absent from staging, mobile overflow, desktop/mobile axe and zero page errors. octocat/Hello-World at 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d returned 60/1000 with full rule-evidence coverage and four original API calls. Test shares were removed.
+
+Cursiv and www still use the original cursiv-web production binding; their bodies and the staging homepage were byte-identical before/after. Existing veterans routes and Cursiv custom-domain certificate bindings were unchanged. Evidence is ignored under .wrangler/production and .wrangler/production-smoke. All original automated checks passed before upload; deployment-scope/isolation/interactive-safety checks were added. Final local unit/regression total is 296; 34 Worker integration assertions and eight desktop/mobile browser tests passed. Live production smoke also passed. CI is recorded in the task result.
+
+README.md, DEPLOYMENT.md, active Wrangler configuration, per-environment provisioning and shared live smoke scripts now describe production. The preflight script is initial-activation-only and refuses replacement of an existing target. Rollback/permissions are documented; future live payment activation still requires separate approval.
+
+## Historical U2 — accuracy audit and readiness candidate (before production approval)
 
 Local candidate: analyzer/package 0.2.0, rules 2.0.0. Existing staging is still the original deployment described below; no U2 public deployment, production activation, DNS modification or live payment was performed. This update is prepared for review under the new approval constraint.
 

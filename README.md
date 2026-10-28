@@ -4,7 +4,7 @@
 
 An independent, zero-AI public GitHub repository health analyzer. React/Vite frontend, TypeScript Worker, and one SQLite-backed Durable Object. No Python backend, OAuth, accounts, repository code execution, or Cursiv package dependencies.
 
-U2 candidate: analyzer 0.2.0 / rules 2.0.0 now report structural practices, evidence levels and an uncertainty interval. See [accuracy audit](docs/SCORING-AUDIT.md), [Cursiv investigation](docs/CURSIV-671-INVESTIGATION.md) and [cross-repository results](docs/VALIDATION-RESULTS.md). Frozen v1 definitions and historical report versions are preserved. Existing public staging still runs the previous version pending the requested rollout approval.
+Production: **https://roast.cursiv.us** — analyzer 0.2.0 / rules 2.0.0 report structural practices, evidence levels and an uncertainty interval. See [accuracy audit](docs/SCORING-AUDIT.md), [Cursiv investigation](docs/CURSIV-671-INVESTIGATION.md) and [cross-repository results](docs/VALIDATION-RESULTS.md). Historical scoring versions are preserved. Staging remains independent at https://reporoast-staging.joshua-1993-winkler.workers.dev.
 
 ## Included
 
@@ -55,14 +55,14 @@ verify runs the unit/scoring/cross-language/security/payment regression suite, T
 
 ## Deployment status
 
-Existing v1 staging is live: https://reporoast-staging.joshua-1993-winkler.workers.dev
+Production Worker **reporoast-production** is live at https://roast.cursiv.us. Staging Worker **reporoast-staging** remains at https://reporoast-staging.joshua-1993-winkler.workers.dev with separate persistent storage and secrets.
 
-The U2 staging smoke attempt reached a GitHub API rate limit (HTTP 429); full live scanning/share verification could not complete in that run. Local mocked and browser checks pass. No U2 revision was deployed publicly. The production domain configuration is prepared separately; DNS inventory permissions and owner approval are still required. See [domain preparation](docs/CUSTOM-DOMAIN.md).
+The owner authorized production on 2026-10-28. Live production checks passed for HTTPS, real GitHub analysis, deterministic caching, both modes, scorecard download, production-domain sharing/removal, mobile and accessibility. Cursiv/www/staging homepage responses and existing bindings were verified unchanged. Live payments remain disabled. See [deployment](DEPLOYMENT.md) for configuration, permissions and rollback.
 
-Live scans are enabled on staging with limits of 10 submissions/IP/day, 30 globally/day and 2 concurrent scans. A real browser smoke verified scanning, modes, desktop/mobile accessibility, downloads, explicit sharing and removal. Run `npm run smoke:staging` to repeat it; the script consumes a small number of GitHub requests and creates/removes one temporary test share.
+Production allows 5 submissions/IP/day, 100 globally/day and 2 concurrent scans. Staging retains 10/IP/day, 30 globally/day and 2 concurrent scans. Run `npm run smoke:production` or `npm run smoke:staging` to verify the selected environment; each uses real public GitHub access and creates/removes one temporary test share.
 
-Staging service secrets were generated and uploaded without exposing their values. The local backup is in Git-ignored `.dev.vars.staging`; never commit it. `node scripts/provision-staging.mjs` reuses that backup rather than rotating existing values.
+Independent service secrets are backed up only in Git-ignored `.dev.vars.production` and `.dev.vars.staging`; never commit or print them. Each environment's provision script reuses its own backup. Production does not depend on staging secrets or databases.
 
-Production remains disabled and no DNS was changed. Broader ecosystem calibration remains a public-beta release gate. Production deployment and cursiv.us DNS changes require explicit authorization.
+Use `npm run deploy:production` from an interactive terminal for verified, scope-checked production updates; use `npm run deploy:staging` for staging. Cloudflare manages only the `roast.cursiv.us` Custom Domain and certificate. The apex/www Cursiv website was not changed. Broader heuristic calibration and paid-recommendation readiness work remain separate from hosting; no live checkout is connected.
 
 Built independently for Cursiv. The Cursiv repository has not been modified.

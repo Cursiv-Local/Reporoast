@@ -1,12 +1,16 @@
-// Opt-in live browser smoke. Uses a small public repo and removes its test share.
+// Opt-in live deployment smoke. Defaults to staging; production is explicit.
 import { chromium } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import assert from 'node:assert/strict';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 const config = JSON.parse(await readFile('wrangler.jsonc', 'utf8'));
-const origin = config.env.staging.vars.PUBLIC_ORIGIN;
-assert.match(origin, /^https:\/\/reporoast-staging\.[a-z0-9-]+\.workers\.dev$/);
-await mkdir('.wrangler/staging-smoke', { recursive: true });
+const environment=process.argv[2]||'staging';
+assert.ok(['staging','production'].includes(environment));
+const origin = config.env[environment].vars.PUBLIC_ORIGIN;
+if(environment==='staging')assert.match(origin, /^https:\/\/reporoast-staging\.[a-z0-9-]+\.workers\.dev$/);
+else assert.equal(origin,'https://roast.cursiv.us');
+const artifactDir='.wrangler/'+environment+'-smoke';
+await mkdir(artifactDir, { recursive: true });
 const browser = await chromium.launch({ channel: 'msedge', headless: true });
 const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
 const page = await context.newPage();
@@ -16,11 +20,12 @@ let share;
 try {
   const response = await page.goto(origin, { waitUntil: 'networkidle' });
   assert.equal(response.status(), 200);
+  const tls=await response.securityDetails();assert.ok(tls&&tls.validTo>Date.now()/1000,'Valid HTTPS certificate required');
   assert.ok(response.headers()['content-security-policy'], 'Homepage must have a CSP');
   assert.match(await page.title(), /RepoRoast/);
   const health = await (await page.request.get(origin + '/api/health')).json();
   assert.equal(health.scansEnabled, true);
-  await page.screenshot({ path: '.wrangler/staging-smoke/home.png', fullPage: true });
+  await page.screenshot({ path: artifactDir+'/home.png', fullPage: true });
   await page.getByLabel('GITHUB REPOSITORY URL').fill('https://github.com/octocat/Hello-World');
   const pending = page.waitForResponse(r => r.url() === origin + '/api/scan' && r.request().method() === 'POST');
   await page.getByRole('button', { name: 'Score My Repo' }).click();
@@ -29,6 +34,9 @@ try {
   assert.equal(report.repository.fullName, 'octocat/Hello-World');
   assert.match(report.sha, /^[a-f0-9]{40}$/);
   assert.notEqual(report.score, null);
+  const repeated=await page.request.post(origin+'/api/scan',{headers:{origin},data:{url:'https://github.com/octocat/Hello-World'}});
+  assert.equal(repeated.status(),200);const repeatReport=await repeated.json();
+  assert.equal(repeatReport.id,report.id);assert.equal(repeatReport.score,report.score);assert.equal(repeatReport.timestamp,report.timestamp,'Repeated scan should reuse immutable cached report');
   await page.getByRole('heading', { name: 'octocat/Hello-World' }).waitFor();
   const before = await page.locator('.big-score').innerText();
   await page.getByRole('button', { name: 'Serious Mode', exact: true }).click();
@@ -36,7 +44,7 @@ try {
   assert.deepEqual((await new AxeBuilder({ page }).analyze()).violations, []);
   const downloaded = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Download PNG' }).click();
-  await (await downloaded).saveAs('.wrangler/staging-smoke/scorecard.png');
+  await (await downloaded).saveAs(artifactDir+'/scorecard.png');
   await page.getByRole('checkbox').check();
   const published = page.waitForResponse(r => r.url() === origin + '/api/share' && r.request().method() === 'POST');
   await page.getByRole('button', { name: 'Create public share link' }).click();
@@ -48,18 +56,20 @@ try {
   assert.match(shared.headers()['x-robots-tag'], /noindex/);
   const html = await shared.text();
   assert.ok(html.includes('og:title') && !html.includes('removalToken'));
+  assert.ok(html.includes('content="'+share.url+'"'),'Share OG URL must use its own deployment');
+  if(environment==='production')assert.equal((await page.request.get(config.env.staging.vars.PUBLIC_ORIGIN+'/api/share/'+new URL(share.url).pathname.split('/').pop())).status(),404,'Production share must not exist in staging storage');
   const deleted = page.waitForResponse(r => r.request().method() === 'DELETE');
   await page.getByRole('button', { name: 'Remove public summary' }).click();
   assert.equal((await deleted).status(), 200);
   assert.equal((await page.request.get(share.url)).status(), 404);
   share = undefined;
-  await page.screenshot({ path: '.wrangler/staging-smoke/report.png', fullPage: true });
+  await page.screenshot({ path: artifactDir+'/report.png', fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   assert.deepEqual((await new AxeBuilder({ page }).analyze()).violations, []);
   assert.deepEqual(errors, []);
-  const summary = { origin, repository: report.repository.fullName, sha: report.sha, score: report.score, coverage: report.coverage, githubRequests: report.inspection.requests, verified: ['HTTPS homepage and CSP', 'live GitHub scan', 'mode consistency', 'desktop/mobile axe', 'PNG download', 'explicit share and OG', 'share removal', 'mobile overflow', 'no browser errors'], timestamp: new Date().toISOString() };
-  await writeFile('.wrangler/staging-smoke/result.json', JSON.stringify(summary, null, 2));
+  const summary = { environment, origin, version:health.version,ruleVersion:report.ruleVersion,tls,repository: report.repository.fullName, sha: report.sha, score: report.score, coverage: report.coverage, githubRequests: report.inspection.requests, verified: ['HTTPS certificate/homepage/CSP', 'live GitHub scan', 'deterministic cached repeat', 'mode consistency', 'desktop/mobile axe', 'PNG download', 'explicit share and environment-correct OG', 'share removal', 'mobile overflow', 'no browser errors'], timestamp: new Date().toISOString() };
+  await writeFile(artifactDir+'/result.json', JSON.stringify(summary, null, 2));
   console.log(JSON.stringify(summary, null, 2));
 } finally {
   if (share?.url && share?.removalToken) {

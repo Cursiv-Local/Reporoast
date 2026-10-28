@@ -11,7 +11,7 @@
     "test:e2e": "playwright test",
     "check": "npm run test && npm run build",
     "deploy:staging": "npm run verify && wrangler deploy --env staging",
-    "deploy:production": "npm run verify && wrangler deploy --env production",
+    "deploy:production": "npm run verify && node scripts/deploy-production.mjs",
     "test:integration": "wrangler deploy --dry-run --outdir .wrangler/dry-run --env staging && node tests/worker.integration.mjs",
     "verify": "npm run check && npm run test:integration && npm run test:e2e",
     "smoke:live": "wrangler deploy --dry-run --outdir .wrangler/dry-run --env staging && node scripts/live-smoke.mjs",
@@ -19,7 +19,8 @@
     "test:scoring": "vitest run tests/scoring-v2.test.ts tests/cross-repository.test.ts",
     "test:premium": "vitest run tests/premium.test.ts",
     "validate:scoring": "node scripts/document-scoring.mjs && node scripts/validate-scoring.mjs",
-    "generate:example": "node scripts/generate-example.mjs"
+    "generate:example": "node scripts/generate-example.mjs",
+    "smoke:production": "node scripts/smoke-staging.mjs production"
   },
   "dependencies": {
     "json5": "^2.2.3",
