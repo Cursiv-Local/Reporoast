@@ -1,7 +1,7 @@
 import { DurableObject } from 'cloudflare:workers';
 import { AppError, parseRepository } from '../src/shared/url';
 import { analyze, ANALYZER_VERSION, RULE_VERSION, PROFILES, type Profile, type Report } from '../src/shared/engine';
-import { GitHub, LIMITS } from './github';
+import { GitHub, LIMITS, type GitHubResponseInfo } from './github';
 import { redact, sanitizeReport } from './redact';
 import { publicOrigin, canonicalRedirect } from './origin';
 export interface Env { ASSETS:Fetcher; COORDINATOR:DurableObjectNamespace<Coordinator>; GITHUB_TOKEN?:string; IP_HASH_SECRET?:string; ADMIN_TOKEN?:string; SCANS_ENABLED:string; DAILY_LIMIT:string; IP_LIMIT:string; MAX_CONCURRENT:string; PUBLIC_ORIGIN:string; CANONICAL_REDIRECTS?:string }
@@ -17,7 +17,12 @@ export async function readBody(request:Request):Promise<any>{
  while(true){const next=await reader.read();if(next.done)break;size+=next.value.byteLength;if(size>2048){await reader.cancel();throw new AppError('INVALID_BODY','Request exceeds 2 KB.',413);}raw+=decoder.decode(next.value,{stream:true});}
  try{const value=JSON.parse(raw);if(!value||typeof value!=='object'||Array.isArray(value))throw new Error();return value;}catch{throw new AppError('INVALID_BODY','Invalid JSON object.');}
 }
-export function errorResponse(error:unknown){return error instanceof AppError?json({error:{code:error.code,message:error.message}},error.status):json({error:{code:'INTERNAL_ERROR',message:'The scan could not finish. Please try again later.'}},500);}
+export function errorResponse(error:unknown){
+ if(!(error instanceof AppError))return json({error:{code:'INTERNAL_ERROR',message:'The scan could not finish. Please try again later.'}},500);
+ const response=json({error:{code:error.code,message:error.message,...(error.source?{source:error.source}:{}),...(error.retryAt?{retryAt:new Date(error.retryAt).toISOString()}: {})}},error.status);
+ if(error.retryAt)response.headers.set('Retry-After',String(Math.max(1,Math.ceil((error.retryAt-Date.now())/1000))));
+ return response;
+}
 export default {
  async fetch(request:Request,env:Env):Promise<Response>{
   try{
@@ -57,7 +62,7 @@ export class Coordinator extends DurableObject<Env>{
  private metric(name:string,n=1){this.ctx.storage.sql.exec('INSERT INTO metrics(day,name,count) VALUES(?,?,?) ON CONFLICT(day,name) DO UPDATE SET count=count+excluded.count',new Date().toISOString().slice(0,10),name,n);}
  private get<T>(key:string):T|undefined {const row=this.ctx.storage.sql.exec<Stored>('SELECT data,expires FROM records WHERE key=?',key).toArray()[0];return row&&row.expires>Date.now()?JSON.parse(row.data):undefined;}
  private put(key:string,data:unknown,ttl:number){this.ctx.storage.sql.exec('INSERT OR REPLACE INTO records(key,data,expires) VALUES(?,?,?)',key,JSON.stringify(data),Date.now()+ttl);}
- private limit(key:string,max:number,expires:number){const row=this.ctx.storage.sql.exec<{count:number}>('SELECT count FROM quotas WHERE key=? AND expires>?',key,Date.now()).toArray()[0];if(row&&row.count>=max)throw new AppError('CAPACITY','Scan capacity exhausted. Try again after the quota window resets.',429);this.ctx.storage.sql.exec('INSERT INTO quotas(key,count,expires) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN expires<=? THEN 1 ELSE count+1 END, expires=excluded.expires',key,expires,Date.now());}
+ private limit(key:string,max:number,expires:number){const row=this.ctx.storage.sql.exec<{count:number}>('SELECT count FROM quotas WHERE key=? AND expires>?',key,Date.now()).toArray()[0];if(row&&row.count>=max)throw new AppError('CAPACITY','RepoRoast '+(key.startsWith('global:')?'global daily scan':key.startsWith('ip:')?'per-client daily scan':'daily request')+' quota reached. Retry after '+new Date(expires).toISOString()+'.',429,expires,'reporoast_quota');this.ctx.storage.sql.exec('INSERT INTO quotas(key,count,expires) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET count=CASE WHEN expires<=? THEN 1 ELSE count+1 END, expires=excluded.expires',key,expires,Date.now());}
  private cleanup(){const now=Date.now();this.ctx.storage.sql.exec('DELETE FROM records WHERE expires<=?',now);this.ctx.storage.sql.exec('DELETE FROM quotas WHERE expires<=?',now);this.ctx.storage.sql.exec("DELETE FROM metrics WHERE day < date('now','-7 days')");}
  async alarm(){this.cleanup();await this.ctx.storage.setAlarm(Date.now()+3600000);}
  private authorized(request:Request){const expected='Bearer '+this.env.ADMIN_TOKEN,actual=request.headers.get('authorization')||'';let diff=expected.length^actual.length;for(let n=0;n<expected.length;n++)diff|=expected.charCodeAt(n)^(actual.charCodeAt(n)||0);return !!this.env.ADMIN_TOKEN&&this.env.ADMIN_TOKEN.length>=32&&diff===0;}
@@ -67,7 +72,7 @@ export class Coordinator extends DurableObject<Env>{
    if(!await this.ctx.storage.getAlarm())await this.ctx.storage.setAlarm(now+3600000);
    if(url.pathname==='/api/admin/metrics'&&request.method==='GET'){
     if(!this.authorized(request))throw new AppError('UNAUTHORIZED','Administrative access required.',401);
-    return json({metrics:this.ctx.storage.sql.exec('SELECT * FROM metrics ORDER BY day DESC').toArray(),active:this.pending.size,limits:{daily:this.env.DAILY_LIMIT,perIp:this.env.IP_LIMIT,concurrent:this.env.MAX_CONCURRENT,inspection:LIMITS},costs:{estimate:'No paid plan is enabled by this application. Configure and monitor account usage in Cloudflare; request counts are not a billing quote.',retentionHours:24,shareDays:7}});
+    return json({github:{authenticated:!!this.env.GITHUB_TOKEN,lastResponse:this.get<GitHubResponseInfo>('github:lastResponse'),lastScan:this.get('github:lastScan'),recentHeadSeconds:60,automaticRetries:0},metrics:this.ctx.storage.sql.exec('SELECT * FROM metrics ORDER BY day DESC').toArray(),active:this.pending.size,limits:{daily:this.env.DAILY_LIMIT,perIp:this.env.IP_LIMIT,concurrent:this.env.MAX_CONCURRENT,inspection:LIMITS},costs:{estimate:'No paid plan is enabled by this application. Configure and monitor account usage in Cloudflare; request counts are not a billing quote.',retentionHours:24,shareDays:7}});
    }
    if(url.pathname==='/api/scan'&&request.method==='POST'){
     if(this.env.SCANS_ENABLED!=='true')throw new AppError('SCANS_DISABLED','New scans are temporarily disabled.',503);
@@ -76,7 +81,7 @@ export class Coordinator extends DurableObject<Env>{
     this.limit('requests:'+day+':'+ip,40,tomorrow);
     const key=repo.fullName.toLowerCase()+':'+(profile||'auto');
     if(this.pending.has(key)){this.metric('coalesced');return json(await this.pending.get(key));}
-    if(this.pending.size>=bounded(this.env.MAX_CONCURRENT,2,1,4))throw new AppError('CAPACITY','Scan concurrency capacity exhausted. Try again shortly.',429);
+    if(this.pending.size>=bounded(this.env.MAX_CONCURRENT,2,1,4))throw new AppError('CAPACITY','RepoRoast is processing its maximum number of scans. Retry in 10 seconds.',429,Date.now()+10000,'reporoast_concurrency');
     // No await inside this transaction: quota checks and reservations are atomic.
     this.ctx.storage.transactionSync(()=>{this.limit('ip:'+day+':'+ip,bounded(this.env.IP_LIMIT,5,1,50),tomorrow);this.limit('global:'+day,bounded(this.env.DAILY_LIMIT,100,1,500),tomorrow);});
     const promise=this.scan(repo.fullName,profile);this.pending.set(key,promise);
@@ -108,8 +113,23 @@ export class Coordinator extends DurableObject<Env>{
   }catch(error){if(error instanceof AppError&&error.status===429)this.metric('rateLimitRejections');return errorResponse(error);}
  }
  private async scan(fullName:string,profile?:Profile):Promise<Report>{
-  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),LIMITS.timeout),github=new GitHub(this.env.GITHUB_TOKEN,fetch,controller.signal);this.metric('submissions');
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),LIMITS.timeout);
+  const credential=await digest(this.env.GITHUB_TOKEN||'unauthenticated'),cooldownKey='github:cooldown:'+credential;
+  const checkCooldown=()=>{const cooldown=this.get<{retryAt:number;kind:string}>(cooldownKey);if(cooldown&&cooldown.retryAt>Date.now())throw new AppError('RATE_LIMITED','GitHub '+cooldown.kind+' API limit is cooling down. Retry after '+new Date(cooldown.retryAt).toISOString()+'.',429,cooldown.retryAt,'github_'+cooldown.kind);};
+  const github=new GitHub(this.env.GITHUB_TOKEN,fetch,controller.signal,info=>{
+   this.metric('githubStatus'+info.status);
+   if(info.kind&&info.retryAt){
+    const previous=this.get<{attempt:number}>(cooldownKey),attempt=info.kind==='secondary'?Math.min((previous?.attempt||0)+1,6):0;
+    const retryAt=Math.max(info.retryAt,info.kind==='secondary'?Date.now()+60000*2**(attempt-1):0);
+    info.retryAt=retryAt;this.put(cooldownKey,{kind:info.kind,retryAt,attempt},86400000);this.metric('github'+info.kind+'Limits');
+   }
+   this.put('github:lastResponse',info,86400000);
+  },checkCooldown);this.metric('submissions');
+  const recentKey='head:'+fullName.toLowerCase()+':'+ANALYZER_VERSION+':'+RULE_VERSION+':'+(profile||'auto');
   try{
+   const recentId=this.get<string>(recentKey),recent=recentId?this.get<Report>('report:'+recentId):undefined;
+   if(recent){this.metric('cacheHits');this.metric('zeroRequestCacheHits');return recent;}
+   checkCooldown();
    let meta=this.metadata.get(fullName.toLowerCase());
    if(!meta||meta.expires<Date.now()){const value=await github.metadata(fullName);meta={value,expires:Date.now()+60000};if(this.metadata.size>=100)this.metadata.clear();this.metadata.set(fullName.toLowerCase(),meta);}
    const m=meta.value;
@@ -118,14 +138,14 @@ export class Coordinator extends DurableObject<Env>{
    if(!/^[a-f0-9]{40}$/.test(commit.sha))throw new AppError('UNSUPPORTED_STRUCTURE','No exact commit found.',422);
    const cacheKey='scan:'+m.id+':'+commit.sha+':'+ANALYZER_VERSION+':'+RULE_VERSION+':'+(profile||'auto');
    const cached=this.get<Report>(cacheKey);
-   if(cached){this.metric('cacheHits');return cached;}
+   if(cached){this.put(recentKey,cached.id,60000);this.metric('cacheHits');return cached;}
    const inspection=await github.inspect(m,commit);
    // Raw file text never enters persistent storage or HTTP responses.
    const report=analyze(inspection,profile);
    const existing=this.get<Report>('report:'+report.id);
    const safe=existing||sanitizeReport(report);
-   this.put(cacheKey,safe,86400000);this.put('report:'+safe.id,safe,86400000);this.metric('scans');return safe;
-  }catch(error){this.metric('failures');throw error;}finally{clearTimeout(timer);this.metric('githubRequests',github.requests);}
+   this.put(recentKey,safe.id,60000);this.put(cacheKey,safe,86400000);this.put('report:'+safe.id,safe,86400000);this.metric('scans');return safe;
+  }catch(error){this.metric('failures');throw error;}finally{clearTimeout(timer);this.metric('githubRequests',github.requests);this.put('github:lastScan',{at:new Date().toISOString(),requests:github.requests,retries:0,authenticated:!!this.env.GITHUB_TOKEN},86400000);}
  }
 }
 function bounded(value:string,fallback:number,min:number,max:number){const n=Number(value);return Number.isInteger(n)&&n>=min&&n<=max?n:fallback;}

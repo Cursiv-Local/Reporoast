@@ -23,3 +23,37 @@ describe('secret redaction',()=>{
 
 it('marks malformed tree entries incomplete rather than inventing absence',async()=>{const f=sequence({tree:[{path:'../outside.py',type:'blob',mode:'100644',sha:'a'.repeat(40)}],truncated:false});const r=await new GitHub(undefined,f).inspect(exampleInspection().metadata,{sha:'a'.repeat(40),commit:{tree:{sha:'c'.repeat(40)}}});expect(r.treeComplete).toBe(false);expect(r.tree).toEqual([]);expect(r.skipped[0].reason).toContain('absence cannot be established');});
 it('classifies interrupted response bodies as unavailable API evidence',async()=>{const stream=new ReadableStream({start(controller){controller.error(new Error('Interrupted'));}});await expect(new GitHub(undefined,sequence(new Response(stream))).metadata('o/r')).rejects.toMatchObject({code:'API_UNAVAILABLE'});});
+
+it('sends authentication only server-side and records safe response headers',async()=>{
+ const f=vi.fn(async(_url:unknown,init:RequestInit)=>{expect((init.headers as Record<string,string>).Authorization).toBe('Bearer service-token');return Response.json(metadata,{headers:{'x-ratelimit-remaining':'4999','x-ratelimit-limit':'5000','x-ratelimit-reset':'2000000000'}});});
+ const observed:unknown[]=[];const g=new GitHub('service-token',f as typeof fetch,undefined,info=>observed.push(info));await g.metadata('o/r');
+ expect(g.requests).toBe(1);expect(observed[0]).toMatchObject({status:200,authenticated:true,remaining:4999,limit:5000,reset:2000000000,retryAfter:null});expect(JSON.stringify(observed)).not.toContain('service-token');
+});
+it.each([403,429])('distinguishes primary exhaustion %s without retries',async status=>{
+ const reset=Math.floor(Date.now()/1000)+3600;const f=sequence(Response.json({message:'API rate limit exceeded'},{status,headers:{'x-ratelimit-remaining':'0','x-ratelimit-reset':String(reset)}}));
+ const g=new GitHub(undefined,f);await expect(g.metadata('o/r')).rejects.toMatchObject({code:'RATE_LIMITED',source:'github_primary',retryAt:reset*1000});expect(g.requests).toBe(1);
+});
+it.each([403,429])('recognizes secondary limits %s even with primary capacity',async status=>{
+ const f=sequence(Response.json({message:'You have exceeded a secondary rate limit'},{status,headers:{'x-ratelimit-remaining':'48'}}));const g=new GitHub(undefined,f);
+ await expect(g.metadata('o/r')).rejects.toMatchObject({source:'github_secondary',status:429});expect(g.requests).toBe(1);
+});
+it('honors Retry-After and reset together',async()=>{
+ const now=Date.now(),reset=Math.floor(now/1000)+120;const f=sequence(new Response(null,{status:403,headers:{'x-ratelimit-remaining':'0','x-ratelimit-reset':String(reset),'retry-after':'600'}}));
+ try{await new GitHub(undefined,f).metadata('o/r');throw new Error('Expected rate limit');}catch(error:any){expect(error.retryAt).toBeGreaterThanOrEqual(now+600000);}
+});
+it('recognizes an invalid credential without pretending evidence is missing',async()=>{
+ await expect(new GitHub('expired',sequence(new Response(null,{status:401}))).metadata('o/r')).rejects.toMatchObject({code:'GITHUB_AUTHENTICATION',status:503});
+});
+
+it('does not guess secondary when upstream classification evidence is absent',async()=>{
+ await expect(new GitHub(undefined,sequence(new Response(null,{status:429}))).metadata('o/r')).rejects.toMatchObject({source:'github_unclassified'});
+});
+it('does not count blocked or unsafe requests as HTTP calls',async()=>{
+ const g=new GitHub(undefined,sequence(metadata),undefined,undefined,()=>{throw new Error('cooldown');});
+ await expect(g.metadata('o/r')).rejects.toThrow('cooldown');expect(g.requests).toBe(0);
+ const redirected=new GitHub('secret',sequence(new Response(null,{status:301,headers:{location:'https://evil.test/steal'}})));
+ await expect(redirected.metadata('o/r')).rejects.toMatchObject({code:'UNSAFE_REDIRECT'});expect(redirected.requests).toBe(1);
+});
+it('bounds malformed upstream date headers without crashing error handling',async()=>{
+ await expect(new GitHub(undefined,sequence(new Response(null,{status:403,headers:{'x-ratelimit-remaining':'0','x-ratelimit-reset':'9007199254740991','retry-after':'9'.repeat(1000)}}))).metadata('o/r')).rejects.toMatchObject({code:'RATE_LIMITED',source:'github_primary'});
+});
