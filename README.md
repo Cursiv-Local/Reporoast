@@ -4,9 +4,11 @@
 
 An independent, zero-AI public GitHub repository health analyzer. React/Vite frontend, TypeScript Worker, and one SQLite-backed Durable Object. No Python backend, OAuth, accounts, repository code execution, or Cursiv package dependencies.
 
+Production: **https://roast.cursiv.us** — analyzer 0.2.0 / rules 2.0.0 report structural practices, evidence levels and an uncertainty interval. See [accuracy audit](docs/SCORING-AUDIT.md), [Cursiv investigation](docs/CURSIV-671-INVESTIGATION.md) and [cross-repository results](docs/VALIDATION-RESULTS.md). Historical scoring versions are preserved. Staging remains independent at https://reporoast-staging.joshua-1993-winkler.workers.dev.
+
 ## Included
 
-- 24 versioned deterministic rules across seven categories, scored out of 1000.
+- 24 stable versioned checks (22 scored, two informational), across seven categories, scored out of 1000.
 - Five profiles, explicit applicability, weighted evidence coverage, and insufficient-evidence results.
 - Commit-pinned findings, partial credit, effective-weight point gains, and overlapping-license recommendation merging.
 - Deterministic Roast / Serious commentary with instant local switching.
@@ -37,7 +39,9 @@ npm run verify
 npm audit
 ```
 
-verify runs 103 unit tests, TypeScript/build checks, 31 Worker integration assertions in Miniflare, and 8 desktop/mobile Edge Playwright tests. Tests mock GitHub and need no API access. Browser tests run axe accessibility checks on the landing page and results. If Edge is unavailable, install it using `npx playwright install --with-deps msedge`.
+verify runs the unit/scoring/cross-language/security/payment regression suite, TypeScript/build checks, 34 Worker integration assertions in Miniflare, and 8 desktop/mobile Edge Playwright tests. Tests mock GitHub and need no API access. Browser tests run axe accessibility checks on the landing page and results. If Edge is unavailable, install it using `npx playwright install --with-deps msedge`.
+
+`npm run validate:scoring` regenerates the scoring specification, Cursiv investigation, before/after comparison and labeled-check error rates from pinned fixtures. `npm run test:scoring` and `npm run test:premium` run isolated suites. `npm run generate:example` refreshes precomputed browser example data. Premium preparation is test-only and disabled; see [readiness](docs/PREMIUM-READINESS.md). No live checkout is connected.
 
 `npm run smoke:live` is a separate opt-in check of octocat/Hello-World using unauthenticated GitHub requests. It is not run in CI and publishes nothing. Its local report is ignored under .wrangler/smoke.
 
@@ -51,12 +55,14 @@ verify runs 103 unit tests, TypeScript/build checks, 31 Worker integration asser
 
 ## Deployment status
 
-Staging is live: https://reporoast-staging.joshua-1993-winkler.workers.dev
+Production Worker **reporoast-production** is live at https://roast.cursiv.us. Staging Worker **reporoast-staging** remains at https://reporoast-staging.joshua-1993-winkler.workers.dev with separate persistent storage and secrets.
 
-Live scans are enabled on staging with limits of 10 submissions/IP/day, 30 globally/day and 2 concurrent scans. A real browser smoke verified scanning, modes, desktop/mobile accessibility, downloads, explicit sharing and removal. Run `npm run smoke:staging` to repeat it; the script consumes a small number of GitHub requests and creates/removes one temporary test share.
+The owner authorized production on 2026-10-28. Live production checks passed for HTTPS, real GitHub analysis, deterministic caching, both modes, scorecard download, production-domain sharing/removal, mobile and accessibility. Cursiv/www/staging homepage responses and existing bindings were verified unchanged. Live payments remain disabled. See [deployment](DEPLOYMENT.md) for configuration, permissions and rollback.
 
-Staging service secrets were generated and uploaded without exposing their values. The local backup is in Git-ignored `.dev.vars.staging`; never commit it. `node scripts/provision-staging.mjs` reuses that backup rather than rotating existing values.
+Production allows 5 submissions/IP/day, 100 globally/day and 2 concurrent scans. Staging retains 10/IP/day, 30 globally/day and 2 concurrent scans. Run `npm run smoke:production` or `npm run smoke:staging` to verify the selected environment; each uses real public GitHub access and creates/removes one temporary test share.
 
-Production remains disabled and no DNS was changed. Broader ecosystem calibration remains a public-beta release gate. Production deployment and cursiv.us DNS changes require explicit authorization.
+Independent service secrets are backed up only in Git-ignored `.dev.vars.production` and `.dev.vars.staging`; never commit or print them. Each environment's provision script reuses its own backup. Production does not depend on staging secrets or databases.
+
+Use `npm run deploy:production` from an interactive terminal for verified, scope-checked production updates; use `npm run deploy:staging` for staging. Cloudflare manages only the `roast.cursiv.us` Custom Domain and certificate. The apex/www Cursiv website was not changed. Broader heuristic calibration and paid-recommendation readiness work remain separate from hosting; no live checkout is connected.
 
 Built independently for Cursiv. The Cursiv repository has not been modified.

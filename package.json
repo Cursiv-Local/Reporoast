@@ -1,6 +1,6 @@
 {
   "name": "reporoast",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,15 +11,23 @@
     "test:e2e": "playwright test",
     "check": "npm run test && npm run build",
     "deploy:staging": "npm run verify && wrangler deploy --env staging",
-    "deploy:production": "npm run verify && wrangler deploy --env production",
+    "deploy:production": "npm run verify && node scripts/deploy-production.mjs",
     "test:integration": "wrangler deploy --dry-run --outdir .wrangler/dry-run --env staging && node tests/worker.integration.mjs",
     "verify": "npm run check && npm run test:integration && npm run test:e2e",
     "smoke:live": "wrangler deploy --dry-run --outdir .wrangler/dry-run --env staging && node scripts/live-smoke.mjs",
-    "smoke:staging": "node scripts/smoke-staging.mjs"
+    "smoke:staging": "node scripts/smoke-staging.mjs",
+    "test:scoring": "vitest run tests/scoring-v2.test.ts tests/cross-repository.test.ts",
+    "test:premium": "vitest run tests/premium.test.ts",
+    "validate:scoring": "node scripts/document-scoring.mjs && node scripts/validate-scoring.mjs",
+    "generate:example": "node scripts/generate-example.mjs",
+    "smoke:production": "node scripts/smoke-staging.mjs production"
   },
   "dependencies": {
+    "json5": "^2.2.3",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "smol-toml": "^1.9.1",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.0",

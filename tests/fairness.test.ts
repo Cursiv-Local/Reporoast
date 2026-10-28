@@ -1,5 +1,5 @@
 import { describe,it,expect } from 'vitest';
-import { analyze,RULES,PROFILES } from '../src/shared/engine';
+import { analyze,RULES,PROFILES } from '../src/shared/legacy/v1';
 import { exampleInspection } from '../src/shared/example';
 import { sanitizeReport } from '../worker/redact';
 import { readFileSync } from 'node:fs';
@@ -15,7 +15,7 @@ describe('rule registry and fairness',()=>{
  it('keeps a known subset conditional and unknowns without numerical awards',()=>{const i=withFiles(full);delete i.files['.github/workflows/check.yml'];const r=analyze(i,'application');expect(r.coverage).toBe(.91);expect(r.score).toBe(1000);expect(r.checks.find(c=>c.rule.id==='TST03')!.awarded).toBeNull();expect(r.categories.reduce((s,c)=>s+c.maximum,0)).toBe(1000);});
  it('uses real documentation-only evidence without test penalties',()=>{const r=analyze(withFiles({'README.md':'# Documentation\n## Navigation\n## Scope','docs/guide.md':'Guide','LICENSE':'MIT'}));expect(r.detectedProfile).toBe('documentation');expect(r.checks.find(c=>c.rule.id==='TST01')!.state).toBe('not-applicable');expect(r.score).not.toBeNull();});
  it.each([['rust',{'Cargo.toml':'[package]','src/main.rs':'fn main() {}','tests/smoke.rs':'// example','Cargo.lock':'# generated'}],['go',{'go.mod':'module demo','cmd/main.go':'package main','cmd/main_test.go':'// example','go.sum':'sum'}],['python',{'pyproject.toml':'[project]','src/tool.py':'# example','tests/test_tool.py':'# example','uv.lock':'# generated'}]])('recognizes %s package paths without reading dependency code',(_,files)=>{const r=analyze(withFiles(files as Record<string,string>),'general');expect(r.checks.find(c=>c.rule.id==='MNT03')!.state).toBe('pass');expect(r.checks.find(c=>c.rule.id==='TST01')!.state).toBe('pass');});
- it('documents every rule and version',()=>{const doc=readFileSync('SCORING.md','utf8');for(const rule of RULES){expect(doc).toContain('### '+rule.id+' — '+rule.title);expect(doc).toContain('Base maximum: '+rule.max);}});
+ it('documents every rule and version',()=>{const doc=readFileSync('docs/history/SCORING-v1.0.0.md','utf8');for(const rule of RULES){expect(doc).toContain('### '+rule.id+' — '+rule.title);expect(doc).toContain('Base maximum: '+rule.max);}});
  it('redacts path credentials without fabricating blob references',()=>{const secret='ghp_'+'x'.repeat(36);const i=withFiles({['tests/'+secret+'.test.js']:'// example'});const report=analyze(i,'general'),safe=sanitizeReport(report);expect(JSON.stringify(safe)).not.toContain(secret);const evidence=safe.checks.find(c=>c.rule.id==='TST01')!.evidence[0];expect(evidence.path).toBeNull();expect(evidence.url).toBe('https://github.com/'+i.metadata.fullName+'/tree/'+i.sha);expect(evidence.confidence).toBe('low');});
  it('recognizes CLI and library profile evidence',()=>{expect(analyze(withFiles({'package.json':'{"bin":{"demo":"cli.js"}}'})).detectedProfile).toBe('cli');expect(analyze(withFiles({'package.json':'{"exports":"./src/main.js"}'})).detectedProfile).toBe('library');});
 });

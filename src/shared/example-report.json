@@ -1,0 +1,1187 @@
+{
+  "id": "0:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:0.2.0:2.0.0:application",
+  "analyzerVersion": "0.2.0",
+  "ruleVersion": "2.0.0",
+  "repository": {
+    "id": 0,
+    "fullName": "example/kindling",
+    "description": "A fictional project demonstrating an evidence-backed report.",
+    "language": "TypeScript",
+    "defaultBranch": "main",
+    "license": "MIT",
+    "archived": false
+  },
+  "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "timestamp": "2026-10-28T12:00:00.000Z",
+  "profile": "application",
+  "detectedProfile": "application",
+  "score": 730,
+  "scoreRange": {
+    "minimum": 730,
+    "maximum": 730
+  },
+  "evidenceSummary": {
+    "structuralOnly": true,
+    "executionChecks": 0,
+    "verifiedBehaviorChecks": 0
+  },
+  "diagnostics": [
+    "GitHub license recognition and community conduct policies are informational and unscored."
+  ],
+  "tier": "Certified Spaghetti",
+  "coverage": 1,
+  "categories": [
+    {
+      "name": "Documentation",
+      "maximum": 200,
+      "awarded": 200,
+      "coverage": 1
+    },
+    {
+      "name": "Testing and CI",
+      "maximum": 200,
+      "awarded": 200,
+      "coverage": 1
+    },
+    {
+      "name": "Project Structure",
+      "maximum": 150,
+      "awarded": 70,
+      "coverage": 1
+    },
+    {
+      "name": "Security Hygiene",
+      "maximum": 150,
+      "awarded": 90,
+      "coverage": 1
+    },
+    {
+      "name": "Maintainability",
+      "maximum": 150,
+      "awarded": 45,
+      "coverage": 1
+    },
+    {
+      "name": "Contributor Readiness",
+      "maximum": 100,
+      "awarded": 75,
+      "coverage": 1
+    },
+    {
+      "name": "Repository Metadata",
+      "maximum": 50,
+      "awarded": 50,
+      "coverage": 1
+    }
+  ],
+  "checks": [
+    {
+      "rule": {
+        "id": "DOC01",
+        "category": "Documentation",
+        "title": "Provide a substantive root README",
+        "max": 40,
+        "method": "content",
+        "fix": "Describe project purpose and entry points in the root README; replace placeholders with useful prose.",
+        "steps": [
+          "Describe project purpose and entry points in the root README; replace placeholders with useful prose.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 2,
+        "roast": [
+          "The evidence for “Provide a substantive root README” needs another commit.",
+          "“Provide a substantive root README” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 40,
+      "maximum": 40,
+      "evidence": [
+        {
+          "path": "README.md",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/README.md#L1",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration",
+          "lines": [
+            1,
+            1
+          ]
+        }
+      ],
+      "explanation": "Root README prose was inspected; documentation adequacy is not verified.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "DOC02",
+        "category": "Documentation",
+        "title": "Describe concrete setup steps",
+        "max": 60,
+        "method": "content",
+        "fix": "Add concrete prerequisites and setup steps to the root README or contributor guide.",
+        "steps": [
+          "Add concrete prerequisites and setup steps to the root README or contributor guide.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 2,
+        "roast": [
+          "The evidence for “Describe concrete setup steps” needs another commit.",
+          "“Describe concrete setup steps” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 60,
+      "maximum": 60,
+      "evidence": [
+        {
+          "path": "CONTRIBUTING.md",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/CONTRIBUTING.md#L6",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration",
+          "lines": [
+            6,
+            6
+          ]
+        }
+      ],
+      "explanation": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "DOC03",
+        "category": "Documentation",
+        "title": "Explain usage or document navigation",
+        "max": 60,
+        "method": "content",
+        "fix": "Describe a usage example, get-started workflow or document navigation with supporting content.",
+        "steps": [
+          "Describe a usage example, get-started workflow or document navigation with supporting content.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 2,
+        "roast": [
+          "The evidence for “Explain usage or document navigation” needs another commit.",
+          "“Explain usage or document navigation” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 60,
+      "maximum": 60,
+      "evidence": [
+        {
+          "path": "README.md",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/README.md#L1",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration",
+          "lines": [
+            1,
+            1
+          ]
+        }
+      ],
+      "explanation": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "DOC04",
+        "category": "Documentation",
+        "title": "Describe scope or supported requirements",
+        "max": 40,
+        "method": "content",
+        "fix": "Explain supported platforms, requirements, scope or limitations beneath the appropriate heading.",
+        "steps": [
+          "Explain supported platforms, requirements, scope or limitations beneath the appropriate heading.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 2,
+        "roast": [
+          "The evidence for “Describe scope or supported requirements” needs another commit.",
+          "“Describe scope or supported requirements” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 40,
+      "maximum": 40,
+      "evidence": [
+        {
+          "path": "README.md",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/README.md#L13",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration",
+          "lines": [
+            13,
+            13
+          ]
+        }
+      ],
+      "explanation": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "TST01",
+        "category": "Testing and CI",
+        "title": "Include recognizable test declarations",
+        "max": 40,
+        "method": "content",
+        "fix": "Include tests with recognizable assertions or declarations. This does not establish that tests pass.",
+        "steps": [
+          "Include tests with recognizable assertions or declarations. This does not establish that tests pass.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Moderate",
+        "importance": 4,
+        "roast": [
+          "The evidence for “Include recognizable test declarations” needs another commit.",
+          "“Include recognizable test declarations” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 40,
+      "maximum": 40,
+      "evidence": [
+        {
+          "path": "tests/main.test.ts",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/tests/main.test.ts",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "explanation": "Recognizable test declarations inspected. Tests were not run.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "TST02",
+        "category": "Testing and CI",
+        "title": "Provide parseable CI job configuration",
+        "max": 30,
+        "method": "content",
+        "fix": "Provide valid supported CI jobs/steps. Configuration is not evidence of a successful run.",
+        "steps": [
+          "Provide valid supported CI jobs/steps. Configuration is not evidence of a successful run.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Moderate",
+        "importance": 4,
+        "roast": [
+          "The evidence for “Provide parseable CI job configuration” needs another commit.",
+          "“Provide parseable CI job configuration” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 30,
+      "maximum": 30,
+      "evidence": [
+        {
+          "path": ".github/workflows/test.yml",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/.github/workflows/test.yml",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "explanation": "GitHub Actions jobs/steps parse; actual execution and success are unverified.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "TST03",
+        "category": "Testing and CI",
+        "title": "Reference a test invocation in CI",
+        "max": 90,
+        "method": "content",
+        "fix": "Reference the actual test command from at least one relevant CI job. Deployment-only workflows do not each need tests.",
+        "steps": [
+          "Reference the actual test command from at least one relevant CI job. Deployment-only workflows do not each need tests.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Moderate",
+        "importance": 4,
+        "roast": [
+          "The evidence for “Reference a test invocation in CI” needs another commit.",
+          "“Reference a test invocation in CI” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 90,
+      "maximum": 90,
+      "evidence": [
+        {
+          "path": ".github/workflows/test.yml",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/.github/workflows/test.yml",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "invocation"
+        },
+        {
+          "path": "package.json",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/package.json",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "invocation"
+        }
+      ],
+      "explanation": "At least one job references a recognized test invocation. Non-test workflows do not enter a test-workflow denominator. No execution outcome verified.",
+      "level": "invocation"
+    },
+    {
+      "rule": {
+        "id": "TST04",
+        "category": "Testing and CI",
+        "title": "Document verification commands",
+        "max": 40,
+        "method": "content",
+        "fix": "Document concrete verification commands and their prerequisites in the README or contributor guide.",
+        "steps": [
+          "Document concrete verification commands and their prerequisites in the README or contributor guide.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 3,
+        "roast": [
+          "The evidence for “Document verification commands” needs another commit.",
+          "“Document verification commands” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 40,
+      "maximum": 40,
+      "evidence": [
+        {
+          "path": "CONTRIBUTING.md",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/CONTRIBUTING.md",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "invocation"
+        }
+      ],
+      "explanation": "README/contributor guidance references a recognized verification command; it was not executed.",
+      "level": "invocation"
+    },
+    {
+      "rule": {
+        "id": "STR01",
+        "category": "Project Structure",
+        "title": "Publish substantive root license terms",
+        "max": 80,
+        "method": "content",
+        "fix": "Publish actual root license terms. Review licensing choices yourself; GitHub recognition is not required.",
+        "steps": [
+          "Publish actual root license terms. Review licensing choices yourself; GitHub recognition is not required.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 2,
+        "roast": [
+          "The evidence for “Publish substantive root license terms” needs another commit.",
+          "“Publish substantive root license terms” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "fail",
+      "ratio": 0,
+      "awarded": 0,
+      "maximum": 80,
+      "evidence": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/LICENSE",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "explanation": "Substantive root license terms inspected; no legal compatibility/identification claim.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "STR02",
+        "category": "Project Structure",
+        "title": "Declare useful ignore entries",
+        "max": 30,
+        "method": "content",
+        "fix": "Declare relevant noncomment ignore entries for local/generated files used by the project.",
+        "steps": [
+          "Declare relevant noncomment ignore entries for local/generated files used by the project.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 2,
+        "roast": [
+          "The evidence for “Declare useful ignore entries” needs another commit.",
+          "“Declare useful ignore entries” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 30,
+      "maximum": 30,
+      "evidence": [
+        {
+          "path": ".gitignore",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/.gitignore",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "explanation": "Noncomment ignore entries exist; completeness is not established.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "STR03",
+        "category": "Project Structure",
+        "title": "Make an implementation entry point discoverable",
+        "max": 40,
+        "method": "tree",
+        "fix": "Expose an implementation or document entry point. A flat layout is valid; do not add directories for points.",
+        "steps": [
+          "Expose an implementation or document entry point. A flat layout is valid; do not add directories for points.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Moderate",
+        "importance": 1,
+        "roast": [
+          "The evidence for “Make an implementation entry point discoverable” needs another commit.",
+          "“Make an implementation entry point discoverable” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 40,
+      "maximum": 40,
+      "evidence": [
+        {
+          "path": "src/main.ts",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/src/main.ts",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "presence"
+        }
+      ],
+      "explanation": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+      "level": "presence"
+    },
+    {
+      "rule": {
+        "id": "SEC01",
+        "category": "Security Hygiene",
+        "title": "Explain private vulnerability reporting",
+        "max": 40,
+        "method": "content",
+        "fix": "Describe a private vulnerability-reporting channel and responsible-disclosure instructions.",
+        "steps": [
+          "Describe a private vulnerability-reporting channel and responsible-disclosure instructions.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 5,
+        "roast": [
+          "The evidence for “Explain private vulnerability reporting” needs another commit.",
+          "“Explain private vulnerability reporting” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "fail",
+      "ratio": 0,
+      "awarded": 0,
+      "maximum": 60,
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "explanation": "Private reporting contact/instructions inspected; responsiveness and security unverified.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "SEC02",
+        "category": "Security Hygiene",
+        "title": "Configure applicable dependency updates",
+        "max": 30,
+        "method": "content",
+        "fix": "Configure supported dependency update tooling for the ecosystems actually used; service activation is not verified.",
+        "steps": [
+          "Configure supported dependency update tooling for the ecosystems actually used; service activation is not verified.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Moderate",
+        "importance": 4,
+        "roast": [
+          "The evidence for “Configure applicable dependency updates” needs another commit.",
+          "“Configure applicable dependency updates” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "not-applicable",
+      "ratio": null,
+      "awarded": null,
+      "maximum": null,
+      "evidence": [],
+      "explanation": "No declared third-party dependencies in supported complete evidence.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "SEC03",
+        "category": "Security Hygiene",
+        "title": "Ignore observed local environment files",
+        "max": 20,
+        "method": "content",
+        "fix": "Ignore observed environment-file paths and review ordered exceptions. Ignore rules do not remove already tracked files.",
+        "steps": [
+          "Ignore observed environment-file paths and review ordered exceptions. Ignore rules do not remove already tracked files.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 5,
+        "roast": [
+          "The evidence for “Ignore observed local environment files” needs another commit.",
+          "“Ignore observed local environment files” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "not-applicable",
+      "ratio": null,
+      "awarded": null,
+      "maximum": null,
+      "evidence": [],
+      "explanation": "No environment-file use observed; .env is not mandatory.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "SEC04",
+        "category": "Security Hygiene",
+        "title": "Declare scoped workflow token policies",
+        "max": 60,
+        "method": "content",
+        "fix": "Declare workflow or job-level permissions; review broad grants. Scoped release writes are not automatically unsafe.",
+        "steps": [
+          "Declare workflow or job-level permissions; review broad grants. Scoped release writes are not automatically unsafe.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Moderate",
+        "importance": 5,
+        "roast": [
+          "The evidence for “Declare scoped workflow token policies” needs another commit.",
+          "“Declare scoped workflow token policies” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 90,
+      "maximum": 90,
+      "evidence": [
+        {
+          "path": ".github/workflows/test.yml",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/.github/workflows/test.yml#L2",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration",
+          "lines": [
+            2,
+            2
+          ]
+        }
+      ],
+      "explanation": "Explicit workflow/job-level scopes inspected; scoped writes can be intentional. This is not proof of least privilege or workflow security.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "MNT01",
+        "category": "Maintainability",
+        "title": "Declare formatting settings or commands",
+        "max": 30,
+        "method": "content",
+        "fix": "Configure native formatting settings or declare a formatting command. Repository JS configuration is never executed.",
+        "steps": [
+          "Configure native formatting settings or declare a formatting command. Repository JS configuration is never executed.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 1,
+        "roast": [
+          "The evidence for “Declare formatting settings or commands” needs another commit.",
+          "“Declare formatting settings or commands” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 45,
+      "maximum": 45,
+      "evidence": [
+        {
+          "path": ".prettierrc",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/.prettierrc",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "explanation": "Supported tool configuration inspected; opaque executable configuration is unknown and never run.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "MNT02",
+        "category": "Maintainability",
+        "title": "Declare static analysis settings or commands",
+        "max": 50,
+        "method": "content",
+        "fix": "Declare applicable lint/static-analysis settings or commands, including native ecosystem tools.",
+        "steps": [
+          "Declare applicable lint/static-analysis settings or commands, including native ecosystem tools.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Moderate",
+        "importance": 3,
+        "roast": [
+          "The evidence for “Declare static analysis settings or commands” needs another commit.",
+          "“Declare static analysis settings or commands” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "fail",
+      "ratio": 0,
+      "awarded": 0,
+      "maximum": 75,
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "explanation": "Supported tool configuration inspected; opaque executable configuration is unknown and never run.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "MNT03",
+        "category": "Maintainability",
+        "title": "Record ecosystem dependency reproducibility",
+        "max": 50,
+        "method": "content",
+        "fix": "Use ecosystem-appropriate dependency pins/hashes/checksums. Their presence does not prove installs succeed.",
+        "steps": [
+          "Use ecosystem-appropriate dependency pins/hashes/checksums. Their presence does not prove installs succeed.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 3,
+        "roast": [
+          "The evidence for “Record ecosystem dependency reproducibility” needs another commit.",
+          "“Record ecosystem dependency reproducibility” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "not-applicable",
+      "ratio": null,
+      "awarded": null,
+      "maximum": null,
+      "evidence": [],
+      "explanation": "No declared third-party dependencies in supported complete evidence.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "MNT04",
+        "category": "Maintainability",
+        "title": "Record substantive change notes",
+        "max": 20,
+        "method": "content",
+        "fix": "Record concrete changes instead of a placeholder. Required unreadable content remains unknown.",
+        "steps": [
+          "Record concrete changes instead of a placeholder. Required unreadable content remains unknown.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 1,
+        "roast": [
+          "The evidence for “Record substantive change notes” needs another commit.",
+          "“Record substantive change notes” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "fail",
+      "ratio": 0,
+      "awarded": 0,
+      "maximum": 30,
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "explanation": "Substantive change notes inspected, not release correctness.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "CON01",
+        "category": "Contributor Readiness",
+        "title": "Explain contributor setup or verification",
+        "max": 75,
+        "method": "content",
+        "fix": "Explain contributor setup, verification and the contribution process using substantive guidance.",
+        "steps": [
+          "Explain contributor setup, verification and the contribution process using substantive guidance.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 2,
+        "roast": [
+          "The evidence for “Explain contributor setup or verification” needs another commit.",
+          "“Explain contributor setup or verification” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 75,
+      "maximum": 75,
+      "evidence": [
+        {
+          "path": "CONTRIBUTING.md",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/CONTRIBUTING.md",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "explanation": "Substantive contributor process/setup guidance inspected; onboarding success not verified.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "CON02",
+        "category": "Contributor Readiness",
+        "title": "Provide substantive issue templates",
+        "max": 25,
+        "method": "content",
+        "fix": "Provide useful issue questions or structured fields. Template presence does not prove responsiveness.",
+        "steps": [
+          "Provide useful issue questions or structured fields. Template presence does not prove responsiveness.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 1,
+        "roast": [
+          "The evidence for “Provide substantive issue templates” needs another commit.",
+          "“Provide substantive issue templates” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "fail",
+      "ratio": 0,
+      "awarded": 0,
+      "maximum": 25,
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "explanation": "Issue questions/form structure inspected; availability/community response unverified.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "CON03",
+        "category": "Contributor Readiness",
+        "title": "Optional community conduct guidance (unscored)",
+        "max": 0,
+        "method": "tree",
+        "fix": "Community conduct policies are optional and carry no numerical penalty.",
+        "steps": [
+          "Community conduct policies are optional and carry no numerical penalty.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 1,
+        "roast": [
+          "The evidence for “Optional community conduct guidance (unscored)” needs another commit.",
+          "“Optional community conduct guidance (unscored)” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "not-applicable",
+      "ratio": null,
+      "awarded": null,
+      "maximum": null,
+      "evidence": [],
+      "explanation": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+      "level": "configuration"
+    },
+    {
+      "rule": {
+        "id": "MET01",
+        "category": "Repository Metadata",
+        "title": "Provide a repository description snapshot",
+        "max": 50,
+        "method": "metadata",
+        "fix": "Provide a concise GitHub repository description; this is mutable scan-time metadata.",
+        "steps": [
+          "Provide a concise GitHub repository description; this is mutable scan-time metadata.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 1,
+        "roast": [
+          "The evidence for “Provide a repository description snapshot” needs another commit.",
+          "“Provide a repository description snapshot” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "pass",
+      "ratio": 1,
+      "awarded": 50,
+      "maximum": 50,
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "metadata"
+        }
+      ],
+      "explanation": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+      "level": "metadata"
+    },
+    {
+      "rule": {
+        "id": "MET02",
+        "category": "Repository Metadata",
+        "title": "GitHub license recognition (unscored)",
+        "max": 0,
+        "method": "metadata",
+        "fix": "GitHub license recognition is informational, unscored and not a legal conclusion.",
+        "steps": [
+          "GitHub license recognition is informational, unscored and not a legal conclusion.",
+          "Run the documented verification yourself, commit the change and rescan."
+        ],
+        "difficulty": "Easy",
+        "importance": 2,
+        "roast": [
+          "The evidence for “GitHub license recognition (unscored)” needs another commit.",
+          "“GitHub license recognition (unscored)” is waiting for its supporting paperwork."
+        ],
+        "version": "2.0.0"
+      },
+      "state": "not-applicable",
+      "ratio": null,
+      "awarded": null,
+      "maximum": null,
+      "evidence": [],
+      "explanation": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+      "level": "configuration"
+    }
+  ],
+  "findings": [
+    {
+      "id": "STR01-aaaaaaaaaaaa",
+      "ruleId": "STR01",
+      "category": "Project Structure",
+      "severity": "info",
+      "title": "Publish substantive root license terms",
+      "description": "Substantive root license terms inspected; no legal compatibility/identification claim.",
+      "evidence": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/LICENSE",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "evidenceStatus": "improvement suggestion",
+      "confidence": "medium",
+      "recommendedImprovement": "Publish actual root license terms. Review licensing choices yourself; GitHub recognition is not required."
+    },
+    {
+      "id": "SEC01-aaaaaaaaaaaa",
+      "ruleId": "SEC01",
+      "category": "Security Hygiene",
+      "severity": "warning",
+      "title": "Explain private vulnerability reporting",
+      "description": "Private reporting contact/instructions inspected; responsiveness and security unverified.",
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "evidenceStatus": "improvement suggestion",
+      "confidence": "medium",
+      "recommendedImprovement": "Describe a private vulnerability-reporting channel and responsible-disclosure instructions."
+    },
+    {
+      "id": "MNT02-aaaaaaaaaaaa",
+      "ruleId": "MNT02",
+      "category": "Maintainability",
+      "severity": "info",
+      "title": "Declare static analysis settings or commands",
+      "description": "Supported tool configuration inspected; opaque executable configuration is unknown and never run.",
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "evidenceStatus": "improvement suggestion",
+      "confidence": "medium",
+      "recommendedImprovement": "Declare applicable lint/static-analysis settings or commands, including native ecosystem tools."
+    },
+    {
+      "id": "MNT04-aaaaaaaaaaaa",
+      "ruleId": "MNT04",
+      "category": "Maintainability",
+      "severity": "info",
+      "title": "Record substantive change notes",
+      "description": "Substantive change notes inspected, not release correctness.",
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "evidenceStatus": "improvement suggestion",
+      "confidence": "medium",
+      "recommendedImprovement": "Record concrete changes instead of a placeholder. Required unreadable content remains unknown."
+    },
+    {
+      "id": "CON02-aaaaaaaaaaaa",
+      "ruleId": "CON02",
+      "category": "Contributor Readiness",
+      "severity": "info",
+      "title": "Provide substantive issue templates",
+      "description": "Issue questions/form structure inspected; availability/community response unverified.",
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "evidenceStatus": "improvement suggestion",
+      "confidence": "medium",
+      "recommendedImprovement": "Provide useful issue questions or structured fields. Template presence does not prove responsiveness."
+    }
+  ],
+  "improvements": [
+    {
+      "ruleId": "SEC01",
+      "title": "Explain private vulnerability reporting",
+      "category": "Security Hygiene",
+      "current": 0,
+      "maximum": 60,
+      "potentialGain": 60,
+      "difficulty": "Easy",
+      "explanation": "Describe a private vulnerability-reporting channel and responsible-disclosure instructions.",
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "steps": [
+        "Describe a private vulnerability-reporting channel and responsible-disclosure instructions.",
+        "Review the analyzed commit tree using the documented node tools. Paths are evidence, not invented patch targets.",
+        "Run verification yourself, commit changes and rescan. Applicability and other rules may change."
+      ],
+      "importance": 5
+    },
+    {
+      "ruleId": "MNT02",
+      "title": "Declare static analysis settings or commands",
+      "category": "Maintainability",
+      "current": 0,
+      "maximum": 75,
+      "potentialGain": 75,
+      "difficulty": "Moderate",
+      "explanation": "Declare applicable lint/static-analysis settings or commands, including native ecosystem tools.",
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "steps": [
+        "Declare applicable lint/static-analysis settings or commands, including native ecosystem tools.",
+        "Review the analyzed commit tree using the documented node tools. Paths are evidence, not invented patch targets.",
+        "Run verification yourself, commit changes and rescan. Applicability and other rules may change."
+      ],
+      "importance": 3
+    },
+    {
+      "ruleId": "STR01",
+      "title": "Publish substantive root license terms",
+      "category": "Project Structure",
+      "current": 0,
+      "maximum": 80,
+      "potentialGain": 80,
+      "difficulty": "Easy",
+      "explanation": "Publish actual root license terms. Review licensing choices yourself; GitHub recognition is not required.",
+      "evidence": [
+        {
+          "path": "LICENSE",
+          "url": "https://github.com/example/kindling/blob/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/LICENSE",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "steps": [
+        "Publish actual root license terms. Review licensing choices yourself; GitHub recognition is not required.",
+        "Review LICENSE using the documented node tools. Paths are evidence, not invented patch targets.",
+        "Run verification yourself, commit changes and rescan. Applicability and other rules may change."
+      ],
+      "importance": 2
+    },
+    {
+      "ruleId": "MNT04",
+      "title": "Record substantive change notes",
+      "category": "Maintainability",
+      "current": 0,
+      "maximum": 30,
+      "potentialGain": 30,
+      "difficulty": "Easy",
+      "explanation": "Record concrete changes instead of a placeholder. Required unreadable content remains unknown.",
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "steps": [
+        "Record concrete changes instead of a placeholder. Required unreadable content remains unknown.",
+        "Review the analyzed commit tree using the documented node tools. Paths are evidence, not invented patch targets.",
+        "Run verification yourself, commit changes and rescan. Applicability and other rules may change."
+      ],
+      "importance": 1
+    },
+    {
+      "ruleId": "CON02",
+      "title": "Provide substantive issue templates",
+      "category": "Contributor Readiness",
+      "current": 0,
+      "maximum": 25,
+      "potentialGain": 25,
+      "difficulty": "Easy",
+      "explanation": "Provide useful issue questions or structured fields. Template presence does not prove responsiveness.",
+      "evidence": [
+        {
+          "path": null,
+          "url": "https://github.com/example/kindling/tree/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "status": "confirmed condition",
+          "confidence": "medium",
+          "level": "configuration"
+        }
+      ],
+      "steps": [
+        "Provide useful issue questions or structured fields. Template presence does not prove responsiveness.",
+        "Review the analyzed commit tree using the documented node tools. Paths are evidence, not invented patch targets.",
+        "Run verification yourself, commit changes and rescan. Applicability and other rules may change."
+      ],
+      "importance": 1
+    }
+  ],
+  "inspection": {
+    "inspected": [
+      "README.md",
+      "package.json",
+      ".github/workflows/test.yml",
+      ".gitignore",
+      "LICENSE",
+      "src/main.ts",
+      "tests/main.test.ts",
+      ".prettierrc",
+      "package-lock.json",
+      "CONTRIBUTING.md"
+    ],
+    "skipped": [],
+    "unavailable": [],
+    "bytes": 1879,
+    "requests": 0,
+    "treeComplete": true,
+    "truncated": false
+  },
+  "limitations": [
+    "Structural practices score only; not a security audit, certification or behavior verification.",
+    "Files and configuration presence do not prove tests pass, code works, or software is secure.",
+    "Inspection is bounded. Unavailable evidence remains unknown. Pattern recognition may miss valid alternatives.",
+    "Profiles use different applicability and are not directly comparable. Correct the profile when appropriate.",
+    "Potential gains are conditional estimates. Repository changes can affect applicability, coverage, and other rules.",
+    "No tests, builds or repository commands were executed. Execution/verified-behavior coverage is zero. No AI or payment status affects scoring."
+  ]
+}

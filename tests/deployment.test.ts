@@ -1,0 +1,7 @@
+import {it,expect} from 'vitest';
+import {readFileSync} from 'node:fs';
+import {spawnSync} from 'node:child_process';
+const config=JSON.parse(readFileSync('wrangler.jsonc','utf8'));
+it('limits production activation to the authorized hostname',()=>{expect(config.env.production.name).toBe('reporoast-production');expect(config.env.production.routes).toEqual([{pattern:'roast.cursiv.us',custom_domain:true,zone_id:'08a275b81c4a8ba471461d3a0b50d96b'}]);expect(config.env.production.workers_dev).toBe(false);expect(config.env.production.preview_urls).toBe(false);});
+it('keeps staging and production origins, worker identities and object storage separate',()=>{const {staging,production}=config.env;expect(staging.name).toBe('reporoast-staging');expect(staging.name).not.toBe(production.name);expect(staging.vars.PUBLIC_ORIGIN).toBe('https://reporoast-staging.joshua-1993-winkler.workers.dev');expect(production.vars.PUBLIC_ORIGIN).toBe('https://roast.cursiv.us');for(const env of [staging,production])for(const binding of env.durable_objects.bindings){expect(binding.class_name).toBe('Coordinator');expect(binding.script_name).toBeUndefined();}expect(production.d1_databases).toBeUndefined();expect(production.kv_namespaces).toBeUndefined();expect(production.vars.LIVE_PAYMENTS_ENABLED).not.toBe('true');});
+it('refuses noninteractive production deployment before any network operation',()=>{const child=spawnSync(process.execPath,['scripts/deploy-production.mjs'],{encoding:'utf8'});expect(child.status).not.toBe(0);expect(child.stderr).toContain('interactive terminal');});

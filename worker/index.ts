@@ -3,7 +3,8 @@ import { AppError, parseRepository } from '../src/shared/url';
 import { analyze, ANALYZER_VERSION, RULE_VERSION, PROFILES, type Profile, type Report } from '../src/shared/engine';
 import { GitHub, LIMITS } from './github';
 import { redact, sanitizeReport } from './redact';
-export interface Env { ASSETS:Fetcher; COORDINATOR:DurableObjectNamespace<Coordinator>; GITHUB_TOKEN?:string; IP_HASH_SECRET?:string; ADMIN_TOKEN?:string; SCANS_ENABLED:string; DAILY_LIMIT:string; IP_LIMIT:string; MAX_CONCURRENT:string; PUBLIC_ORIGIN:string }
+import { publicOrigin, canonicalRedirect } from './origin';
+export interface Env { ASSETS:Fetcher; COORDINATOR:DurableObjectNamespace<Coordinator>; GITHUB_TOKEN?:string; IP_HASH_SECRET?:string; ADMIN_TOKEN?:string; SCANS_ENABLED:string; DAILY_LIMIT:string; IP_LIMIT:string; MAX_CONCURRENT:string; PUBLIC_ORIGIN:string; CANONICAL_REDIRECTS?:string }
 export const SECURITY_HEADERS = {'Strict-Transport-Security':'max-age=31536000','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','X-Frame-Options':'DENY','Permissions-Policy':'camera=(), microphone=(), geolocation=()','Content-Security-Policy':"default-src 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",'X-Robots-Tag':'noindex, noarchive','Cache-Control':'no-store'};
 export function json(data:unknown,status=200){return new Response(JSON.stringify(data),{status,headers:{...SECURITY_HEADERS,'Content-Type':'application/json; charset=utf-8'}});}
 function wrap(response:Response){const result=new Response(response.body,response);for(const [k,v]of Object.entries(SECURITY_HEADERS))result.headers.set(k,v);return result;}
@@ -21,6 +22,8 @@ export default {
  async fetch(request:Request,env:Env):Promise<Response>{
   try{
    const url=new URL(request.url);
+   const target=canonicalRedirect(request.url,env.PUBLIC_ORIGIN,env.CANONICAL_REDIRECTS==='true');
+   if(target)return new Response(null,{status:308,headers:{...SECURITY_HEADERS,Location:target}});
    if(url.pathname==='/api/health')return json({service:'RepoRoast',version:ANALYZER_VERSION,scansEnabled:env.SCANS_ENABLED==='true'});
    if(url.pathname.startsWith('/api/')||url.pathname.startsWith('/s/')){
     if(['POST','DELETE'].includes(request.method)&&request.headers.get('origin')!==url.origin)throw new AppError('ORIGIN_REJECTED','Use RepoRoast from its own website.',403);
@@ -31,13 +34,18 @@ export default {
     const stub=env.COORDINATOR.get(env.COORDINATOR.idFromName('global-v1'));
     return wrap(await stub.fetch(new Request(request,{headers})));
    }
-   return wrap(await env.ASSETS.fetch(request));
+   const asset=await env.ASSETS.fetch(request);
+   if(asset.headers.get('content-type')?.includes('text/html')){
+    const canonical=publicOrigin(env.PUBLIC_ORIGIN)+url.pathname;
+    return wrap(new HTMLRewriter().on('head',{element(element){element.append('<link rel="canonical" href="'+escapeHtml(canonical)+'"><meta property="og:url" content="'+escapeHtml(canonical)+'">',{html:true});}}).transform(asset));
+   }
+   return wrap(asset);
   }catch(error){return errorResponse(error);}
  }
 };
 type Stored = { data:string; expires:number }
-interface Share { repository:string; sha:string; timestamp:string; score:number|null; tier:string; coverage:number; profile:Profile; analyzerVersion:string; ruleVersion:string; categories:Report['categories'] }
-function publicSummary(r:Report):Share{return {repository:r.repository.fullName,sha:r.sha,timestamp:r.timestamp,score:r.score,tier:r.tier,coverage:r.coverage,profile:r.profile,analyzerVersion:r.analyzerVersion,ruleVersion:r.ruleVersion,categories:r.categories};}
+interface Share { repository:string; sha:string; timestamp:string; score:number|null; tier:string; coverage:number; profile:Profile; analyzerVersion:string; ruleVersion:string; categories:Report['categories']; scoreRange?:Report['scoreRange'] }
+function publicSummary(r:Report):Share{return {repository:r.repository.fullName,sha:r.sha,timestamp:r.timestamp,score:r.score,tier:r.tier,coverage:r.coverage,profile:r.profile,analyzerVersion:r.analyzerVersion,ruleVersion:r.ruleVersion,categories:r.categories,scoreRange:r.scoreRange};}
 export class Coordinator extends DurableObject<Env>{
  private pending=new Map<string,Promise<Report>>();
  private metadata=new Map<string,{expires:number;value:Awaited<ReturnType<GitHub['metadata']>>}>();
@@ -80,7 +88,7 @@ export class Coordinator extends DurableObject<Env>{
     const report=this.get<Report>('report:'+body.reportId);if(!report)throw new AppError('EXPIRED','This report expired. Scan again before sharing.',410);
     const id=crypto.randomUUID(),token=crypto.randomUUID()+crypto.randomUUID(),removalHash=await digest(token);
     this.put('share:'+id,{summary:publicSummary(report),removalHash},7*86400000);this.metric('shares');
-    return json({url:this.env.PUBLIC_ORIGIN+'/s/'+id,removalToken:token,expires:new Date(now+7*86400000).toISOString()},201);
+    return json({url:publicOrigin(this.env.PUBLIC_ORIGIN)+'/s/'+id,removalToken:token,expires:new Date(now+7*86400000).toISOString()},201);
    }
    const shareMatch=url.pathname.match(/^\/(?:s|api\/share)\/([a-f\d-]{36})$/);
    if(shareMatch){
@@ -123,5 +131,5 @@ export class Coordinator extends DurableObject<Env>{
 function bounded(value:string,fallback:number,min:number,max:number){const n=Number(value);return Number.isInteger(n)&&n>=min&&n<=max?n:fallback;}
 export function escapeHtml(value:unknown){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));}
 export function shareHtml(s:Share,origin:string,path:string){const title=escapeHtml(s.repository+' — '+(s.score??'Insufficient evidence')+'/1000 | RepoRoast'),description=escapeHtml(s.tier+'. Evidence coverage '+Math.round(s.coverage*100)+'%. Commit '+s.sha.slice(0,12)+'.');
- return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,noarchive"><title>'+title+'</title><meta property="og:type" content="website"><meta property="og:title" content="'+title+'"><meta property="og:description" content="'+description+'"><meta property="og:url" content="'+escapeHtml(origin+path)+'"><meta name="description" content="'+description+'"></head><body style="background:#111110;color:#faf6ed;font:18px system-ui;max-width:850px;padding:40px;margin:auto"><a style="color:#ff9955" href="/">RepoRoast by Cursiv</a><p>Explicitly shared score summary · expires after 7 days</p><h1>'+escapeHtml(s.repository)+'</h1><p style="font-size:72px;margin:0">'+(s.score??'Insufficient evidence')+' <small style="font-size:22px">/ 1000</small></p><h2>'+escapeHtml(s.tier)+'</h2><p>Coverage: '+Math.round(s.coverage*100)+'% · Profile: '+escapeHtml(s.profile)+'</p><ul>'+s.categories.map(c=>'<li>'+escapeHtml(c.name)+': '+c.awarded+'/'+c.maximum+'</li>').join('')+'</ul><p>Commit: <a style="color:#ff9955" href="https://github.com/'+escapeHtml(s.repository)+'/tree/'+s.sha+'">'+s.sha+'</a></p><p>Analyzed '+escapeHtml(s.timestamp)+' · Analyzer '+s.analyzerVersion+' · Rules '+s.ruleVersion+'</p><p>Heuristic health assessment, not a security audit. Tier names are entertainment. Different profiles are not directly comparable. No source contents or detailed findings are published.</p><p>To remove this report, use the removal token from its creation in the sharing controls on the homepage. Without a token, open an issue in <a style="color:#ff9955" href="https://github.com/Cursiv-Local/Reporoast/issues">RepoRoast</a> with this share ID; never publish the token.</p></body></html>';
+ return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,noarchive"><title>'+title+'</title><link rel="canonical" href="'+escapeHtml(origin+path)+'"><meta property="og:type" content="website"><meta property="og:title" content="'+title+'"><meta property="og:description" content="'+description+'"><meta property="og:url" content="'+escapeHtml(origin+path)+'"><meta name="description" content="'+description+'"></head><body style="background:#111110;color:#faf6ed;font:18px system-ui;max-width:850px;padding:40px;margin:auto"><a style="color:#ff9955" href="/">RepoRoast by Cursiv</a><p>Explicitly shared score summary · expires after 7 days</p><h1>'+escapeHtml(s.repository)+'</h1><p style="font-size:72px;margin:0">'+(s.score??'Insufficient evidence')+' <small style="font-size:22px">/ 1000</small></p><h2>'+escapeHtml(s.tier)+'</h2><p>Structural practices only. No tests or repository commands executed. '+(s.scoreRange?'Possible score range: '+s.scoreRange.minimum+'–'+s.scoreRange.maximum+'. ':'')+'</p><p>Coverage: '+Math.round(s.coverage*100)+'% · Profile: '+escapeHtml(s.profile)+'</p><ul>'+s.categories.map(c=>'<li>'+escapeHtml(c.name)+': '+c.awarded+'/'+c.maximum+'</li>').join('')+'</ul><p>Commit: <a style="color:#ff9955" href="https://github.com/'+escapeHtml(s.repository)+'/tree/'+s.sha+'">'+s.sha+'</a></p><p>Analyzed '+escapeHtml(s.timestamp)+' · Analyzer '+s.analyzerVersion+' · Rules '+s.ruleVersion+'</p><p>Heuristic health assessment, not a security audit. Tier names are entertainment. Different profiles are not directly comparable. No source contents or detailed findings are published.</p><p>To remove this report, use the removal token from its creation in the sharing controls on the homepage. Without a token, open an issue in <a style="color:#ff9955" href="https://github.com/Cursiv-Local/Reporoast/issues">RepoRoast</a> with this share ID; never publish the token.</p></body></html>';
 }

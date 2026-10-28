@@ -1,0 +1,283 @@
+{
+  "provenance": {
+    "repository": "Cursiv-Local/Reporoast",
+    "commit": "587466ebc2cd8ca04b79234f26ea7366f46fc0ae",
+    "note": "Pinned original local Git object from the public initial push, not working-copy files."
+  },
+  "inspection": {
+    "metadata": {
+      "id": 1437584043,
+      "fullName": "Cursiv-Local/Reporoast",
+      "description": "",
+      "language": "TypeScript",
+      "defaultBranch": "main",
+      "license": null,
+      "archived": false
+    },
+    "sha": "587466ebc2cd8ca04b79234f26ea7366f46fc0ae",
+    "tree": [
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b41ed825939ddf166b6d4c37be93f5c17ef32b42",
+        "size": 604,
+        "path": ".github/workflows/ci.yml"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "423ed8a13025a0a4655eaab7e6b138ce92a6ab40",
+        "size": 97,
+        "path": ".gitignore"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "1621f2374e287d01336b08362cc4be11a8675d54",
+        "size": 4740,
+        "path": "ARCHITECTURE.md"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "cd115171170ce0721bcf4483abd7fef17b612eb1",
+        "size": 5244,
+        "path": "DEPLOYMENT.md"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "57ab5fbc998c7780092c12bf8c4b4c45cfe7449c",
+        "size": 10015,
+        "path": "HANDOFF.md"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b505ff4d2907b35510b718527fa8641e92053e53",
+        "size": 2048,
+        "path": "PRIVACY.md"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "42f46ccafe5d703e7883f05f7d50aa1dbc701729",
+        "size": 3905,
+        "path": "README.md"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "eee7f7391e6102595815dfe857fca832bb029617",
+        "size": 1136,
+        "path": "ROADMAP.md"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "a3b9c42465b123e51396050ddb25e6718763cadc",
+        "size": 25573,
+        "path": "SCORING.md"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "88568b5d0144eb215be49fe3d4e890b883590cce",
+        "size": 2219,
+        "path": "SECURITY.md"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "4426ca58af95b1baa4fdf2f9bcb0c62a2cd52288",
+        "size": 473,
+        "path": "index.html"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "4f5de898f63f31cebc088b8bf3692a898f0069f1",
+        "size": 128419,
+        "path": "package-lock.json"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8986d7420f1e42d5cc613b4c6dd744d65d3f155c",
+        "size": 1427,
+        "path": "package.json"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e6fdb0fe69f5da4d9b609dbc7283c903c42d5479",
+        "size": 507,
+        "path": "playwright.config.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "d0992e3db140988f0c3b2804f23ae984052ebd52",
+        "size": 463,
+        "path": "public/_headers"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "1bb4eb2a0e6e6ba1b57519473f7059d6115751d1",
+        "size": 1730,
+        "path": "scripts/live-smoke.mjs"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "377db03b6dea96c9d3ccafd7b1020c1621d22580",
+        "size": 1528,
+        "path": "scripts/provision-staging.mjs"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "eb8f2385ab949e57462c24a51ff3d2869090b560",
+        "size": 4624,
+        "path": "scripts/smoke-staging.mjs"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "76d75a38719de189c877f5d6417aca156e9c5d35",
+        "size": 20387,
+        "path": "src/main.tsx"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "a32c8d4bf4595a1104cb9561f84f4a5be7e5317d",
+        "size": 21060,
+        "path": "src/shared/engine.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "761b598596c2874ea1b18a3ec1d9537c4357d851",
+        "size": 1285,
+        "path": "src/shared/example.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "2a40ed364c2b593f43eb7adfef6f2dfc4658ce11",
+        "size": 1798,
+        "path": "src/shared/url.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "f37daa983520433a54ac07e0d96bafc7275bc06b",
+        "size": 15855,
+        "path": "src/style.css"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "2f9ed546f7662637dd94322ad2eaaaa224ae0c11",
+        "size": 4018,
+        "path": "tests/e2e/app.spec.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "50593da11aea27ee610a2802675a5f15ce1e24a9",
+        "size": 5911,
+        "path": "tests/engine.test.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b1e7ac52d7a0a5bf83275030ea00c8b3a0f61a3f",
+        "size": 5453,
+        "path": "tests/fairness.test.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8f310c45c1928560dab982ec9bcaeadb77c11f53",
+        "size": 4936,
+        "path": "tests/github.test.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "9a5d487655cb92476fa2c30515efe4fbcb1fb8a0",
+        "size": 8491,
+        "path": "tests/worker.integration.mjs"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e45b15d6a74e5e0950a2ff31290e3f0703e9618c",
+        "size": 527,
+        "path": "tsconfig.json"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "3af451c2c00e770bc8af773f35c663751000145c",
+        "size": 361,
+        "path": "vite.config.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "764860ef9d52b991abe4699781048463778bd6f5",
+        "size": 7796,
+        "path": "worker/github.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "80afa2b6d8d4e8898071afa6851316ed5c2c86eb",
+        "size": 15789,
+        "path": "worker/index.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c2883a6258537bfa19a91f72ec2253dc189ea7cf",
+        "size": 1357,
+        "path": "worker/redact.ts"
+      },
+      {
+        "mode": "100644",
+        "type": "blob",
+        "sha": "7842d0cedb280d8b320b7563a76b1cf96adbfa25",
+        "size": 1737,
+        "path": "wrangler.jsonc"
+      }
+    ],
+    "treeComplete": true,
+    "files": {
+      ".github/workflows/ci.yml": "name: Verify\non: [push, pull_request]\npermissions:\n  contents: read\njobs:\n  verify:\n    runs-on: ubuntu-latest\n    timeout-minutes: 10\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 24\n          cache: npm\n      - run: npm ci --ignore-scripts\n      - run: npm run check\n      - run: npx playwright install --with-deps msedge\n      - run: npm run test:e2e\n      - run: npm run test:integration\n      - uses: actions/upload-artifact@v4\n        if: failure()\n        with:\n          name: browser-results\n          path: test-results/\n",
+      ".gitignore": "node_modules/\ndist/\n.wrangler/\n.dev.vars*\n.env*\nplaywright-report/\ntest-results/\ncoverage/\n*.log\n",
+      "README.md": "# RepoRoast by Cursiv\n\n**Your repo is public. Here’s the evidence.**\n\nAn independent, zero-AI public GitHub repository health analyzer. React/Vite frontend, TypeScript Worker, and one SQLite-backed Durable Object. No Python backend, OAuth, accounts, repository code execution, or Cursiv package dependencies.\n\n## Included\n\n- 24 versioned deterministic rules across seven categories, scored out of 1000.\n- Five profiles, explicit applicability, weighted evidence coverage, and insufficient-evidence results.\n- Commit-pinned findings, partial credit, effective-weight point gains, and overlapping-license recommendation merging.\n- Deterministic Roast / Serious commentary with instant local switching.\n- Bounded GitHub inspection, atomic quotas, duplicate coalescing, short-lived caching, redaction, and admin metrics.\n- Local clipboard/PNG scorecards and explicit expiring public summaries with removal tokens.\n- Responsive, keyboard-accessible interface, reduced motion, and tested mobile layouts.\n\nThis is a heuristic assessment, not a security audit, test runner, certification, or proof of correctness. Scores across different profiles or evidence snapshots are not directly comparable.\n\n## Development\n\nUse Node 24 (minimum 22.12) and npm.\n\n```sh\nnpm ci --ignore-scripts\nnpm run build\nnpm run dev:worker\n```\n\nIn a second terminal run `npm run dev`, then open the URL printed by Vite. Its /api proxy points to Wrangler on 127.0.0.1:8787. The homepage and example work without GitHub access. Live scans default to disabled.\n\nFor local scanning, put IP_HASH_SECRET (at least 32 random characters), optional GITHUB_TOKEN (minimal public-read permissions), and optional ADMIN_TOKEN (32+ random characters) in ignored .dev.vars. Start the local Worker with `npm run dev:worker -- --var SCANS_ENABLED:true`. Secrets never belong in frontend environment variables.\n\n## Verification\n\n```sh\nnpm run verify\nnpm audit\n```\n\nverify runs 103 unit tests, TypeScript/build checks, 31 Worker integration assertions in Miniflare, and 8 desktop/mobile Edge Playwright tests. Tests mock GitHub and need no API access. Browser tests run axe accessibility checks on the landing page and results. If Edge is unavailable, install it using `npx playwright install --with-deps msedge`.\n\n`npm run smoke:live` is a separate opt-in check of octocat/Hello-World using unauthenticated GitHub requests. It is not run in CI and publishes nothing. Its local report is ignored under .wrangler/smoke.\n\n## Documentation\n\n- [Architecture](ARCHITECTURE.md): ingestion, quotas, cache, API and retention.\n- [Scoring](SCORING.md): every rule, applicability, rounding, coverage, evidence and conditional gains.\n- [Security](SECURITY.md) and [Privacy](PRIVACY.md).\n- [Deployment](DEPLOYMENT.md): local setup, staging/production secrets, DNS/HTTPS and rollback.\n- [Roadmap](ROADMAP.md) and [Handoff](HANDOFF.md): verified work and release gates.\n\n## Deployment status\n\nStaging is live: https://reporoast-staging.joshua-1993-winkler.workers.dev\n\nLive scans are enabled on staging with limits of 10 submissions/IP/day, 30 globally/day and 2 concurrent scans. A real browser smoke verified scanning, modes, desktop/mobile accessibility, downloads, explicit sharing and removal. Run `npm run smoke:staging` to repeat it; the script consumes a small number of GitHub requests and creates/removes one temporary test share.\n\nStaging service secrets were generated and uploaded without exposing their values. The local backup is in Git-ignored `.dev.vars.staging`; never commit it. `node scripts/provision-staging.mjs` reuses that backup rather than rotating existing values.\n\nProduction remains disabled and no DNS was changed. Broader ecosystem calibration remains a public-beta release gate. Production deployment and cursiv.us DNS changes require explicit authorization.\n\nBuilt independently for Cursiv. The Cursiv repository has not been modified.\n",
+      "SECURITY.md": "# Security\n\nReport vulnerabilities privately using the repository's GitHub Security Advisory feature if enabled. Do not post credentials, private code, or exploit payloads publicly. If private reporting is unavailable, open an issue requesting a private contact without vulnerability details.\n\nOnly public GitHub repositories are accepted. A configured token must have minimal public read access; private:true metadata is always rejected. Requests use fixed api.github.com endpoints, redirect:manual, validated redirect hosts and repository endpoint paths, fixed request budgets, response size caps, abort deadlines, and bounded blob selection. No user-provided raw content URL is fetched.\n\nNo repository code is run, imported, built, or installed. Symlinks and submodules are not followed. React escapes text; raw Markdown/HTML is never rendered. Public share HTML escapes values. Security headers prohibit scripts from other origins, framing, object URLs for scripts, and external connections. Findings contain no source snippets.\n\nKnown credential formats are redacted from metadata and report strings. Redaction is defense in depth, not a secret scanner; the application must never claim no secrets exist. Filenames containing credential patterns are omitted from evidence links and replaced with commit-root context.\n\nMutation APIs require same-origin requests and bounded JSON. Scans and publication are separately limited by atomic coordinator transactions. Administrative metrics and override removals require a server-side token of at least 32 characters. Secrets belong in Cloudflare secret bindings or ignored local .dev.vars. Public share removal tokens are shown once, stored hashed on the server, and never logged.\n\nUse npm ci --ignore-scripts for application dependency installation. Test fixtures never execute submitted repository commands. Test and build dependencies run only as developer tooling. Use Cloudflare's account request limits, usage dashboard, and edge controls in addition to application scan quotas; quotas cannot eliminate the platform cost of receiving abusive HTTP requests.\n\nNo personal developer computer is required after deployment. This project is not a security audit service.\n",
+      "package.json": "{\n  \"name\": \"reporoast\",\n  \"version\": \"0.1.0\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite --host 127.0.0.1\",\n    \"dev:worker\": \"wrangler dev\",\n    \"build\": \"tsc --noEmit && vite build\",\n    \"test\": \"vitest run\",\n    \"test:e2e\": \"playwright test\",\n    \"check\": \"npm run test && npm run build\",\n    \"deploy:staging\": \"npm run verify && wrangler deploy --env staging\",\n    \"deploy:production\": \"npm run verify && wrangler deploy --env production\",\n    \"test:integration\": \"wrangler deploy --dry-run --outdir .wrangler/dry-run --env staging && node tests/worker.integration.mjs\",\n    \"verify\": \"npm run check && npm run test:integration && npm run test:e2e\",\n    \"smoke:live\": \"wrangler deploy --dry-run --outdir .wrangler/dry-run --env staging && node scripts/live-smoke.mjs\",\n    \"smoke:staging\": \"node scripts/smoke-staging.mjs\"\n  },\n  \"dependencies\": {\n    \"react\": \"^19.2.0\",\n    \"react-dom\": \"^19.2.0\"\n  },\n  \"devDependencies\": {\n    \"@axe-core/playwright\": \"^4.10.0\",\n    \"@cloudflare/workers-types\": \"^5.20261028.1\",\n    \"@playwright/test\": \"^1.56.0\",\n    \"@tailwindcss/vite\": \"^4.1.0\",\n    \"@types/node\": \"^24.19.2\",\n    \"@types/react\": \"^19.2.0\",\n    \"@types/react-dom\": \"^19.2.0\",\n    \"@vitejs/plugin-react\": \"^5.0.0\",\n    \"miniflare\": \"^5.20261023.1-beta\",\n    \"tailwindcss\": \"^4.1.0\",\n    \"typescript\": \"^5.9.0\",\n    \"vite\": \"^7.0.0\",\n    \"vitest\": \"^5.0.5\",\n    \"wrangler\": \"^4.0.0\"\n  }\n}\n"
+    },
+    "skipped": [],
+    "unavailable": [],
+    "bytes": 8252,
+    "requests": 0,
+    "truncated": false
+  },
+  "afterFiles": {
+    ".github/workflows/ci.yml": "name: Verify\non: [push, pull_request]\npermissions:\n  contents: read\njobs:\n  verify:\n    runs-on: ubuntu-latest\n    timeout-minutes: 10\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 24\n          cache: npm\n      - run: npm ci --ignore-scripts\n      - run: npm run check\n      - run: npx playwright install --with-deps msedge\n      - run: npm run test:e2e\n      - run: npm run test:integration\n      - uses: actions/upload-artifact@v4\n        if: failure()\n        with:\n          name: browser-results\n          path: test-results/\n",
+    ".gitignore": "node_modules/\ndist/\n.wrangler/\n.dev.vars*\n.env*\nplaywright-report/\ntest-results/\ncoverage/\n*.log\n",
+    "README.md": "# RepoRoast by Cursiv\n\n**Your repo is public. Here’s the evidence.**\n\nAn independent, zero-AI public GitHub repository health analyzer. React/Vite frontend, TypeScript Worker, and one SQLite-backed Durable Object. No Python backend, OAuth, accounts, repository code execution, or Cursiv package dependencies.\n\n## Included\n\n- 24 versioned deterministic rules across seven categories, scored out of 1000.\n- Five profiles, explicit applicability, weighted evidence coverage, and insufficient-evidence results.\n- Commit-pinned findings, partial credit, effective-weight point gains, and overlapping-license recommendation merging.\n- Deterministic Roast / Serious commentary with instant local switching.\n- Bounded GitHub inspection, atomic quotas, duplicate coalescing, short-lived caching, redaction, and admin metrics.\n- Local clipboard/PNG scorecards and explicit expiring public summaries with removal tokens.\n- Responsive, keyboard-accessible interface, reduced motion, and tested mobile layouts.\n\nThis is a heuristic assessment, not a security audit, test runner, certification, or proof of correctness. Scores across different profiles or evidence snapshots are not directly comparable.\n\n## Development\n\nUse Node 24 (minimum 22.12) and npm.\n\n```sh\nnpm ci --ignore-scripts\nnpm run build\nnpm run dev:worker\n```\n\nIn a second terminal run `npm run dev`, then open the URL printed by Vite. Its /api proxy points to Wrangler on 127.0.0.1:8787. The homepage and example work without GitHub access. Live scans default to disabled.\n\nFor local scanning, put IP_HASH_SECRET (at least 32 random characters), optional GITHUB_TOKEN (minimal public-read permissions), and optional ADMIN_TOKEN (32+ random characters) in ignored .dev.vars. Start the local Worker with `npm run dev:worker -- --var SCANS_ENABLED:true`. Secrets never belong in frontend environment variables.\n\n## Verification\n\n```sh\nnpm run verify\nnpm audit\n```\n\nverify runs 103 unit tests, TypeScript/build checks, 31 Worker integration assertions in Miniflare, and 8 desktop/mobile Edge Playwright tests. Tests mock GitHub and need no API access. Browser tests run axe accessibility checks on the landing page and results. If Edge is unavailable, install it using `npx playwright install --with-deps msedge`.\n\n`npm run smoke:live` is a separate opt-in check of octocat/Hello-World using unauthenticated GitHub requests. It is not run in CI and publishes nothing. Its local report is ignored under .wrangler/smoke.\n\n## Documentation\n\n- [Architecture](ARCHITECTURE.md): ingestion, quotas, cache, API and retention.\n- [Scoring](SCORING.md): every rule, applicability, rounding, coverage, evidence and conditional gains.\n- [Security](SECURITY.md) and [Privacy](PRIVACY.md).\n- [Deployment](DEPLOYMENT.md): local setup, staging/production secrets, DNS/HTTPS and rollback.\n- [Roadmap](ROADMAP.md) and [Handoff](HANDOFF.md): verified work and release gates.\n\n## Deployment status\n\nStaging is live: https://reporoast-staging.joshua-1993-winkler.workers.dev\n\nLive scans are enabled on staging with limits of 10 submissions/IP/day, 30 globally/day and 2 concurrent scans. A real browser smoke verified scanning, modes, desktop/mobile accessibility, downloads, explicit sharing and removal. Run `npm run smoke:staging` to repeat it; the script consumes a small number of GitHub requests and creates/removes one temporary test share.\n\nStaging service secrets were generated and uploaded without exposing their values. The local backup is in Git-ignored `.dev.vars.staging`; never commit it. `node scripts/provision-staging.mjs` reuses that backup rather than rotating existing values.\n\nProduction remains disabled and no DNS was changed. Broader ecosystem calibration remains a public-beta release gate. Production deployment and cursiv.us DNS changes require explicit authorization.\n\nBuilt independently for Cursiv. The Cursiv repository has not been modified.\n",
+    "SECURITY.md": "# Security\n\nReport vulnerabilities privately using the repository's GitHub Security Advisory feature if enabled. Do not post credentials, private code, or exploit payloads publicly. If private reporting is unavailable, open an issue requesting a private contact without vulnerability details.\n\nOnly public GitHub repositories are accepted. A configured token must have minimal public read access; private:true metadata is always rejected. Requests use fixed api.github.com endpoints, redirect:manual, validated redirect hosts and repository endpoint paths, fixed request budgets, response size caps, abort deadlines, and bounded blob selection. No user-provided raw content URL is fetched.\n\nNo repository code is run, imported, built, or installed. Symlinks and submodules are not followed. React escapes text; raw Markdown/HTML is never rendered. Public share HTML escapes values. Security headers prohibit scripts from other origins, framing, object URLs for scripts, and external connections. Findings contain no source snippets.\n\nKnown credential formats are redacted from metadata and report strings. Redaction is defense in depth, not a secret scanner; the application must never claim no secrets exist. Filenames containing credential patterns are omitted from evidence links and replaced with commit-root context.\n\nMutation APIs require same-origin requests and bounded JSON. Scans and publication are separately limited by atomic coordinator transactions. Administrative metrics and override removals require a server-side token of at least 32 characters. Secrets belong in Cloudflare secret bindings or ignored local .dev.vars. Public share removal tokens are shown once, stored hashed on the server, and never logged.\n\nUse npm ci --ignore-scripts for application dependency installation. Test fixtures never execute submitted repository commands. Test and build dependencies run only as developer tooling. Use Cloudflare's account request limits, usage dashboard, and edge controls in addition to application scan quotas; quotas cannot eliminate the platform cost of receiving abusive HTTP requests.\n\nNo personal developer computer is required after deployment. This project is not a security audit service.\n",
+    "package.json": "{\n  \"name\": \"reporoast\",\n  \"version\": \"0.1.0\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite --host 127.0.0.1\",\n    \"dev:worker\": \"wrangler dev\",\n    \"build\": \"tsc --noEmit && vite build\",\n    \"test\": \"vitest run\",\n    \"test:e2e\": \"playwright test\",\n    \"check\": \"npm run test && npm run build\",\n    \"deploy:staging\": \"npm run verify && wrangler deploy --env staging\",\n    \"deploy:production\": \"npm run verify && wrangler deploy --env production\",\n    \"test:integration\": \"wrangler deploy --dry-run --outdir .wrangler/dry-run --env staging && node tests/worker.integration.mjs\",\n    \"verify\": \"npm run check && npm run test:integration && npm run test:e2e\",\n    \"smoke:live\": \"wrangler deploy --dry-run --outdir .wrangler/dry-run --env staging && node scripts/live-smoke.mjs\",\n    \"smoke:staging\": \"node scripts/smoke-staging.mjs\"\n  },\n  \"dependencies\": {\n    \"react\": \"^19.2.0\",\n    \"react-dom\": \"^19.2.0\"\n  },\n  \"devDependencies\": {\n    \"@axe-core/playwright\": \"^4.10.0\",\n    \"@cloudflare/workers-types\": \"^5.20261028.1\",\n    \"@playwright/test\": \"^1.56.0\",\n    \"@tailwindcss/vite\": \"^4.1.0\",\n    \"@types/node\": \"^24.19.2\",\n    \"@types/react\": \"^19.2.0\",\n    \"@types/react-dom\": \"^19.2.0\",\n    \"@vitejs/plugin-react\": \"^5.0.0\",\n    \"miniflare\": \"^5.20261023.1-beta\",\n    \"tailwindcss\": \"^4.1.0\",\n    \"typescript\": \"^5.9.0\",\n    \"vite\": \"^7.0.0\",\n    \"vitest\": \"^5.0.5\",\n    \"wrangler\": \"^4.0.0\"\n  }\n}\n",
+    "tests/e2e/app.spec.ts": "import { test,expect } from '@playwright/test';\nimport AxeBuilder from '@axe-core/playwright';\ntest('landing page, example, mode consistency, accessibility and download',async({page})=>{\n await page.goto('/');await expect(page).toHaveTitle(/RepoRoast/);\n await expect(page.getByRole('heading',{level:1})).toContainText('Your repo is public.');\n expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);\n await expect(page.getByLabel('GITHUB REPOSITORY URL')).toBeVisible();\n const initial=await new AxeBuilder({page}).analyze();expect(initial.violations).toEqual([]);\n await page.getByRole('button',{name:'See Example'}).click();\n await expect(page.getByRole('heading',{name:'example/kindling'})).toBeVisible();\n await expect(page.getByRole('button',{name:'Create public share link'})).toBeDisabled();\n const before=await page.locator('.big-score').innerText();const gains=await page.locator('.gain').allTextContents();\n await page.getByRole('button',{name:'Serious Mode',exact:true}).click();\n await expect(page.getByRole('heading',{name:'How to Improve Your Score'})).toBeVisible();\n expect(await page.locator('.big-score').innerText()).toBe(before);expect(await page.locator('.gain').allTextContents()).toEqual(gains);\n const report=await new AxeBuilder({page}).analyze();expect(report.violations).toEqual([]);\n const downloadEvent=page.waitForEvent('download');await page.getByRole('button',{name:'Download PNG'}).click();expect((await downloadEvent).suggestedFilename()).toMatch(/\\.png$/);\n expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);\n await page.screenshot({path:'test-results/'+test.info().project.name+'-report.png',fullPage:true});\n});\ntest('submission surfaces server errors without fabricating scores',async({page})=>{\n await page.route('**/api/scan',route=>route.fulfill({status:429,contentType:'application/json',body:JSON.stringify({error:{message:'Scan capacity exhausted.'}})}));\n await page.goto('/');await page.getByLabel('GITHUB REPOSITORY URL').fill('https://github.com/example/project');await page.getByRole('button',{name:'Score My Repo'}).click();await expect(page.getByRole('alert')).toContainText('Scan capacity exhausted');await expect(page.locator('.results')).toHaveCount(0);\n});\ntest('untrusted descriptions are rendered as text and sharing requires consent',async({page})=>{\n const {EXAMPLE}=await import('../../src/shared/example');\n await page.route('**/api/scan',route=>route.fulfill({contentType:'application/json',body:JSON.stringify({...EXAMPLE,repository:{...EXAMPLE.repository,id:42,description:'<img src=x onerror=alert(1)>'}})}));\n let shareCalls=0;await page.route('**/api/share',route=>{shareCalls++;return route.fulfill({status:201,contentType:'application/json',body:JSON.stringify({url:'https://roast.cursiv.us/s/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',removalToken:'remove-token',expires:'2026-11-01T00:00:00Z'})});});\n await page.goto('/');await page.getByLabel('GITHUB REPOSITORY URL').fill('https://github.com/example/project');await page.getByRole('button',{name:'Score My Repo'}).click();await expect(page.locator('.results')).toContainText('<img src=x onerror=alert(1)>');await expect(page.locator('.results img')).toHaveCount(0);expect(shareCalls).toBe(0);\n await expect(page.getByRole('button',{name:'Create public share link'})).toBeDisabled();await page.getByRole('checkbox').check();await page.getByRole('button',{name:'Create public share link'}).click();await expect(page.getByText('Public summary created. Save its removal token.')).toBeVisible();expect(shareCalls).toBe(1);\n});\ntest('keyboard access and reduced motion',async({page})=>{await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await page.keyboard.press('Tab');await expect(page.getByRole('link',{name:'Skip to content'})).toBeFocused();await page.keyboard.press('Enter');expect(await page.evaluate(()=>getComputedStyle(document.documentElement).scrollBehavior)).toBe('auto');});\n",
+    "tests/engine.test.ts": "import { describe,it,expect } from 'vitest';\nimport { analyze, RULES, WEIGHTS, commentary, PROFILES, tier } from '../src/shared/engine';\nimport { exampleInspection } from '../src/shared/example';\nimport { evidenceUrl, parseRepository } from '../src/shared/url';\ndescribe('URL validation',()=>{\n it.each(['https://github.com/owner/repo','https://github.com/Owner/repo.git/'])('normalizes %s',url=>expect(parseRepository(url).fullName).toMatch(/^[Oo]wner\\/repo$/));\n it.each(['http://github.com/a/b','https://github.com.evil.test/a/b','https://api.github.com/repos/a/b','https://github.com/a/b/tree/main','https://github.com/a/b?x=1','https://github.com/a/b#x','https://user:secret@github.com/a/b','https://github.com/a/%2e%2e','https://github.com/a/..','https://github.com/a\\\\b/c','https://github.com:444/a/b','https://github.com/topics/typescript','not a url','https://github.com/a/b%0a'])('rejects unsafe URL %s',url=>expect(()=>parseRepository(url)).toThrow());\n it('pins and encodes evidence',()=>expect(evidenceUrl('o/r','a'.repeat(40),'src/a b.ts',4)).toBe('https://github.com/o/r/blob/'+ 'a'.repeat(40)+'/src/a%20b.ts#L4'));\n});\ndescribe('deterministic scoring',()=>{\n it('weights and definitions total 1000',()=>{expect(RULES).toHaveLength(24);expect(new Set(RULES.map(x=>x.id)).size).toBe(24);expect(Object.values(WEIGHTS).reduce((s,n)=>s+n,0)).toBe(1000);for(const [category,max] of Object.entries(WEIGHTS))expect(RULES.filter(r=>r.category===category).reduce((s,r)=>s+r.max,0)).toBe(max);});\n it('is deterministic and ignores popularity',()=>{const i=exampleInspection();const a=analyze(i,undefined,'fixed');const b=analyze({...i,metadata:{...i.metadata,...{stars:999999}}},undefined,'fixed');expect(a.score).toEqual(b.score);expect(a.checks).toEqual(b.checks);expect(a.score).toBeGreaterThan(0);expect(a.coverage).toBe(1);});\n it('gives workflow partial credit and consistent gains',()=>{const i=exampleInspection();i.tree.push({path:'.github/workflows/other.yml',type:'blob',sha:'b'.repeat(40),mode:'100644'});i.files['.github/workflows/other.yml']='name: Other\\njobs: {}';const r=analyze(i);const check=r.checks.find(c=>c.rule.id==='TST03')!;expect(check.state).toBe('partial');expect(check.ratio).toBe(.5);const improvement=r.improvements.find(c=>c.ruleId==='TST03')!;expect(improvement.potentialGain).toBe(check.maximum!-check.awarded!);});\n it('does not interpret unreadable files as missing',()=>{const i=exampleInspection();delete i.files['README.md'];i.unavailable=['README.md'];const r=analyze(i);expect(r.checks.filter(c=>c.rule.id.startsWith('DOC')).every(c=>c.state==='unknown')).toBe(true);expect(r.score).toBeNull();expect(r.coverage).toBeLessThan(.8);expect(r.improvements.some(x=>x.ruleId.startsWith('DOC'))).toBe(false);});\n it('does not claim absence in a truncated tree',()=>{const i=exampleInspection();i.treeComplete=false;i.truncated=true;const r=analyze(i);expect(r.checks.find(c=>c.rule.id==='SEC01')!.state).toBe('unknown');expect(r.improvements.some(c=>c.ruleId==='SEC01')).toBe(false);expect(r.coverage).toBeLessThan(1);});\n it.each(PROFILES)('normalizes profile %s to exactly 1000 with integer gains',profile=>{const r=analyze(exampleInspection(),profile);expect(r.checks.reduce((s,c)=>s+(c.maximum||0),0)).toBe(1000);expect(r.score).toBe(r.checks.reduce((s,c)=>s+(c.awarded||0),0));for(const i of r.improvements){expect(i.potentialGain).toBe(i.maximum-i.current);expect(Number.isInteger(i.potentialGain)).toBe(true);}expect(r.improvements.reduce((s,c)=>s+c.potentialGain,0)).toBe(1000-r.score!);});\n it('excludes documentation code checks and reallocates categories',()=>{const r=analyze(exampleInspection(),'documentation');expect(r.categories.find(c=>c.name==='Testing and CI')!.maximum).toBe(0);expect(r.checks.find(c=>c.rule.id==='TST01')!.state).toBe('not-applicable');expect(r.categories.find(c=>c.name==='Documentation')!.maximum).toBeGreaterThan(200);});\n it('changes applicability with profile corrections',()=>{const i=exampleInspection();const app=analyze(i,'application'),lib=analyze(i,'library');expect(app.checks.find(c=>c.rule.id==='MNT03')!.state).toBe('pass');expect(lib.checks.find(c=>c.rule.id==='MNT03')!.state).toBe('not-applicable');expect(app.id).not.toBe(lib.id);});\n it('withholds a score when all evidence is unknown',()=>{const i=exampleInspection();i.tree=[];i.files={};i.treeComplete=false;const r=analyze(i);expect(r.score).toBeNull();expect(r.tier).toBe('Insufficient evidence');expect(r.improvements).toEqual([]);});\n it('merges overlapping license recommendations without duplicate gains',()=>{const i=exampleInspection();i.tree=i.tree.filter(e=>e.path!=='LICENSE');i.metadata.license=null;const r=analyze(i);const merged=r.improvements.find(x=>x.ruleId==='STR01+MET02')!;expect(merged).toBeDefined();expect(r.improvements.some(x=>x.ruleId==='MET02')).toBe(false);expect(merged.potentialGain).toBe(r.checks.filter(c=>['STR01','MET02'].includes(c.rule.id)).reduce((s,c)=>s+c.maximum!-c.awarded!,0));});\n it('has evidence for every finding and exact commit links',()=>{const r=analyze(exampleInspection());for(const f of r.findings){expect(f.evidence.length).toBeGreaterThan(0);for(const e of f.evidence)expect(e.url).toContain(r.sha);}expect(r.inspection.inspected).toContain('README.md');});\n it('commentary is deterministic and never changes score or gains',()=>{const r=analyze(exampleInspection()),before=JSON.stringify(r);for(const f of r.findings){expect(commentary(r,f.ruleId,'roast')).toBe(commentary(r,f.ruleId,'roast'));expect(commentary(r,f.ruleId,'serious')).toBeTruthy();}expect(JSON.stringify(r)).toBe(before);});\n it.each([[0,'Digital Crime Scene'],[199,'Digital Crime Scene'],[200,'Spaghetti Factory'],[400,'Held Together by Hope'],[600,'Certified Spaghetti'],[750,'Actually Pretty Solid'],[900,'Suspiciously Competent'],[1000,'Suspiciously Competent']])('maps tier %s',(n,name)=>expect(tier(n as number)).toBe(name));\n});\n",
+    "tests/fairness.test.ts": "import { describe,it,expect } from 'vitest';\nimport { analyze,RULES,PROFILES } from '../src/shared/engine';\nimport { exampleInspection } from '../src/shared/example';\nimport { sanitizeReport } from '../worker/redact';\nimport { readFileSync } from 'node:fs';\nfunction withFiles(files:Record<string,string>){const i=exampleInspection();i.files={...files};i.tree=Object.keys(files).map((path,n)=>({path,type:'blob',mode:'100644',sha:String(n).padStart(40,'0'),size:files[path].length}));return i;}\ndescribe('rule registry and fairness',()=>{\n const full={'README.md':'# Tool\\nInstallation\\nUsage\\nLimitations\\nTesting','package.json':'{\"scripts\":{\"start\":\"node src/index.js\"}}','LICENSE':'MIT','.gitignore':'.env\\nnode_modules/','src/index.js':'// example','tests/tool.test.js':'// example','.github/workflows/check.yml':'permissions: read-all\\nsteps:\\n  - run: npm test','.github/dependabot.yml':'version: 2','SECURITY.md':'Use private reporting.','eslint.config.js':'export default []','.prettierrc':'{}','package-lock.json':'{}','CHANGELOG.md':'Initial release.','CONTRIBUTING.md':'Contributing guide.','.github/ISSUE_TEMPLATE/bug.md':'Bug report.','CODE_OF_CONDUCT.md':'Participation expectations.'};\n it.each(RULES)('$id has a tested positive recognition case',rule=>{const r=analyze(withFiles(full),'application');expect(r.checks.find(c=>c.rule.id===rule.id)!.state).toBe('pass');});\n it('all recognized practices total exactly 1000',()=>expect(analyze(withFiles(full),'application').score).toBe(1000));\n it('a minimal repository is not awarded imaginary practices',()=>{const i=withFiles({'entry.js':'// example','package.json':'{}'});i.metadata.description='';i.metadata.license=null;const r=analyze(i,'application');expect(r.coverage).toBe(1);expect(r.score).toBe(0);expect(r.improvements.reduce((s,x)=>s+x.potentialGain,0)).toBe(1000);});\n it('does not reward vendor tests or dependency READMEs',()=>{const i=withFiles({'vendor/tests/example.test.js':'// test','node_modules/pkg/README.md':'installation usage limitations'});const r=analyze(i,'general');expect(r.checks.find(c=>c.rule.id==='TST01')!.state).toBe('fail');expect(r.checks.find(c=>c.rule.id==='DOC01')!.state).toBe('fail');});\n it('requires weighted 80% coverage including unknown README evidence',()=>{const i=withFiles(full);delete i.files['README.md'];const r=analyze(i,'application');expect(r.coverage).toBe(.77);expect(r.score).toBeNull();});\n it.each(PROFILES)('withholds a result for unknown evidence under profile %s',profile=>{const i=withFiles({});i.treeComplete=false;const r=analyze(i,profile);expect(r.score).toBeNull();expect(r.improvements).toHaveLength(0);});\n it('keeps a known subset conditional and unknowns without numerical awards',()=>{const i=withFiles(full);delete i.files['.github/workflows/check.yml'];const r=analyze(i,'application');expect(r.coverage).toBe(.91);expect(r.score).toBe(1000);expect(r.checks.find(c=>c.rule.id==='TST03')!.awarded).toBeNull();expect(r.categories.reduce((s,c)=>s+c.maximum,0)).toBe(1000);});\n it('uses real documentation-only evidence without test penalties',()=>{const r=analyze(withFiles({'README.md':'# Documentation\\n## Navigation\\n## Scope','docs/guide.md':'Guide','LICENSE':'MIT'}));expect(r.detectedProfile).toBe('documentation');expect(r.checks.find(c=>c.rule.id==='TST01')!.state).toBe('not-applicable');expect(r.score).not.toBeNull();});\n it.each([['rust',{'Cargo.toml':'[package]','src/main.rs':'fn main() {}','tests/smoke.rs':'// example','Cargo.lock':'# generated'}],['go',{'go.mod':'module demo','cmd/main.go':'package main','cmd/main_test.go':'// example','go.sum':'sum'}],['python',{'pyproject.toml':'[project]','src/tool.py':'# example','tests/test_tool.py':'# example','uv.lock':'# generated'}]])('recognizes %s package paths without reading dependency code',(_,files)=>{const r=analyze(withFiles(files as Record<string,string>),'general');expect(r.checks.find(c=>c.rule.id==='MNT03')!.state).toBe('pass');expect(r.checks.find(c=>c.rule.id==='TST01')!.state).toBe('pass');});\n it('documents every rule and version',()=>{const doc=readFileSync('SCORING.md','utf8');for(const rule of RULES){expect(doc).toContain('### '+rule.id+' — '+rule.title);expect(doc).toContain('Base maximum: '+rule.max);}});\n it('redacts path credentials without fabricating blob references',()=>{const secret='ghp_'+'x'.repeat(36);const i=withFiles({['tests/'+secret+'.test.js']:'// example'});const report=analyze(i,'general'),safe=sanitizeReport(report);expect(JSON.stringify(safe)).not.toContain(secret);const evidence=safe.checks.find(c=>c.rule.id==='TST01')!.evidence[0];expect(evidence.path).toBeNull();expect(evidence.url).toBe('https://github.com/'+i.metadata.fullName+'/tree/'+i.sha);expect(evidence.confidence).toBe('low');});\n it('recognizes CLI and library profile evidence',()=>{expect(analyze(withFiles({'package.json':'{\"bin\":{\"demo\":\"cli.js\"}}'})).detectedProfile).toBe('cli');expect(analyze(withFiles({'package.json':'{\"exports\":\"./src/main.js\"}'})).detectedProfile).toBe('library');});\n});\n\nit('does not penalize alternative CI for GitHub-specific configuration',()=>{const r=analyze(withFiles({'.gitlab-ci.yml':'test: script: npm test','src/main.js':'// example'}),'application');expect(r.checks.find(c=>c.rule.id==='TST02')!.state).toBe('pass');for(const id of ['TST03','SEC04']){expect(r.checks.find(c=>c.rule.id===id)!.state).toBe('not-applicable');expect(r.improvements.some(x=>x.ruleId===id)).toBe(false);}});",
+    "tests/github.test.ts": "import { describe,it,expect,vi } from 'vitest';\nimport { GitHub, LIMITS } from '../worker/github';\nimport { exampleInspection } from '../src/shared/example';\nimport { redact } from '../worker/redact';\nconst metadata={id:1,private:false,full_name:'new/repo',default_branch:'main',description:'Example',language:'TypeScript',license:{spdx_id:'MIT'}};\nfunction sequence(...values:(object|Response)[]){return vi.fn(async()=>{const next=values.shift();if(!next)throw new Error('Unexpected request');return next instanceof Response?next:Response.json(next);}) as unknown as typeof fetch;}\ndescribe('GitHub bounded ingestion',()=>{\n it('resolves canonical names after a rename',async()=>{const f=sequence(new Response(null,{status:301,headers:{location:'https://api.github.com/repos/new/repo'}}),metadata);expect((await new GitHub(undefined,f).metadata('old/repo')).fullName).toBe('new/repo');});\n it('rejects redirects to arbitrary hosts before forwarding credentials',async()=>{const f=sequence(new Response(null,{status:301,headers:{location:'https://evil.test/steal'}}));await expect(new GitHub('secret',f).metadata('o/r')).rejects.toMatchObject({code:'UNSAFE_REDIRECT'});expect(f).toHaveBeenCalledTimes(1);});\n it.each([[404,'NOT_FOUND'],[500,'API_UNAVAILABLE'],[409,'EMPTY_REPOSITORY'],[429,'RATE_LIMITED']])('handles error %s',async(status,code)=>{const f=sequence(new Response(null,{status:status as number}));await expect(new GitHub(undefined,f).metadata('o/r')).rejects.toMatchObject({code});});\n it('recognizes rate exhausted 403',async()=>{await expect(new GitHub(undefined,sequence(new Response(null,{status:403,headers:{'x-ratelimit-remaining':'0'}}))).metadata('o/r')).rejects.toMatchObject({code:'RATE_LIMITED'});});\n it('rejects private repos even with an available token',async()=>{await expect(new GitHub('secret',sequence({...metadata,private:true})).metadata('o/r')).rejects.toMatchObject({code:'PRIVATE_REPOSITORY'});});\n it('tracks unavailable files without inventing absence',async()=>{const entry={path:'README.md',size:10,type:'blob',sha:'b'.repeat(40),mode:'100644'};const f=sequence({tree:[entry],truncated:false},new Response(null,{status:500}));const r=await new GitHub(undefined,f).inspect(exampleInspection().metadata,{sha:'a'.repeat(40),commit:{tree:{sha:'c'.repeat(40)}}});expect(r.unavailable).toEqual(['README.md']);expect(r.treeComplete).toBe(true);expect(r.files).toEqual({});});\n it('caps oversized files, generated directories and incomplete trees',async()=>{const tree=[{path:'README.md',size:LIMITS.fileBytes+1,type:'blob',sha:'b'.repeat(40),mode:'100644'},{path:'node_modules/readme.md',size:3,type:'blob',sha:'b'.repeat(40),mode:'100644'}];const r=await new GitHub(undefined,sequence({tree,truncated:true})).inspect(exampleInspection().metadata,{sha:'a'.repeat(40),commit:{tree:{sha:'c'.repeat(40)}}});expect(r.treeComplete).toBe(false);expect(r.skipped).toHaveLength(2);expect(r.requests).toBe(1);});\n it('bounds tree count',async()=>{const tree=Array.from({length:LIMITS.files+1},(_,n)=>({path:'file'+n,type:'blob',size:1,mode:'100644'}));const r=await new GitHub(undefined,sequence({tree})).inspect(exampleInspection().metadata,{sha:'a'.repeat(40),commit:{tree:{sha:'c'.repeat(40)}}});expect(r.tree).toHaveLength(LIMITS.files);expect(r.treeComplete).toBe(false);});\n it('decodes UTF8 base64 and tracks inspected bytes',async()=>{const text='# Hello 🔥';const entry={path:'README.md',type:'blob',sha:'b'.repeat(40),size:15,mode:'100644'};const f=sequence({tree:[entry]}, {encoding:'base64',content:btoa(String.fromCharCode(...new TextEncoder().encode(text)))});const r=await new GitHub(undefined,f).inspect(exampleInspection().metadata,{sha:'a'.repeat(40),commit:{tree:{sha:'c'.repeat(40)}}});expect(r.files['README.md']).toBe(text);expect(r.bytes).toBe(new TextEncoder().encode(text).length);});\n it('enforces response and request budgets',async()=>{await expect(new GitHub(undefined,sequence(new Response('a'.repeat(LIMITS.responseBytes+1)))).metadata('o/r')).rejects.toMatchObject({code:'TOO_LARGE'});const g=new GitHub(undefined,sequence(metadata));g.requests=LIMITS.requests;await expect(g.metadata('o/r')).rejects.toMatchObject({code:'REQUEST_BUDGET'});});\n it('keeps rate errors fatal rather than missing evidence',async()=>{const entry={path:'README.md',type:'blob',sha:'b'.repeat(40),size:15,mode:'100644'};await expect(new GitHub(undefined,sequence({tree:[entry]},new Response(null,{status:429}))).inspect(exampleInspection().metadata,{sha:'a'.repeat(40),commit:{tree:{sha:'c'.repeat(40)}}})).rejects.toMatchObject({code:'RATE_LIMITED'});});\n});\ndescribe('secret redaction',()=>{\n it.each(['ghp_'+'a'.repeat(36),'github_pat_'+'a'.repeat(60),'AKIA'+'A'.repeat(16),'token=super-secret-value','-----BEGIN PRIVATE KEY-----\\nsensitive\\n-----END PRIVATE KEY-----','https://user:password@host.test'])('redacts common credential patterns',value=>expect(redact(value)).toBe('[REDACTED]'));\n});\n"
+  }
+}

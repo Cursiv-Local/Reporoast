@@ -1,0 +1,2 @@
+export function publicOrigin(value:string){const url=new URL(value);if(url.username||url.password||url.search||url.hash||url.pathname!=='/'||url.protocol!=='https:'&&!(url.protocol==='http:'&&['localhost','127.0.0.1'].includes(url.hostname)))throw new Error('Invalid configured public origin');return url.origin;}
+export function canonicalRedirect(requestUrl:string,configuredOrigin:string,enabled:boolean){const target=publicOrigin(configuredOrigin),request=new URL(requestUrl);return enabled&&request.origin!==target?target+request.pathname+request.search:null;}

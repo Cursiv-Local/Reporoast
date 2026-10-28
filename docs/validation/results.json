@@ -1,0 +1,3421 @@
+{
+  "versions": {
+    "before": "1.0.0",
+    "after": "2.0.0"
+  },
+  "metrics": {
+    "tp": 51,
+    "fp": 0,
+    "tn": 19,
+    "fn": 0,
+    "abstained": 0,
+    "nonbinary": 20,
+    "stateCorrect": 90,
+    "labeled": 90,
+    "falsePositiveRate": 0,
+    "falseNegativeRate": 0,
+    "note": "Full-credit pass versus labeled pass/fail; unknown/ineligible predictions abstain. Nonbinary labels and exact state accuracy are separate. Hand-selected small, authored fixtures do not estimate population error rates."
+  },
+  "baselineMetrics": {
+    "tp": 34,
+    "fp": 10,
+    "tn": 9,
+    "fn": 16,
+    "abstained": 1,
+    "nonbinary": 20,
+    "stateCorrect": 48,
+    "labeled": 90,
+    "falsePositiveRate": 0.5263157894736842,
+    "falseNegativeRate": 0.32
+  },
+  "comparisons": [
+    {
+      "name": "Cursiv",
+      "kind": "Python desktop application",
+      "source": "real",
+      "repository": "Cursiv-Local/Cursiv",
+      "sha": "efc2f961049b767f0fe49e38304e9e70f25a6955",
+      "before": {
+        "score": 671,
+        "coverage": 0.97,
+        "profile": "general"
+      },
+      "after": {
+        "score": 885,
+        "coverage": 0.911,
+        "profile": "application",
+        "range": {
+          "minimum": 805,
+          "maximum": 894
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 62,
+          "afterPoints": 44,
+          "delta": -18,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 52,
+          "afterPoints": 66,
+          "delta": 14,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "CONTRIBUTING.md",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/CONTRIBUTING.md#L22",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                22,
+                22
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 52,
+          "afterPoints": 66,
+          "delta": 14,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/README.md#L21",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                21,
+                21
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC04",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 41,
+          "afterPoints": 44,
+          "delta": 3,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/README.md#L54",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                54,
+                54
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TST01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 62,
+          "afterPoints": 44,
+          "delta": -18,
+          "reason": "Recognizable test declarations inspected. Tests were not run.",
+          "evidence": [
+            {
+              "path": "tests/test_ci_change_scope.py",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/tests/test_ci_change_scope.py",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 52,
+          "afterPoints": 33,
+          "delta": -19,
+          "reason": "GitHub Actions jobs/steps parse; actual execution and success are unverified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/mac-build.yml",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/.github/workflows/mac-build.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            },
+            {
+              "path": ".github/workflows/tests.yml",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/.github/workflows/tests.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST03",
+          "beforeState": "partial",
+          "afterState": "pass",
+          "beforePoints": 41,
+          "afterPoints": 99,
+          "delta": 58,
+          "reason": "At least one job references a recognized test invocation. Non-test workflows do not enter a test-workflow denominator. No execution outcome verified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/mac-build.yml",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/.github/workflows/mac-build.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            },
+            {
+              "path": ".github/workflows/tests.yml",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/.github/workflows/tests.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            },
+            {
+              "path": "tests/test_ci_change_scope.py",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/tests/test_ci_change_scope.py",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            },
+            {
+              "path": ".github/workflows/website.yml",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/.github/workflows/website.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            },
+            {
+              "path": "tests/test_discovery_measurement.py",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/tests/test_discovery_measurement.py",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "TST04",
+          "beforeState": "unknown",
+          "afterState": "pass",
+          "beforePoints": null,
+          "afterPoints": 44,
+          "delta": 44,
+          "reason": "README/contributor guidance references a recognized verification command; it was not executed.",
+          "evidence": [
+            {
+              "path": "CONTRIBUTING.md",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/CONTRIBUTING.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "STR01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 62,
+          "afterPoints": 88,
+          "delta": 26,
+          "reason": "Substantive root license terms inspected; no legal compatibility/identification claim.",
+          "evidence": [
+            {
+              "path": "LICENSE",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/LICENSE",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "STR02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 41,
+          "afterPoints": 33,
+          "delta": -8,
+          "reason": "Noncomment ignore entries exist; completeness is not established.",
+          "evidence": [
+            {
+              "path": ".gitignore",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/.gitignore",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "STR03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 51,
+          "afterPoints": 44,
+          "delta": -7,
+          "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+          "evidence": [
+            {
+              "path": "docs/ARCHITECTURE-PLAN.md",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/docs/ARCHITECTURE-PLAN.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            },
+            {
+              "path": "docs/ASYNC-ANSWER-REVIEW.md",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/docs/ASYNC-ANSWER-REVIEW.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            }
+          ]
+        },
+        {
+          "id": "SEC03",
+          "beforeState": "pass",
+          "afterState": "not-applicable",
+          "beforePoints": 31,
+          "afterPoints": null,
+          "delta": -31,
+          "reason": "No environment-file use observed; .env is not mandatory.",
+          "evidence": []
+        },
+        {
+          "id": "SEC04",
+          "beforeState": "partial",
+          "afterState": "unknown",
+          "beforePoints": 21,
+          "afterPoints": null,
+          "delta": -21,
+          "reason": "Unspecified/malformed/dynamic/unavailable permissions: organization/repository defaults were not inspected. No insecure-default claim.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/Cursiv-Local/Cursiv/tree/efc2f961049b767f0fe49e38304e9e70f25a6955",
+              "status": "insufficient evidence",
+              "confidence": "low",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "MNT01",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 33,
+          "delta": 33,
+          "reason": "Supported tool settings parsed from pyproject.toml; execution unverified.",
+          "evidence": [
+            {
+              "path": "pyproject.toml",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/pyproject.toml#L31",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                31,
+                31
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT02",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 55,
+          "delta": 55,
+          "reason": "Supported tool settings parsed from pyproject.toml; execution unverified.",
+          "evidence": [
+            {
+              "path": "pyproject.toml",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/pyproject.toml#L31",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                31,
+                31
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT03",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 55,
+          "delta": 55,
+          "reason": "Ecosystem pin/hash/checksum structure inspected; Go checksums are not a lockfile. No install/test executed.",
+          "evidence": [
+            {
+              "path": "requirements-release.lock",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/requirements-release.lock",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "MNT04",
+          "beforeState": "pass",
+          "afterState": "unknown",
+          "beforePoints": 36,
+          "afterPoints": null,
+          "delta": -36,
+          "reason": "Required evidence is unavailable or outside supported static interpretation; no failure is inferred.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/Cursiv-Local/Cursiv/tree/efc2f961049b767f0fe49e38304e9e70f25a6955",
+              "status": "insufficient evidence",
+              "confidence": "low",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "CON01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 41,
+          "afterPoints": 82,
+          "delta": 41,
+          "reason": "Substantive contributor process/setup guidance inspected; onboarding success not verified.",
+          "evidence": [
+            {
+              "path": "CONTRIBUTING.md",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/CONTRIBUTING.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 26,
+          "afterPoints": 55,
+          "delta": 29,
+          "reason": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/Cursiv-Local/Cursiv/tree/efc2f961049b767f0fe49e38304e9e70f25a6955",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "metadata"
+            }
+          ]
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "python-library",
+      "kind": "Python library",
+      "source": "synthetic",
+      "repository": "validation/python-library",
+      "sha": "cccccccccccccccccccccccccccccccccccccccc",
+      "before": {
+        "score": 505,
+        "coverage": 1,
+        "profile": "general"
+      },
+      "after": {
+        "score": 639,
+        "coverage": 1,
+        "profile": "library",
+        "range": {
+          "minimum": 639,
+          "maximum": 639
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 40,
+          "delta": -20,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/python-library/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/python-library/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L5",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                5,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/python-library/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TST01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 40,
+          "delta": -20,
+          "reason": "Recognizable test declarations inspected. Tests were not run.",
+          "evidence": [
+            {
+              "path": "tests/test_lib.py",
+              "url": "https://github.com/validation/python-library/blob/cccccccccccccccccccccccccccccccccccccccc/tests/test_lib.py",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 30,
+          "delta": -20,
+          "reason": "GitHub Actions jobs/steps parse; actual execution and success are unverified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/python-library/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 90,
+          "delta": 30,
+          "reason": "At least one job references a recognized test invocation. Non-test workflows do not enter a test-workflow denominator. No execution outcome verified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/python-library/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "TST04",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 30,
+          "afterPoints": 0,
+          "delta": -30,
+          "reason": "README/contributor guidance references a recognized verification command; it was not executed.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/python-library/blob/cccccccccccccccccccccccccccccccccccccccc/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "STR03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 40,
+          "delta": -10,
+          "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+          "evidence": [
+            {
+              "path": "src/library/__init__.py",
+              "url": "https://github.com/validation/python-library/blob/cccccccccccccccccccccccccccccccccccccccc/src/library/__init__.py",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            }
+          ]
+        },
+        {
+          "id": "SEC03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No environment-file use observed; .env is not mandatory.",
+          "evidence": []
+        },
+        {
+          "id": "SEC04",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 30,
+          "afterPoints": 69,
+          "delta": 39,
+          "reason": "Explicit workflow/job-level scopes inspected; scoped writes can be intentional. This is not proof of least privilege or workflow security.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/python-library/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml#L2",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                2,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT01",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 45,
+          "delta": 45,
+          "reason": "Supported tool settings parsed from pyproject.toml; execution unverified.",
+          "evidence": [
+            {
+              "path": "pyproject.toml",
+              "url": "https://github.com/validation/python-library/blob/cccccccccccccccccccccccccccccccccccccccc/pyproject.toml#L4",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                4,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT02",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 75,
+          "delta": 75,
+          "reason": "Supported tool settings parsed from pyproject.toml; execution unverified.",
+          "evidence": [
+            {
+              "path": "pyproject.toml",
+              "url": "https://github.com/validation/python-library/blob/cccccccccccccccccccccccccccccccccccccccc/pyproject.toml#L4",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                4,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Library publication lock conventions vary; no universal lockfile requirement.",
+          "evidence": []
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 25,
+          "afterPoints": 50,
+          "delta": 25,
+          "reason": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/validation/python-library/tree/cccccccccccccccccccccccccccccccccccccccc",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "metadata"
+            }
+          ]
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "RepoRoast",
+      "kind": "TypeScript application",
+      "source": "real",
+      "repository": "Cursiv-Local/Reporoast",
+      "sha": "587466ebc2cd8ca04b79234f26ea7366f46fc0ae",
+      "before": {
+        "score": 600,
+        "coverage": 1,
+        "profile": "application"
+      },
+      "after": {
+        "score": 580,
+        "coverage": 0.95,
+        "profile": "application",
+        "range": {
+          "minimum": 550,
+          "maximum": 600
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 42,
+          "delta": -18,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC02",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 50,
+          "afterPoints": 0,
+          "delta": -50,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "DOC03",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 50,
+          "afterPoints": 0,
+          "delta": -50,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 42,
+          "delta": -18,
+          "reason": "Recognizable test declarations inspected. Tests were not run.",
+          "evidence": [
+            {
+              "path": "tests/e2e/app.spec.ts",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/tests/e2e/app.spec.ts",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 32,
+          "delta": -18,
+          "reason": "GitHub Actions jobs/steps parse; actual execution and success are unverified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 95,
+          "delta": 35,
+          "reason": "At least one job references a recognized test invocation. Non-test workflows do not enter a test-workflow denominator. No execution outcome verified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            },
+            {
+              "path": "package.json",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/package.json",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "TST04",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 30,
+          "afterPoints": 42,
+          "delta": 12,
+          "reason": "README/contributor guidance references a recognized verification command; it was not executed.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "STR02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 40,
+          "afterPoints": 32,
+          "delta": -8,
+          "reason": "Noncomment ignore entries exist; completeness is not established.",
+          "evidence": [
+            {
+              "path": ".gitignore",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/.gitignore",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "STR03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 42,
+          "delta": -8,
+          "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+          "evidence": [
+            {
+              "path": "playwright.config.ts",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/playwright.config.ts",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            },
+            {
+              "path": "src/main.tsx",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/src/main.tsx",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            }
+          ]
+        },
+        {
+          "id": "SEC01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 48,
+          "delta": -2,
+          "reason": "Private reporting contact/instructions inspected; responsiveness and security unverified.",
+          "evidence": [
+            {
+              "path": "SECURITY.md",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/SECURITY.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "SEC03",
+          "beforeState": "pass",
+          "afterState": "not-applicable",
+          "beforePoints": 30,
+          "afterPoints": null,
+          "delta": -30,
+          "reason": "No environment-file use observed; .env is not mandatory.",
+          "evidence": []
+        },
+        {
+          "id": "SEC04",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 30,
+          "afterPoints": 73,
+          "delta": 43,
+          "reason": "Explicit workflow/job-level scopes inspected; scoped writes can be intentional. This is not proof of least privilege or workflow security.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/.github/workflows/ci.yml#L3",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                3,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT02",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 53,
+          "delta": 53,
+          "reason": "Recognized native tool invocation declared, not executed.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            },
+            {
+              "path": "package.json",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/package.json",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "MNT03",
+          "beforeState": "pass",
+          "afterState": "unknown",
+          "beforePoints": 40,
+          "afterPoints": null,
+          "delta": -40,
+          "reason": "Required evidence is unavailable or outside supported static interpretation; no failure is inferred.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/Cursiv-Local/Reporoast/tree/587466ebc2cd8ca04b79234f26ea7366f46fc0ae",
+              "status": "insufficient evidence",
+              "confidence": "low",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "CON01",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 79,
+          "delta": 79,
+          "reason": "Substantive contributor process/setup guidance inspected; onboarding success not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "javascript-package",
+      "kind": "JavaScript package",
+      "source": "synthetic",
+      "repository": "validation/javascript-package",
+      "sha": "cccccccccccccccccccccccccccccccccccccccc",
+      "before": {
+        "score": 509,
+        "coverage": 1,
+        "profile": "library"
+      },
+      "after": {
+        "score": 561,
+        "coverage": 0.925,
+        "profile": "library",
+        "range": {
+          "minimum": 519,
+          "maximum": 594
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 43,
+          "delta": -17,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 65,
+          "delta": 15,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L5",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                5,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 65,
+          "delta": 15,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC04",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 40,
+          "afterPoints": 43,
+          "delta": 3,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L13",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                13,
+                13
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TST01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 43,
+          "delta": -17,
+          "reason": "Recognizable test declarations inspected. Tests were not run.",
+          "evidence": [
+            {
+              "path": "test/unit.test.js",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/test/unit.test.js",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 33,
+          "delta": -17,
+          "reason": "GitHub Actions jobs/steps parse; actual execution and success are unverified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 97,
+          "delta": 37,
+          "reason": "At least one job references a recognized test invocation. Non-test workflows do not enter a test-workflow denominator. No execution outcome verified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            },
+            {
+              "path": "package.json",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/package.json",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "TST04",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 30,
+          "afterPoints": 0,
+          "delta": -30,
+          "reason": "README/contributor guidance references a recognized verification command; it was not executed.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "STR03",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 43,
+          "delta": 43,
+          "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+          "evidence": [
+            {
+              "path": "eslint.config.js",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/eslint.config.js",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            },
+            {
+              "path": "index.js",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/index.js",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            }
+          ]
+        },
+        {
+          "id": "SEC03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No environment-file use observed; .env is not mandatory.",
+          "evidence": []
+        },
+        {
+          "id": "SEC04",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 30,
+          "afterPoints": 75,
+          "delta": 45,
+          "reason": "Explicit workflow/job-level scopes inspected; scoped writes can be intentional. This is not proof of least privilege or workflow security.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/javascript-package/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml#L2",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                2,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT02",
+          "beforeState": "pass",
+          "afterState": "unknown",
+          "beforePoints": 54,
+          "afterPoints": null,
+          "delta": -54,
+          "reason": "Required evidence is unavailable or outside supported static interpretation; no failure is inferred.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/validation/javascript-package/tree/cccccccccccccccccccccccccccccccccccccccc",
+              "status": "insufficient evidence",
+              "confidence": "low",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 25,
+          "afterPoints": 54,
+          "delta": 29,
+          "reason": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/validation/javascript-package/tree/cccccccccccccccccccccccccccccccccccccccc",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "metadata"
+            }
+          ]
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "rust-project",
+      "kind": "Rust project",
+      "source": "synthetic",
+      "repository": "validation/rust-project",
+      "sha": "cccccccccccccccccccccccccccccccccccccccc",
+      "before": {
+        "score": 545,
+        "coverage": 1,
+        "profile": "general"
+      },
+      "after": {
+        "score": 649,
+        "coverage": 1,
+        "profile": "application",
+        "range": {
+          "minimum": 649,
+          "maximum": 649
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 40,
+          "delta": -20,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L5",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                5,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TST01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 40,
+          "delta": -20,
+          "reason": "Recognizable test declarations inspected. Tests were not run.",
+          "evidence": [
+            {
+              "path": "tests/check.rs",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/tests/check.rs",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 30,
+          "delta": -20,
+          "reason": "GitHub Actions jobs/steps parse; actual execution and success are unverified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 90,
+          "delta": 30,
+          "reason": "At least one job references a recognized test invocation. Non-test workflows do not enter a test-workflow denominator. No execution outcome verified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "TST04",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 30,
+          "afterPoints": 0,
+          "delta": -30,
+          "reason": "README/contributor guidance references a recognized verification command; it was not executed.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "STR03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 40,
+          "delta": -10,
+          "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+          "evidence": [
+            {
+              "path": "src/main.rs",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/src/main.rs",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            }
+          ]
+        },
+        {
+          "id": "SEC03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No environment-file use observed; .env is not mandatory.",
+          "evidence": []
+        },
+        {
+          "id": "SEC04",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 30,
+          "afterPoints": 69,
+          "delta": 39,
+          "reason": "Explicit workflow/job-level scopes inspected; scoped writes can be intentional. This is not proof of least privilege or workflow security.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml#L2",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                2,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT01",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 30,
+          "delta": 30,
+          "reason": "Recognized native tool invocation declared, not executed.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "MNT02",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 50,
+          "delta": 50,
+          "reason": "Recognized native tool invocation declared, not executed.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "MNT03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 40,
+          "afterPoints": 50,
+          "delta": 10,
+          "reason": "Ecosystem pin/hash/checksum structure inspected; Go checksums are not a lockfile. No install/test executed.",
+          "evidence": [
+            {
+              "path": "Cargo.lock",
+              "url": "https://github.com/validation/rust-project/blob/cccccccccccccccccccccccccccccccccccccccc/Cargo.lock",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 25,
+          "afterPoints": 50,
+          "delta": 25,
+          "reason": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/validation/rust-project/tree/cccccccccccccccccccccccccccccccccccccccc",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "metadata"
+            }
+          ]
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "go-application",
+      "kind": "Go application",
+      "source": "synthetic",
+      "repository": "validation/go-application",
+      "sha": "cccccccccccccccccccccccccccccccccccccccc",
+      "before": {
+        "score": 495,
+        "coverage": 1,
+        "profile": "general"
+      },
+      "after": {
+        "score": 649,
+        "coverage": 1,
+        "profile": "application",
+        "range": {
+          "minimum": 649,
+          "maximum": 649
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 40,
+          "delta": -20,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L5",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                5,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TST01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 40,
+          "delta": -20,
+          "reason": "Recognizable test declarations inspected. Tests were not run.",
+          "evidence": [
+            {
+              "path": "main_test.go",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/main_test.go",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 30,
+          "delta": -20,
+          "reason": "GitHub Actions jobs/steps parse; actual execution and success are unverified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 90,
+          "delta": 30,
+          "reason": "At least one job references a recognized test invocation. Non-test workflows do not enter a test-workflow denominator. No execution outcome verified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "TST04",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 30,
+          "afterPoints": 0,
+          "delta": -30,
+          "reason": "README/contributor guidance references a recognized verification command; it was not executed.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "STR03",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 40,
+          "delta": 40,
+          "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+          "evidence": [
+            {
+              "path": "main.go",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/main.go",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            },
+            {
+              "path": "main_test.go",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/main_test.go",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            }
+          ]
+        },
+        {
+          "id": "SEC03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No environment-file use observed; .env is not mandatory.",
+          "evidence": []
+        },
+        {
+          "id": "SEC04",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 30,
+          "afterPoints": 69,
+          "delta": 39,
+          "reason": "Explicit workflow/job-level scopes inspected; scoped writes can be intentional. This is not proof of least privilege or workflow security.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml#L2",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                2,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT01",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 30,
+          "delta": 30,
+          "reason": "Recognized native tool invocation declared, not executed.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "MNT02",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 50,
+          "delta": 50,
+          "reason": "Recognized native tool invocation declared, not executed.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "MNT03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 40,
+          "afterPoints": 50,
+          "delta": 10,
+          "reason": "Ecosystem pin/hash/checksum structure inspected; Go checksums are not a lockfile. No install/test executed.",
+          "evidence": [
+            {
+              "path": "go.sum",
+              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/go.sum",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 25,
+          "afterPoints": 50,
+          "delta": 25,
+          "reason": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/validation/go-application/tree/cccccccccccccccccccccccccccccccccccccccc",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "metadata"
+            }
+          ]
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "cli-tool",
+      "kind": "CLI tool",
+      "source": "synthetic",
+      "repository": "validation/cli-tool",
+      "sha": "cccccccccccccccccccccccccccccccccccccccc",
+      "before": {
+        "score": 335,
+        "coverage": 1,
+        "profile": "cli"
+      },
+      "after": {
+        "score": 500,
+        "coverage": 1,
+        "profile": "cli",
+        "range": {
+          "minimum": 500,
+          "maximum": 500
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 40,
+          "delta": -20,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/cli-tool/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/cli-tool/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L5",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                5,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/cli-tool/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TST02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 30,
+          "delta": -20,
+          "reason": "GitHub Actions jobs/steps parse; actual execution and success are unverified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/release.yml",
+              "url": "https://github.com/validation/cli-tool/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/release.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            },
+            {
+              "path": ".github/workflows/test.yml",
+              "url": "https://github.com/validation/cli-tool/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/test.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST03",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 90,
+          "delta": 90,
+          "reason": "At least one job references a recognized test invocation. Non-test workflows do not enter a test-workflow denominator. No execution outcome verified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/test.yml",
+              "url": "https://github.com/validation/cli-tool/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/test.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            },
+            {
+              "path": "package.json",
+              "url": "https://github.com/validation/cli-tool/blob/cccccccccccccccccccccccccccccccccccccccc/package.json",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "TST04",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 30,
+          "afterPoints": 0,
+          "delta": -30,
+          "reason": "README/contributor guidance references a recognized verification command; it was not executed.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/cli-tool/blob/cccccccccccccccccccccccccccccccccccccccc/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "STR03",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 40,
+          "delta": 40,
+          "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+          "evidence": [
+            {
+              "path": "cli.js",
+              "url": "https://github.com/validation/cli-tool/blob/cccccccccccccccccccccccccccccccccccccccc/cli.js",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            }
+          ]
+        },
+        {
+          "id": "SEC02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No declared third-party dependencies in supported complete evidence.",
+          "evidence": []
+        },
+        {
+          "id": "SEC03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No environment-file use observed; .env is not mandatory.",
+          "evidence": []
+        },
+        {
+          "id": "SEC04",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 30,
+          "afterPoints": 90,
+          "delta": 60,
+          "reason": "Explicit workflow/job-level scopes inspected; scoped writes can be intentional. This is not proof of least privilege or workflow security.",
+          "evidence": [
+            {
+              "path": ".github/workflows/release.yml",
+              "url": "https://github.com/validation/cli-tool/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/release.yml#L2",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                2,
+                2
+              ]
+            },
+            {
+              "path": ".github/workflows/test.yml",
+              "url": "https://github.com/validation/cli-tool/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/test.yml#L2",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                2,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No declared third-party dependencies in supported complete evidence.",
+          "evidence": []
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 25,
+          "afterPoints": 50,
+          "delta": 25,
+          "reason": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/validation/cli-tool/tree/cccccccccccccccccccccccccccccccccccccccc",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "metadata"
+            }
+          ]
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "documentation",
+      "kind": "Documentation-only repository",
+      "source": "synthetic",
+      "repository": "validation/documentation",
+      "sha": "cccccccccccccccccccccccccccccccccccccccc",
+      "before": {
+        "score": 366,
+        "coverage": 1,
+        "profile": "documentation"
+      },
+      "after": {
+        "score": 375,
+        "coverage": 1,
+        "profile": "documentation",
+        "range": {
+          "minimum": 375,
+          "maximum": 375
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 75,
+          "afterPoints": 50,
+          "delta": -25,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/documentation/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 63,
+          "afterPoints": 75,
+          "delta": 12,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/documentation/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L5",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                5,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 62,
+          "afterPoints": 75,
+          "delta": 13,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/documentation/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "STR03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 85,
+          "afterPoints": 63,
+          "delta": -22,
+          "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+          "evidence": [
+            {
+              "path": "docs/guide.md",
+              "url": "https://github.com/validation/documentation/blob/cccccccccccccccccccccccccccccccccccccccc/docs/guide.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            }
+          ]
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 31,
+          "afterPoints": 62,
+          "delta": 31,
+          "reason": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/validation/documentation/tree/cccccccccccccccccccccccccccccccccccccccc",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "metadata"
+            }
+          ]
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "Hello-World",
+      "kind": "Small hobby repository",
+      "source": "real",
+      "repository": "octocat/Hello-World",
+      "sha": "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+      "before": {
+        "score": 85,
+        "coverage": 1,
+        "profile": "general"
+      },
+      "after": {
+        "score": 60,
+        "coverage": 1,
+        "profile": "general",
+        "range": {
+          "minimum": 60,
+          "maximum": 60
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "partial",
+          "beforePoints": 60,
+          "afterPoints": 10,
+          "delta": -50,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README",
+              "url": "https://github.com/octocat/Hello-World/blob/7fd1a60b01f91b314f59955a4e4d4e80d8edf11d/README#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "SEC03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No environment-file use observed; .env is not mandatory.",
+          "evidence": []
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 25,
+          "afterPoints": 50,
+          "delta": 25,
+          "reason": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/octocat/Hello-World/tree/7fd1a60b01f91b314f59955a4e4d4e80d8edf11d",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "metadata"
+            }
+          ]
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "mature-monorepo",
+      "kind": "Large mature project (synthetic, not popularity-calibrated)",
+      "source": "synthetic",
+      "repository": "validation/mature-monorepo",
+      "sha": "cccccccccccccccccccccccccccccccccccccccc",
+      "before": {
+        "score": 475,
+        "coverage": 1,
+        "profile": "general"
+      },
+      "after": {
+        "score": 599,
+        "coverage": 1,
+        "profile": "general",
+        "range": {
+          "minimum": 599,
+          "maximum": 599
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 40,
+          "delta": -20,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L5",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                5,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TST01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 40,
+          "delta": -20,
+          "reason": "Recognizable test declarations inspected. Tests were not run.",
+          "evidence": [
+            {
+              "path": "tests/core.test.ts",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/tests/core.test.ts",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 30,
+          "delta": -20,
+          "reason": "GitHub Actions jobs/steps parse; actual execution and success are unverified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/docs.yml",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/docs.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            },
+            {
+              "path": ".github/workflows/test.yml",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/test.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST03",
+          "beforeState": "partial",
+          "afterState": "pass",
+          "beforePoints": 30,
+          "afterPoints": 90,
+          "delta": 60,
+          "reason": "At least one job references a recognized test invocation. Non-test workflows do not enter a test-workflow denominator. No execution outcome verified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/test.yml",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/test.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            },
+            {
+              "path": "package.json",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/package.json",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "TST04",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 30,
+          "afterPoints": 0,
+          "delta": -30,
+          "reason": "README/contributor guidance references a recognized verification command; it was not executed.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "STR03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 40,
+          "delta": -10,
+          "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+          "evidence": [
+            {
+              "path": "packages/core/index.ts",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/packages/core/index.ts",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            },
+            {
+              "path": "packages/part0/index.ts",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/packages/part0/index.ts",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            }
+          ]
+        },
+        {
+          "id": "SEC03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No environment-file use observed; .env is not mandatory.",
+          "evidence": []
+        },
+        {
+          "id": "SEC04",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 30,
+          "afterPoints": 69,
+          "delta": 39,
+          "reason": "Explicit workflow/job-level scopes inspected; scoped writes can be intentional. This is not proof of least privilege or workflow security.",
+          "evidence": [
+            {
+              "path": ".github/workflows/docs.yml",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/docs.yml#L2",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                2,
+                2
+              ]
+            },
+            {
+              "path": ".github/workflows/test.yml",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/test.yml#L2",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                2,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT01",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 30,
+          "delta": 30,
+          "reason": "Recognized native tool invocation declared, not executed.",
+          "evidence": [
+            {
+              "path": "package.json",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/package.json",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "MNT02",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 50,
+          "delta": 50,
+          "reason": "Recognized native tool invocation declared, not executed.",
+          "evidence": [
+            {
+              "path": "package.json",
+              "url": "https://github.com/validation/mature-monorepo/blob/cccccccccccccccccccccccccccccccccccccccc/package.json",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 25,
+          "afterPoints": 50,
+          "delta": 25,
+          "reason": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/validation/mature-monorepo/tree/cccccccccccccccccccccccccccccccccccccccc",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "metadata"
+            }
+          ]
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "empty-shell-project",
+      "kind": "Adversarial: presence without substance",
+      "source": "synthetic",
+      "repository": "validation/empty-shell-project",
+      "sha": "cccccccccccccccccccccccccccccccccccccccc",
+      "before": {
+        "score": 531,
+        "coverage": 1,
+        "profile": "application"
+      },
+      "after": {
+        "score": 130,
+        "coverage": 1,
+        "profile": "application",
+        "range": {
+          "minimum": 130,
+          "maximum": 130
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 60,
+          "afterPoints": 0,
+          "delta": -60,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/empty-shell-project/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC02",
+          "beforeState": "pass",
+          "afterState": "partial",
+          "beforePoints": 50,
+          "afterPoints": 15,
+          "delta": -35,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/empty-shell-project/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L2",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                2,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC03",
+          "beforeState": "pass",
+          "afterState": "partial",
+          "beforePoints": 50,
+          "afterPoints": 15,
+          "delta": -35,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/empty-shell-project/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC04",
+          "beforeState": "pass",
+          "afterState": "partial",
+          "beforePoints": 40,
+          "afterPoints": 10,
+          "delta": -30,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/empty-shell-project/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L4",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                4,
+                4
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TST01",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 86,
+          "afterPoints": 0,
+          "delta": -86,
+          "reason": "Recognizable test declarations inspected. Tests were not run.",
+          "evidence": [
+            {
+              "path": "tests/empty.test.js",
+              "url": "https://github.com/validation/empty-shell-project/blob/cccccccccccccccccccccccccccccccccccccccc/tests/empty.test.js",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "STR01",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 60,
+          "afterPoints": 0,
+          "delta": -60,
+          "reason": "Substantive root license terms inspected; no legal compatibility/identification claim.",
+          "evidence": [
+            {
+              "path": "LICENSE",
+              "url": "https://github.com/validation/empty-shell-project/blob/cccccccccccccccccccccccccccccccccccccccc/LICENSE",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "STR03",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 40,
+          "delta": 40,
+          "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+          "evidence": [
+            {
+              "path": "main.js",
+              "url": "https://github.com/validation/empty-shell-project/blob/cccccccccccccccccccccccccccccccccccccccc/main.js",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            }
+          ]
+        },
+        {
+          "id": "SEC02",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 50,
+          "afterPoints": 0,
+          "delta": -50,
+          "reason": "Supported update configuration covers observed ecosystems; service activity is not verified.",
+          "evidence": [
+            {
+              "path": ".github/dependabot.yml",
+              "url": "https://github.com/validation/empty-shell-project/blob/cccccccccccccccccccccccccccccccccccccccc/.github/dependabot.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "SEC03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No environment-file use observed; .env is not mandatory.",
+          "evidence": []
+        },
+        {
+          "id": "MNT03",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 40,
+          "afterPoints": 0,
+          "delta": -40,
+          "reason": "Observed ecosystem reproducibility structure; exact pins without hashes earn partial credit.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/validation/empty-shell-project/tree/cccccccccccccccccccccccccccccccccccccccc",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "CON01",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 40,
+          "afterPoints": 0,
+          "delta": -40,
+          "reason": "Substantive contributor process/setup guidance inspected; onboarding success not verified.",
+          "evidence": [
+            {
+              "path": "CONTRIBUTING.md",
+              "url": "https://github.com/validation/empty-shell-project/blob/cccccccccccccccccccccccccccccccccccccccc/CONTRIBUTING.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            },
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/empty-shell-project/blob/cccccccccccccccccccccccccccccccccccccccc/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "CON02",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 30,
+          "afterPoints": 0,
+          "delta": -30,
+          "reason": "Issue questions/form structure inspected; availability/community response unverified.",
+          "evidence": [
+            {
+              "path": ".github/ISSUE_TEMPLATE/bug.md",
+              "url": "https://github.com/validation/empty-shell-project/blob/cccccccccccccccccccccccccccccccccccccccc/.github/ISSUE_TEMPLATE/bug.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 25,
+          "afterPoints": 50,
+          "delta": 25,
+          "reason": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/validation/empty-shell-project/tree/cccccccccccccccccccccccccccccccccccccccc",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "metadata"
+            }
+          ]
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "name": "deceptive-ci",
+      "kind": "Adversarial: echoed/quoted test names and broad token",
+      "source": "synthetic",
+      "repository": "validation/deceptive-ci",
+      "sha": "cccccccccccccccccccccccccccccccccccccccc",
+      "before": {
+        "score": 455,
+        "coverage": 1,
+        "profile": "application"
+      },
+      "after": {
+        "score": 320,
+        "coverage": 1,
+        "profile": "application",
+        "range": {
+          "minimum": 320,
+          "maximum": 320
+        }
+      },
+      "changes": [
+        {
+          "id": "DOC01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 60,
+          "afterPoints": 40,
+          "delta": -20,
+          "reason": "Root README prose was inspected; documentation adequacy is not verified.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/deceptive-ci/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/deceptive-ci/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L5",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                5,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "id": "DOC03",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 60,
+          "delta": 10,
+          "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/deceptive-ci/blob/cccccccccccccccccccccccccccccccccccccccc/README.md#L1",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                1,
+                1
+              ]
+            }
+          ]
+        },
+        {
+          "id": "TST01",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 60,
+          "afterPoints": 0,
+          "delta": -60,
+          "reason": "Recognizable test declarations inspected. Tests were not run.",
+          "evidence": [
+            {
+              "path": "tests/fake.test.js",
+              "url": "https://github.com/validation/deceptive-ci/blob/cccccccccccccccccccccccccccccccccccccccc/tests/fake.test.js",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST02",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 50,
+          "afterPoints": 30,
+          "delta": -20,
+          "reason": "GitHub Actions jobs/steps parse; actual execution and success are unverified.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/deceptive-ci/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration"
+            }
+          ]
+        },
+        {
+          "id": "TST03",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 60,
+          "afterPoints": 0,
+          "delta": -60,
+          "reason": "No supported test invocation in inspected workflow run steps.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/deceptive-ci/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "TST04",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 30,
+          "afterPoints": 0,
+          "delta": -30,
+          "reason": "README/contributor guidance references a recognized verification command; it was not executed.",
+          "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/deceptive-ci/blob/cccccccccccccccccccccccccccccccccccccccc/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "invocation"
+            }
+          ]
+        },
+        {
+          "id": "STR03",
+          "beforeState": "fail",
+          "afterState": "pass",
+          "beforePoints": 0,
+          "afterPoints": 40,
+          "delta": 40,
+          "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
+          "evidence": [
+            {
+              "path": "main.js",
+              "url": "https://github.com/validation/deceptive-ci/blob/cccccccccccccccccccccccccccccccccccccccc/main.js",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            }
+          ]
+        },
+        {
+          "id": "SEC02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No declared third-party dependencies in supported complete evidence.",
+          "evidence": []
+        },
+        {
+          "id": "SEC03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No environment-file use observed; .env is not mandatory.",
+          "evidence": []
+        },
+        {
+          "id": "SEC04",
+          "beforeState": "pass",
+          "afterState": "fail",
+          "beforePoints": 30,
+          "afterPoints": 0,
+          "delta": -30,
+          "reason": "Explicit workflow/job-level scopes inspected; scoped writes can be intentional. This is not proof of least privilege or workflow security.",
+          "evidence": [
+            {
+              "path": ".github/workflows/ci.yml",
+              "url": "https://github.com/validation/deceptive-ci/blob/cccccccccccccccccccccccccccccccccccccccc/.github/workflows/ci.yml#L2",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "configuration",
+              "lines": [
+                2,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "id": "MNT03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "No declared third-party dependencies in supported complete evidence.",
+          "evidence": []
+        },
+        {
+          "id": "CON03",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        },
+        {
+          "id": "MET01",
+          "beforeState": "pass",
+          "afterState": "pass",
+          "beforePoints": 25,
+          "afterPoints": 50,
+          "delta": 25,
+          "reason": "Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.",
+          "evidence": [
+            {
+              "path": null,
+              "url": "https://github.com/validation/deceptive-ci/tree/cccccccccccccccccccccccccccccccccccccccc",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "metadata"
+            }
+          ]
+        },
+        {
+          "id": "MET02",
+          "beforeState": "fail",
+          "afterState": "not-applicable",
+          "beforePoints": 0,
+          "afterPoints": null,
+          "delta": 0,
+          "reason": "Optional informational signal; no numerical penalty or gain in 2.0.0.",
+          "evidence": []
+        }
+      ]
+    }
+  ]
+}
