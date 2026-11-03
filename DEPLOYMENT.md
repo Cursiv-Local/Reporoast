@@ -7,7 +7,7 @@ Production is live at **https://roast.cursiv.us**.
 | Production | reporoast-production | https://roast.cursiv.us |
 | Staging | reporoast-staging | https://reporoast-staging.joshua-1993-winkler.workers.dev |
 
-Production runs analyzer 0.2.0 / rules 2.0.0. Staging was deliberately retained on its existing deployment. The owner explicitly authorized production and the roast subdomain on 2026-10-28. Live payments remain unimplemented and disabled.
+Production runs analyzer 0.2.0 / rules 2.0.0. Staging now runs the same scoring rules with the rate-limit incident fixes; see RATE_LIMIT_AUDIT.md. The owner explicitly authorized production and the roast subdomain on 2026-10-28. Live payments remain unimplemented and disabled.
 
 ## Account and domain
 
@@ -29,7 +29,7 @@ Production variables: PUBLIC_ORIGIN=https://roast.cursiv.us, CANONICAL_REDIRECTS
 
 Each environment needs independent IP_HASH_SECRET and ADMIN_TOKEN values (at least 32 random bytes). Production values were freshly generated, checked for non-reuse against staging, and uploaded through stdin. Local backups are Git-ignored .dev.vars.production and .dev.vars.staging; never commit or print them.
 
-GITHUB_TOKEN is optional: use only a minimal public-read service credential. No personal GitHub OAuth credential was copied. Live production verification succeeded with unauthenticated public access; monitor GitHub rate limits.
+GITHUB_TOKEN is supported as a minimal public-read server credential. The initial unauthenticated production smoke passed, but subsequent testing exhausted the 60/hour upstream quota. Configure a dedicated Worker secret before authenticated release verification. No personal GitHub OAuth credential was copied. See the incident report below and RATE_LIMIT_AUDIT.md.
 
 ## Required Cloudflare permissions
 
@@ -67,3 +67,22 @@ Disable scans first: set production SCANS_ENABLED=false and deploy the verified 
 Code rollback is not a DNS/domain rollback. Never delete an unrelated route, the production namespace or SQLite data to repair code. Retain original scoring versions and expiry on cached reports/shares. Rotate secrets after suspected exposure.
 
 GET /api/admin/metrics requires ADMIN_TOKEN and exposes aggregate quotas/cache/failure/API counts, not raw IPs/source. Monitor account usage and public GitHub quotas; application limits are not a currency billing cap. Live checkout requires separate future owner approval.
+
+
+## GitHub authentication and rate-limit diagnostics
+
+Both deployed environments were initially missing GITHUB_TOKEN. Configure a dedicated GitHub public-repository read credential as a Worker **secret**, never a Wrangler plaintext variable, Vite variable, browser setting or committed file. Use only the permissions needed to read public repository metadata and contents. Do not copy a developer's broad GitHub CLI credential. A token with private access does not enable private scanning: the application still rejects private metadata.
+
+From a trusted interactive terminal in this repository, use the hidden Wrangler secret input:
+
+```powershell
+npx wrangler secret put GITHUB_TOKEN --env staging
+# Verify staging first, then configure the production binding:
+npx wrangler secret put GITHUB_TOKEN --env production
+```
+
+Alternatively use each Worker's Cloudflare Settings / Variables and Secrets, type Secret. Do not paste tokens in chat or shell command arguments. Secret updates can deploy a Worker revision; record that revision and test staging before production. No account plan, subscription, billing or cost limit change is required. A token is not created by this repository. Provisioning the HMAC/admin secrets does not overwrite GITHUB_TOKEN.
+
+Verify presence using `npx wrangler secret list --env staging` (then production). Verify actual authenticated requests through the protected `/api/admin/metrics`: github.authenticated must be true, and github.lastResponse.authenticated must be true after a scan. Never print the Authorization header. Look at lastResponse.status, remaining, limit, reset (UTC epoch seconds), retryAfter and kind. lastScan.requests includes redirect attempts and all actual HTTP calls; automaticRetries is zero. Existing githubRequests is the aggregate. Diagnostics expire after 24 hours and are not published in share previews. Primary reset and secondary cooldown errors include Retry-After plus a UTC retryAt; local daily quota errors identify RepoRoast explicitly and reset at UTC midnight. Do not clear quotas to make smoke tests pass or make requests before GitHub's deadline. Two service tokens owned by the same GitHub user still share its primary quota.
+
+Run `npm run verify`, deploy staging, then run `npm run smoke:staging`. Only deploy production after staging passes. Keep the production terminal guard; do not use --yes. Run `npm run smoke:production` and inspect protected metrics afterward. A cached response retains the original scan's request count; use lastScan.requests or aggregate deltas to measure the resubmission cost. Head changes may take up to 60 seconds to appear.

@@ -1,36 +1,53 @@
 import { AppError, parseRepository } from '../src/shared/url';
+import { testRank, LICENSE_PATH, CHANGELOG_PATH, TOOL_CONFIG } from '../src/shared/inspection-facts';
 export interface Metadata { id: number; fullName: string; description: string; language: string | null; defaultBranch: string; license: string | null; archived: boolean }
 export interface Entry { path: string; type: string; sha: string; size?: number; mode: string }
-export interface Inspection { metadata: Metadata; sha: string; tree: Entry[]; treeComplete: boolean; files: Record<string, string>; skipped: {path: string; reason: string}[]; unavailable: string[]; bytes: number; requests: number; truncated: boolean }
+/** Default community health files from the owner's `.github` repository (scan-time snapshot, not commit-pinned). */
+export interface InheritedDefaults { repository: string; checked: boolean; unresolved: boolean; files: Record<string, string> }
+export interface Inspection { metadata: Metadata; sha: string; tree: Entry[]; treeComplete: boolean; files: Record<string, string>; skipped: {path: string; reason: string}[]; unavailable: string[]; bytes: number; requests: number; truncated: boolean; inherited?: InheritedDefaults }
 export const LIMITS = { files: 5000, selected: 24, fileBytes: 96000, bytes: 400000, requests: 30, timeout: 20000, responseBytes: 2000000 };
+export interface GitHubResponseInfo { status:number; authenticated:boolean; remaining:number|null; limit:number|null; reset:number|null; retryAfter:string|null; resource:string|null; kind?:'primary'|'secondary'|'unclassified'; retryAt?:number }
+function numberHeader(headers:Headers,name:string){const raw=headers.get(name);return raw!==null&&/^\d+$/.test(raw)&&Number.isSafeInteger(Number(raw))?Number(raw):null;}
 export class GitHub {
   requests = 0;
-  constructor(private token?: string, private fetcher: typeof fetch = fetch, private signal?: AbortSignal) {}
+  constructor(private token?: string, private fetcher: typeof fetch = fetch, private signal?: AbortSignal, private observe?:(info:GitHubResponseInfo)=>void, private beforeRequest?:()=>void) {}
   async get(path: string): Promise<any> {
 
     let url = new URL('https://api.github.com' + path);
     for (let hop = 0; hop < 4; hop++) {
       if (this.requests >= LIMITS.requests) throw new AppError('REQUEST_BUDGET', 'GitHub inspection request budget exhausted.', 422);
-      this.requests++;
+      this.beforeRequest?.();
       if (url.origin !== 'https://api.github.com' || !/^\/repos\/[a-z\d_.-]+\/[a-z\d_.-]+(?:\/|$)/i.test(url.pathname) && !/^\/repositories\/\d+(?:\/|$)/.test(url.pathname)) throw new AppError('UNSAFE_REDIRECT', 'GitHub returned an unsupported redirect.', 502);
+      this.requests++;
       let response: Response;
       try { response = await this.fetcher.call(globalThis, url.toString(), {headers: {Accept:'application/vnd.github+json','User-Agent':'RepoRoast/0.1','X-GitHub-Api-Version':'2022-11-28',...(this.token ? {Authorization:'Bearer ' + this.token}: {})}, redirect:'manual', signal:this.signal}); }
       catch { throw new AppError('API_UNAVAILABLE', 'GitHub is unavailable or inspection timed out. Try again later.', 503); }
+      const info:GitHubResponseInfo={status:response.status,authenticated:!!this.token,remaining:numberHeader(response.headers,'x-ratelimit-remaining'),limit:numberHeader(response.headers,'x-ratelimit-limit'),reset:numberHeader(response.headers,'x-ratelimit-reset'),retryAfter:response.headers.get('retry-after'),resource:response.headers.get('x-ratelimit-resource')};
       if ([301,302,307,308].includes(response.status)) {
+        this.observe?.(info);
         const location = response.headers.get('location');
         if (!location) throw new AppError('API_UNAVAILABLE','Invalid GitHub redirect.',502);
         url = new URL(location, url); continue;
       }
-      if (response.status === 404) throw new AppError('NOT_FOUND', 'Repository not found. It may be private; only public repositories are supported.', 404);
-      if (response.status === 429 || response.status === 403 && (response.headers.get('x-ratelimit-remaining') === '0' || response.headers.has('retry-after'))) throw new AppError('RATE_LIMITED','GitHub API rate limit reached. Try again later.',429);
-      if (response.status === 409) throw new AppError('EMPTY_REPOSITORY','This repository has no analyzable commit yet.',422);
-      if (!response.ok) throw new AppError('API_UNAVAILABLE','GitHub could not provide the requested evidence.',502);
       const reader = response.body?.getReader(); const chunks: Uint8Array[] = []; let size = 0;
-      if (!reader) throw new AppError('API_UNAVAILABLE','GitHub returned an empty response.',502);
-      try { while (true) { const next = await reader.read(); if (next.done) break; size += next.value.byteLength; if (size > LIMITS.responseBytes) { await reader.cancel(); throw new AppError('TOO_LARGE','Repository response exceeds inspection capacity.',422); } chunks.push(next.value); } }
+      try { while (reader) { const next = await reader.read(); if (next.done) break; size += next.value.byteLength; if (size > LIMITS.responseBytes) { await reader.cancel(); throw new AppError('TOO_LARGE','Repository response exceeds inspection capacity.',422); } chunks.push(next.value); } }
       catch(error){if(error instanceof AppError)throw error;throw new AppError('API_UNAVAILABLE','GitHub evidence could not be read before the scan deadline.',503);}
       const data = new Uint8Array(size); let offset = 0; for (const chunk of chunks) { data.set(chunk, offset); offset += chunk.length; }
-      try { return JSON.parse(new TextDecoder().decode(data)); } catch { throw new AppError('API_UNAVAILABLE','GitHub returned invalid data.',502); }
+      const text=new TextDecoder().decode(data);
+      if(response.status===429 || response.status===403 && (info.remaining===0 || info.retryAfter!==null || /secondary rate limit|abuse detection|API rate limit exceeded/i.test(text))){
+        info.kind=info.remaining===0?'primary':info.retryAfter!==null||/secondary rate limit|abuse detection/i.test(text)?'secondary':'unclassified';
+        const retry=info.retryAfter===null?NaN:/^\d+$/.test(info.retryAfter)?Date.now()+Number(info.retryAfter)*1000:Date.parse(info.retryAfter);
+        const deadline=(value:number)=>Number.isFinite(value)&&value<=8640000000000000?value:0;
+        info.retryAt=Math.max(Date.now()+60000,deadline(retry),info.remaining===0&&info.reset?deadline(info.reset*1000):0);
+        this.observe?.(info);
+        throw new AppError('RATE_LIMITED','GitHub’s '+info.kind+' API limit was reached. Retry after '+new Date(info.retryAt).toISOString()+'. Recent cached reports may still be available.',429,info.retryAt,'github_'+info.kind);
+      }
+      this.observe?.(info);
+      if(response.status===401)throw new AppError('GITHUB_AUTHENTICATION','GitHub rejected the service credential. The operator must update its server-side token.',503,undefined,'github_authentication');
+      if(response.status===404)throw new AppError('NOT_FOUND','Repository not found. It may be private; only public repositories are supported.',404);
+      if(response.status===409)throw new AppError('EMPTY_REPOSITORY','This repository has no analyzable commit yet.',422);
+      if(!response.ok)throw new AppError('API_UNAVAILABLE','GitHub could not provide the requested evidence.',502);
+      try{return JSON.parse(text);}catch{throw new AppError('API_UNAVAILABLE','GitHub returned invalid data.',502);}
     }
     throw new AppError('UNSAFE_REDIRECT','Too many GitHub redirects.',502);
   }
@@ -60,7 +77,7 @@ export class GitHub {
       else if (/(^|\/)(node_modules|vendor|dist|build|coverage|\.git|\.venv|venv|__pycache__)\//i.test(entry.path) || /(?:\.min\.[cm]?js|\.map|\.lockb|\.(png|jpe?g|gif|pdf|zip|wasm|svg))$/i.test(entry.path)) reason = 'Dependency, generated, or binary';
       else if ((entry.size ?? LIMITS.fileBytes + 1) > LIMITS.fileBytes) reason = 'Individual file size cap';
       else if (priority(entry.path) === 0 && !referenced.has(entry.path)) reason = 'Outside selected evidence scope';
-      else if (priority(entry.path) === 1 && sampledTests++ >= 4) reason = 'Representative test sample cap';
+      else if (testRank(entry.path) > 0 && priority(entry.path) <= 2 && sampledTests++ >= 4) reason = 'Representative test sample cap';
       else if (Object.keys(inspection.files).length + inspection.unavailable.length >= LIMITS.selected || inspection.bytes + (entry.size || 0) > LIMITS.bytes) reason = 'Inspection budget';
       if (reason) { inspection.skipped.push({path:entry.path,reason}); continue; }
       try {
@@ -84,17 +101,40 @@ export class GitHub {
             }
           }
         }
-      } catch (error) { if (this.signal?.aborted || error instanceof AppError && ['RATE_LIMITED','REQUEST_BUDGET'].includes(error.code)) throw error; inspection.unavailable.push(entry.path); }
+      } catch (error) { if (this.signal?.aborted || error instanceof AppError && ['RATE_LIMITED','REQUEST_BUDGET','GITHUB_AUTHENTICATION'].includes(error.code)) throw error; inspection.unavailable.push(entry.path); }
     }
+    if (inspection.treeComplete && !inspection.tree.some(e => e.type === 'blob' && SECURITY_PATH.test(e.path))) inspection.inherited = await this.defaults(metadata.fullName.split('/')[0]);
     inspection.requests = this.requests;
     return inspection;
   }
+  // GitHub applies an owner's `.github` repository SECURITY.md to repositories without their own.
+  // Only its root is read; a policy nested in its .github/ or docs/ folders is reported as unresolved.
+  async defaults(owner: string): Promise<InheritedDefaults> {
+    const result: InheritedDefaults = { repository: owner + '/.github', checked: false, unresolved: false, files: {} };
+    if (this.requests > LIMITS.requests - 2) return result;
+    try {
+      const listing = await this.get('/repos/' + owner + '/.github/contents');
+      if (!Array.isArray(listing)) return result;
+      result.checked = true;
+      const policy = listing.find((e: any) => e?.type === 'file' && typeof e.name === 'string' && /^security\.md$/i.test(e.name));
+      if (!policy) { result.unresolved = listing.some((e: any) => e?.type === 'dir' && /^(?:\.github|docs)$/i.test(e.name)); return result; }
+      if (typeof policy.size !== 'number' || policy.size > LIMITS.fileBytes) { result.unresolved = true; return result; }
+      const file = await this.get('/repos/' + owner + '/.github/contents/' + encodeURIComponent(policy.name));
+      if (file?.encoding !== 'base64' || typeof file.content !== 'string') { result.unresolved = true; return result; }
+      result.files['SECURITY.md'] = new TextDecoder('utf-8', { fatal: true }).decode(Uint8Array.from(atob(file.content.replace(/\s/g, '')), c => c.charCodeAt(0)));
+    } catch (error) {
+      if (error instanceof AppError && error.code === 'NOT_FOUND') { result.checked = true; return result; }
+      if (this.signal?.aborted || error instanceof AppError && ['RATE_LIMITED', 'GITHUB_AUTHENTICATION'].includes(error.code)) throw error;
+      result.checked = true; result.unresolved = true;
+    }
+    return result;
+  }
 }
+const SECURITY_PATH = /^(?:\.github\/|docs\/)?security\.md$/i;
 export function priority(path: string) {
-  if (/^(readme(?:\.[\w-]+)?|package\.json|pyproject\.toml|Cargo\.toml|go\.mod|requirements[^/]*\.(?:txt|in))$/i.test(path)) return 6;
-  if (/^\.github\/workflows\/[^/]+\.ya?ml$/.test(path) || /^(?:\.github\/)?(?:contributing|security)(?:\.md)?$/i.test(path) || /^(?:license|licence|copying)(?:\.[\w-]+)?$|^\.gitignore$/i.test(path)) return 5;
-  if (/^(?:requirements[^/]*\.lock|poetry\.lock|uv\.lock|Pipfile\.lock|package-lock\.json|pnpm-lock\.yaml|yarn\.lock|bun\.lock|Cargo\.lock|go\.sum|CHANGELOG\.md|CHANGES\.md|HISTORY\.md|\.prettierrc.*|\.editorconfig|(?:eslint|prettier)\.config\.[cm]?[jt]s|\.eslintrc.*|\.?ruff\.toml|rustfmt\.toml|\.rustfmt\.toml|clippy\.toml|\.golangci\.ya?ml|biome\.jsonc?|mypy\.ini|\.flake8|setup\.cfg|\.renovaterc(?:\.json)?|renovate\.json5?)$/.test(path) || /^\.github\/dependabot\.ya?ml$/.test(path)) return 4;
+  if (/^(readme(?:\.[\w-]+)?|package\.json|pyproject\.toml|Cargo\.toml|go\.mod|composer\.json|requirements[^/]*\.(?:txt|in))$/i.test(path)) return 6;
+  if (/^\.github\/workflows\/[^/]+\.ya?ml$/.test(path) || /^(?:\.github\/|docs\/)?(?:contributing|security)(?:\.[\w-]+)?$/i.test(path) || LICENSE_PATH.test(path) || /^\.gitignore$/.test(path)) return 5;
+  if (/^(?:requirements[^/]*\.lock|poetry\.lock|uv\.lock|Pipfile\.lock|package-lock\.json|pnpm-lock\.yaml|yarn\.lock|bun\.lock|Cargo\.lock|go\.sum|\.prettierrc.*|\.editorconfig|(?:eslint|prettier)\.config\.[cm]?[jt]s|\.eslintrc.*|\.?ruff\.toml|rustfmt\.toml|\.rustfmt\.toml|clippy\.toml|\.golangci\.ya?ml|biome\.jsonc?|mypy\.ini|\.flake8|setup\.cfg|\.renovaterc(?:\.json)?|renovate\.json5?)$/.test(path) || /^\.github\/dependabot\.ya?ml$/.test(path) || CHANGELOG_PATH.test(path) || TOOL_CONFIG.test(path)) return 4;
   if (/^\.github\/ISSUE_TEMPLATE\/[^/]+\.(md|ya?ml)$/.test(path)) return 3;
-  if (/^(?:tests?|spec|__tests__)\/.*\.(py|[cm]?[jt]sx?|go|rs)$|(?:^|\/)test_[^/]+\.py$|[._](?:test|spec)\.[^/]+$|_test\.go$/.test(path)) return 1;
-  return 0;
+  return testRank(path);
 }

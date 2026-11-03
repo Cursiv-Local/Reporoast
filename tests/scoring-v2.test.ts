@@ -14,7 +14,7 @@ const readme='# A small tool\n\nThis project processes local files using explici
 const workflow=(command:string,permissions='permissions: {contents: read}')=>`on: [push]\n${permissions}\njobs:\n  verify:\n    runs-on: ubuntu-latest\n    steps:\n      - run: ${command}\n`;
 const check=(i:Inspection,id:string,profile?:Parameters<typeof analyze>[1])=>analyze(i,profile,'fixed').checks.find(c=>c.rule.id===id)!;
 describe('U2 structural accuracy',()=>{
- it('freezes original versions and 24 IDs',()=>{expect(RULE_VERSION).toBe('2.0.0');expect(RULES).toHaveLength(24);expect(RULES.map(r=>r.id)).toEqual(legacy(inspection({})).checks.map(c=>c.rule.id));});
+ it('freezes original versions and 24 IDs',()=>{expect(RULE_VERSION).toBe('2.1.0');expect(RULES).toHaveLength(24);expect(RULES.map(r=>r.id)).toEqual(legacy(inspection({})).checks.map(c=>c.rule.id));});
  it('has no payment-dependent score input',()=>{const i=inspection({'main.py':'print(1)'});expect(analyze({...i,...{paid:true,entitlement:'premium'}},undefined,'fixed')).toEqual(analyze(i,undefined,'fixed'));});
  it('does not give full credit to headings-only documentation',()=>{for(const id of ['DOC01','DOC02','DOC03','DOC04'])expect(check(inspection({'README.md':'# X\n## Installation\n## Usage\n## Limitations\n'}),id).ratio).not.toBe(1);});
  it('recognizes concrete prose under supported headings',()=>{for(const id of ['DOC01','DOC02','DOC03','DOC04'])expect(check(inspection({'README.md':readme}),id).state).toBe('pass');});

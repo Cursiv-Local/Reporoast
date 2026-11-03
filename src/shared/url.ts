@@ -1,5 +1,5 @@
 export class AppError extends Error {
-  constructor(public code: string, message: string, public status = 400) { super(message); }
+  constructor(public code: string, message: string, public status = 400, public retryAt?:number, public source?:string) { super(message); }
 }
 export function parseRepository(input: string): { owner: string; name: string; fullName: string } {
   if (typeof input !== 'string' || input.length > 300 || /[%\\\x00-\x20]/.test(input.trim())) throw new AppError('INVALID_URL', 'Enter a public github.com/owner/repository URL.');

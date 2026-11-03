@@ -3,7 +3,7 @@ import { V2_RULES, evaluateRule } from './rules-v2';
 import type { Inspection } from '../../worker/github';
 import { evidenceUrl } from './url';
 export const ANALYZER_VERSION = '0.2.0';
-export const RULE_VERSION = '2.0.0';
+export const RULE_VERSION = '2.1.0';
 export const PROFILES = ['library','application','cli','documentation','general'] as const;
 export type Profile = typeof PROFILES[number];
 export type Category = 'Documentation'|'Testing and CI'|'Project Structure'|'Security Hygiene'|'Maintainability'|'Contributor Readiness'|'Repository Metadata';

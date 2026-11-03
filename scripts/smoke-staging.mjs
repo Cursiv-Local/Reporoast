@@ -11,6 +11,12 @@ if(environment==='staging')assert.match(origin, /^https:\/\/reporoast-staging\.[
 else assert.equal(origin,'https://roast.cursiv.us');
 const artifactDir='.wrangler/'+environment+'-smoke';
 await mkdir(artifactDir, { recursive: true });
+// Read only the local admin credential in Node, never inject it into page JavaScript.
+const adminVars=await readFile('.dev.vars.'+environment,'utf8');
+const admin=adminVars.match(/^ADMIN_TOKEN=["']?([^\r\n"']+)/m)?.[1];
+assert.ok(admin,'A local administrative secret is required to verify actual API request counts');
+async function diagnostics(){const response=await fetch(origin+'/api/admin/metrics',{headers:{Authorization:'Bearer '+admin}});assert.equal(response.status,200);return response.json();}
+const count=data=>data.metrics.filter(m=>m.day===new Date().toISOString().slice(0,10)&&m.name==='githubRequests').reduce((n,m)=>n+m.count,0);
 const browser = await chromium.launch({ channel: 'msedge', headless: true });
 const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
 const page = await context.newPage();
@@ -26,6 +32,7 @@ try {
   const health = await (await page.request.get(origin + '/api/health')).json();
   assert.equal(health.scansEnabled, true);
   await page.screenshot({ path: artifactDir+'/home.png', fullPage: true });
+  const metricsBefore=await diagnostics();
   await page.getByLabel('GITHUB REPOSITORY URL').fill('https://github.com/octocat/Hello-World');
   const pending = page.waitForResponse(r => r.url() === origin + '/api/scan' && r.request().method() === 'POST');
   await page.getByRole('button', { name: 'Score My Repo' }).click();
@@ -34,9 +41,16 @@ try {
   assert.equal(report.repository.fullName, 'octocat/Hello-World');
   assert.match(report.sha, /^[a-f0-9]{40}$/);
   assert.notEqual(report.score, null);
+  const metricsFirst=await diagnostics();
+  assert.equal(metricsFirst.github.authenticated,true,'Server-side GitHub authentication is required for this incident verification');
+  assert.equal(metricsFirst.github.lastResponse.authenticated,true,'The observed GitHub response must come from an authenticated request');
+  assert.equal(metricsFirst.github.lastResponse.status,200);
   const repeated=await page.request.post(origin+'/api/scan',{headers:{origin},data:{url:'https://github.com/octocat/Hello-World'}});
   assert.equal(repeated.status(),200);const repeatReport=await repeated.json();
   assert.equal(repeatReport.id,report.id);assert.equal(repeatReport.score,report.score);assert.equal(repeatReport.timestamp,report.timestamp,'Repeated scan should reuse immutable cached report');
+  const metricsRepeat=await diagnostics();
+  assert.equal(metricsRepeat.github.lastScan.requests,0,'A recent cached rescan must make zero GitHub requests');
+  assert.equal(count(metricsRepeat),count(metricsFirst),'Repeat must not increment upstream usage');
   await page.getByRole('heading', { name: 'octocat/Hello-World' }).waitFor();
   const before = await page.locator('.big-score').innerText();
   await page.getByRole('button', { name: 'Serious Mode', exact: true }).click();
@@ -68,7 +82,7 @@ try {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   assert.deepEqual((await new AxeBuilder({ page }).analyze()).violations, []);
   assert.deepEqual(errors, []);
-  const summary = { environment, origin, version:health.version,ruleVersion:report.ruleVersion,tls,repository: report.repository.fullName, sha: report.sha, score: report.score, coverage: report.coverage, githubRequests: report.inspection.requests, verified: ['HTTPS certificate/homepage/CSP', 'live GitHub scan', 'deterministic cached repeat', 'mode consistency', 'desktop/mobile axe', 'PNG download', 'explicit share and environment-correct OG', 'share removal', 'mobile overflow', 'no browser errors'], timestamp: new Date().toISOString() };
+  const summary = { environment, origin, version:health.version,ruleVersion:report.ruleVersion,tls,repository: report.repository.fullName, sha: report.sha, score: report.score, coverage: report.coverage, githubRequests: report.inspection.requests, measuredRequests:{firstSubmission:count(metricsFirst)-count(metricsBefore),recentRescan:count(metricsRepeat)-count(metricsFirst),automaticRetries:0},github:metricsFirst.github, verified: ['HTTPS certificate/homepage/CSP', 'live GitHub scan', 'deterministic cached repeat', 'mode consistency', 'desktop/mobile axe', 'PNG download', 'explicit share and environment-correct OG', 'share removal', 'mobile overflow', 'no browser errors'], timestamp: new Date().toISOString() };
   await writeFile(artifactDir+'/result.json', JSON.stringify(summary, null, 2));
   console.log(JSON.stringify(summary, null, 2));
 } finally {
