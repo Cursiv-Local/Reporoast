@@ -1,5 +1,7 @@
 # Handoff
 
+> **Start with [docs/REPOROAST-HANDOFF.md](docs/REPOROAST-HANDOFF.md)** for the current state (2026-11-02: rules 2.1.0, quota fix, live validation). This file is the historical log.
+
 Updated 2026-10-28. Manuscript v3.0. Git origin is https://github.com/Cursiv-Local/Reporoast.git; it was empty at initial inspection. No pre-existing history or Cursiv code was overwritten. Initial implementation was local; the user subsequently authorized pushing, deployment and a real test.
 
 ## Production deployment — authorized and verified 2026-10-28

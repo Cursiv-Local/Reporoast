@@ -9,6 +9,7 @@ const mock=async request=>{
  await new Promise(resolve=>setTimeout(resolve,10));
  if(rate)return Response.json({message:rate.message},{status:rate.status,headers:rate.headers});
  if(fail)return Response.json({message:'Unavailable'},{status:503});
+ if(u.pathname==='/repos/demo/.github/contents')return Response.json({message:'Not Found'},{status:404});
  if(u.pathname==='/repos/demo/project')return Response.json({id:42,private:false,full_name:'demo/project',default_branch:'main',description:'<script>alert(1)</script> ghp_'+ 'z'.repeat(36),language:'JavaScript',license:null});
  if(u.pathname.includes('/commits/'))return Response.json({sha:commit,commit:{tree:{sha:'c'.repeat(40)}}});
  if(u.pathname.includes('/git/trees/'))return Response.json({tree,truncated:false});
@@ -28,11 +29,11 @@ try{
  ok((await call('/api/admin/metrics')).status===401,'admin authorization');
  const [a,b]=await Promise.all([call('/api/scan',{url:'https://github.com/demo/project'}),call('/api/scan',{url:'https://github.com/demo/project'})]);assert.equal(a.status,200,await a.clone().text());assert.equal(b.status,200,await b.clone().text());const report=await a.json();ok((await b.json()).id===report.id,'duplicate coalescing');
  ok(requests>0&&requests<=30&&report.inspection.inspected.includes('tests/main.test.js'),'bounded requests and sampled test evidence');
- ok(report.ruleVersion==='2.0.0'&&report.evidenceSummary.executionChecks===0,'versioned structural-only scoring');
+ ok(report.ruleVersion==='2.1.0'&&report.evidenceSummary.executionChecks===0,'versioned structural-only scoring');
  ok(!JSON.stringify(report).includes('ghp_'),'metadata secrets redacted');
  ok(!('files' in report),'no source response');
  ok(report.sha===commit&&report.findings.every(f=>f.evidence.every(e=>e.url.includes(commit))),'commit evidence');
- const coldRequests=requests;ok(coldRequests===8,'cold fixture scan uses three setup calls plus five evidence blobs, no retries');
+ const coldRequests=requests;ok(coldRequests===9,'cold fixture scan uses three setup calls, five evidence blobs and one owner-default policy lookup, no retries');
  const before=requests,cached=await call('/api/scan',{url:'https://github.com/demo/project'});assert.equal(cached.status,200,await cached.clone().text());ok((await cached.json()).id===report.id&&requests===before,'zero-request recent cache reuse');
  ok((await call('/api/share',{reportId:report.id})).status===400,'share consent required');
  const created=await call('/api/share',{reportId:report.id,consent:true});assert.equal(created.status,201,await created.clone().text());const share=await created.json(),id=share.url.split('/').pop();
@@ -46,12 +47,25 @@ try{
  const storage=await mf.unsafeGetDurableObjectStorage('test','Coordinator',{name:'global-v1'});
  await storage.exec("UPDATE records SET expires=0 WHERE key LIKE 'head:%'");
  commit='b'.repeat(40);const updated=await call('/api/scan',{url:'https://github.com/demo/project'});assert.equal(updated.status,200,await updated.clone().text());ok((await updated.json()).id!==report.id,'commit invalidates cached results');
- ok((await call('/api/scan',{url:'https://github.com/demo/project'})).status===429,'per-IP quota');
+ // Cached reports never consume scan quota; only cold inspections do (IP_LIMIT 3, DAILY_LIMIT 4).
+ for(let n=0;n<4;n++)assert.equal((await call('/api/scan',{url:'https://github.com/demo/project'})).status,200);
+ ok(true,'recent cached repeats never consume per-IP scan quota');
+ await storage.exec("UPDATE records SET expires=0 WHERE key LIKE 'head:%'");
+ const beforeUnchanged=requests,unchanged=await call('/api/scan',{url:'https://github.com/demo/project'});
+ ok(unchanged.status===200&&requests-beforeUnchanged<=2,'unchanged commit after head expiry reuses the exact-commit report');
+ const quotaCursor=await storage.exec("SELECT key,count FROM quotas WHERE key LIKE 'ip:%' OR key LIKE 'global:%'"),quotaRows=Array.isArray(quotaCursor)?quotaCursor:(quotaCursor.toArray?.()??[...quotaCursor]);
+ ok(quotaRows.every(r=>r.count===2),'exact-commit cache reuse refunds its scan reservation');
+ const cold=async sha=>{await storage.exec("UPDATE records SET expires=0 WHERE key LIKE 'head:%'");commit=sha;return call('/api/scan',{url:'https://github.com/demo/project'});};
+ assert.equal((await cold('d'.repeat(40))).status,200);
+ const beforeQuota=requests,overQuota=await cold('e'.repeat(40));
+ ok(overQuota.status===429&&(await overQuota.json()).error.source==='reporoast_quota'&&requests===beforeQuota,'per-IP quota rejects cold scans before any GitHub call');
  const metrics=await call('/api/admin/metrics',undefined,{headers:{authorization:'Bearer '+bindings.ADMIN_TOKEN}});const data=await metrics.json();ok(data.metrics.some(m=>m.name==='cacheHits')&&data.metrics.some(m=>m.name==='coalesced'),'admin metrics');
  // Direct DO access is available only to the binding. Use distinct hashed client keys to test global limits.
  const namespace=await mf.getDurableObjectNamespace('COORDINATOR'),stub=namespace.get(namespace.idFromName('global-v1'));
  async function direct(ip,name='demo/project',profile){return stub.fetch(origin+'/api/scan',{method:'POST',headers:{'content-type':'application/json','x-client-key':ip},body:JSON.stringify({url:'https://github.com/'+name,...(profile?{profile}:{})})});}
+ await storage.exec("UPDATE records SET expires=0 WHERE key LIKE 'head:%'");commit='f'.repeat(40);
  assert.equal((await direct('second')).status,200);
+ await storage.exec("UPDATE records SET expires=0 WHERE key LIKE 'head:%'");commit='1'.repeat(40);
  ok((await direct('third')).status===429,'atomic global daily quota');
  // Exercise expiration at the storage layer without changing the host clock.
  const historicalId='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';

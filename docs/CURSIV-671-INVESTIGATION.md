@@ -1,6 +1,6 @@
 # Cursiv 671/1000 investigation
 
-Exact commit: efc2f961049b767f0fe49e38304e9e70f25a6955. Frozen rules 1.0.0 reproduce **671/1000 at 97% evidence coverage**. Rules 2.0.0 produce **885/1000 conditional**, coverage 91.1%, possible original-weight range 805–894. No tests or Cursiv code executed. No Cursiv files changed. API metadata is a fixed captured snapshot, not historical settings.
+Exact commit: efc2f961049b767f0fe49e38304e9e70f25a6955. Frozen rules 1.0.0 reproduce **671/1000 at 97% evidence coverage**. Rules 2.1.0 produce **885/1000 conditional**, coverage 91.1%, possible original-weight range 805–894. No tests or Cursiv code executed. No Cursiv files changed. API metadata is a fixed captured snapshot, not historical settings.
 
 Profile changes general → application from parsed PyQt6/runtime declarations, not the repository name. Renaming the fixture owner/repository leaves scoring unchanged. The library lock exclusion no longer accidentally substitutes for desktop-app identification. Higher score is not a quality improvement: it reflects corrected recognition, retired penalties, different weights and explicit unknowns.
 

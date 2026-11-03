@@ -1,4 +1,4 @@
-# Scoring specification — 2.0.0
+# Scoring specification — 2.1.0
 
 Analyzer 0.2.0. A deterministic **structural practices score**, not code quality, execution evidence, security certification or a test result. The frozen 1.0.0 specification remains in docs/history/SCORING-v1.0.0.md and its engine in src/shared/legacy/v1.ts.
 
@@ -29,7 +29,7 @@ All budgets total 1000. There are 24 stable IDs: 22 scored practices and 2 expli
 
 ## Applicability
 
-Code checks TST01–04, STR02, SEC02–04 and MNT01–03 are excluded for documentation-only profiles. Dependency rules require observed third-party dependencies in supported manifests/requirements; unavailable applicability is unknown. MNT03 is excluded for library profiles rather than imposing an application lock convention. GitHub-specific TST03/SEC04 are excluded when a complete tree has no GitHub workflow; other CI providers are not penalized for GitHub-only settings. SEC03 applies only when tracked .env or example/template paths show environment-file use. No .env use is assumed from language or repository size. CON03 and MET02 are always unscored; no compulsory community code of conduct or SPDX-recognition penalty.
+Code checks TST01–04, STR02, SEC02–04 and MNT01–03 are excluded for documentation-only profiles. Dependency rules require observed third-party dependencies in supported manifests/requirements; unavailable applicability is unknown. Unsupported manifests (Gemfile, composer.json, pom.xml, Gradle, .NET projects, Package.swift, mix.exs, pubspec.yaml and similar) make applicability unknown rather than claiming no dependencies. Any common source-language file prevents a documentation-only profile. MNT03 is excluded for library profiles rather than imposing an application lock convention. GitHub-specific TST03/SEC04 are excluded when a complete tree has no GitHub workflow; other CI providers are not penalized for GitHub-only settings. SEC03 applies only when tracked .env or example/template paths show environment-file use. No .env use is assumed from language or repository size. CON03 and MET02 are always unscored; no compulsory community code of conduct or SPDX-recognition penalty.
 
 ## Bounded data interpretation
 
@@ -57,25 +57,25 @@ Fix: Add concrete prerequisites and setup steps to the root README or contributo
 
 ### DOC03 — Explain usage or document navigation
 
-Category: Documentation. Base maximum: 60. Method: content. Version: 2.0.0.
+Category: Documentation. Base maximum: 60. Method: content. Version: 2.1.0.
 
-Root usage/examples/navigation/what-you-can-do section with ≥60 characters; outline 1/4.
+Root usage/examples/navigation/using/tutorial/guide/documentation/API section with ≥60 characters, or a fenced README example containing a line other than install/clone/dependency declarations; outline 1/4.
 
 Fix: Describe a usage example, get-started workflow or document navigation with supporting content. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 2/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
 ### DOC04 — Describe scope or supported requirements
 
-Category: Documentation. Base maximum: 40. Method: content. Version: 2.0.0.
+Category: Documentation. Base maximum: 40. Method: content. Version: 2.1.0.
 
-Root scope/limits/requirements/platform/privacy section with ≥60 characters; outline 1/4.
+Root scope/limits/requirements/platform/privacy/compatibility/prerequisites/caveats/FAQ/philosophy/goals/why section, or a heading that is exactly Status/Project status, with ≥60 characters; outline 1/4. Other status headings (for example deployment status) do not count.
 
 Fix: Explain supported platforms, requirements, scope or limitations beneath the appropriate heading. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 2/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
 ### TST01 — Include recognizable test declarations
 
-Category: Testing and CI. Base maximum: 40. Method: content. Version: 2.0.0.
+Category: Testing and CI. Base maximum: 40. Method: content. Version: 2.1.0.
 
-Selected non-vendor test file has anchored supported Python/JS/Go/Rust/Java test declarations. Uninspected required test content is unknown.
+Selected non-vendor test file has anchored supported test declarations (Python, JS/TS, Go, Rust, JVM, .NET, Ruby, PHP, Swift, C/C++, Elixir, Dart). Named test files are sampled before helpers. With no recognizable test file and only unsupported source languages, absence is unknown, not a failure. Uninspected required test content is unknown.
 
 Fix: Include tests with recognizable assertions or declarations. This does not establish that tests pass. Difficulty: Moderate (practice-level estimate, not a code-specific prediction). Priority 4/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
@@ -89,15 +89,15 @@ Fix: Provide valid supported CI jobs/steps. Configuration is not evidence of a s
 
 ### TST03 — Reference a test invocation in CI
 
-Category: Testing and CI. Base maximum: 90. Method: content. Version: 2.0.0.
+Category: Testing and CI. Base maximum: 90. Method: content. Version: 2.1.0.
 
-At least one recognized test command in inspected relevant run steps; bounded manifest/local-script tracing. Non-test workflows do not enter a test denominator. Unresolved indirection without positive evidence unknown.
+At least one recognized test command in inspected relevant run steps; bounded manifest/local-script tracing. Non-test workflows do not enter a test denominator. Unresolved indirection without positive evidence unknown. Runner wrappers (poetry/uv/pipenv/pdm run, bundle exec, coverage run, xvfb-run, env assignments) are stripped; package-manager built-ins such as npm ci are non-test steps; Maven/Gradle runs with skipped tests do not count.
 
 Fix: Reference the actual test command from at least one relevant CI job. Deployment-only workflows do not each need tests. Difficulty: Moderate (practice-level estimate, not a code-specific prediction). Priority 4/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
 ### TST04 — Document verification commands
 
-Category: Testing and CI. Base maximum: 40. Method: content. Version: 2.0.0.
+Category: Testing and CI. Base maximum: 40. Method: content. Version: 2.1.0.
 
 Recognized concrete test commands in README or contributor lines/inline code; no uninspected nested README denominator.
 
@@ -105,9 +105,9 @@ Fix: Document concrete verification commands and their prerequisites in the READ
 
 ### STR01 — Publish substantive root license terms
 
-Category: Project Structure. Base maximum: 80. Method: content. Version: 2.0.0.
+Category: Project Structure. Base maximum: 80. Method: content. Version: 2.1.0.
 
-Substantive root license body ≥150 characters with recognizable terms language; no SPDX or compatibility conclusion.
+Substantive root license body ≥150 characters with recognizable terms language; LICENSE/LICENCE/COPYING/UNLICENSE with any extension or suffix (LICENSE-MIT) are read and the best file counts; no SPDX or compatibility conclusion.
 
 Fix: Publish actual root license terms. Review licensing choices yourself; GitHub recognition is not required. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 2/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
@@ -121,23 +121,23 @@ Fix: Declare relevant noncomment ignore entries for local/generated files used b
 
 ### STR03 — Make an implementation entry point discoverable
 
-Category: Project Structure. Base maximum: 40. Method: tree. Version: 2.0.0.
+Category: Project Structure. Base maximum: 40. Method: tree. Version: 2.1.0.
 
-Recognized flat or grouped source/document entry point exists. This is the explicitly labeled presence check; flat projects are supported.
+Any non-test project source file in a common language (flat or nested, excluding .github/ helpers) or a docs/content directory; for documentation profiles any document. This is the explicitly labeled presence check.
 
 Fix: Expose an implementation or document entry point. A flat layout is valid; do not add directories for points. Difficulty: Moderate (practice-level estimate, not a code-specific prediction). Priority 1/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
 ### SEC01 — Explain private vulnerability reporting
 
-Category: Security Hygiene. Base maximum: 40. Method: content. Version: 2.0.0.
+Category: Security Hygiene. Base maximum: 40. Method: content. Version: 2.1.0.
 
-Substantive private vulnerability-reporting guidance with contact/advisory or reporting instructions; service responsiveness unverified.
+Substantive private vulnerability-reporting guidance with contact/advisory or reporting instructions; service responsiveness unverified. Without a repository policy in a complete tree, the owner-level default SECURITY.md at the root of owner/.github is read (one or two extra API calls; scan-time snapshot linked at HEAD). Absence fails only after that check; a possibly nested owner policy is unknown.
 
 Fix: Describe a private vulnerability-reporting channel and responsible-disclosure instructions. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 5/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
 ### SEC02 — Configure applicable dependency updates
 
-Category: Security Hygiene. Base maximum: 30. Method: content. Version: 2.0.0.
+Category: Security Hygiene. Base maximum: 30. Method: content. Version: 2.1.0.
 
 Supported parsed Dependabot v2 updates cover observed ecosystem names and directory/schedule; partial credit is the fraction of observed ecosystems covered; zero coverage earns zero. Renovate uses a declared extends policy; unsupported dynamic configuration unknown.
 
@@ -161,23 +161,23 @@ Fix: Declare workflow or job-level permissions; review broad grants. Scoped rele
 
 ### MNT01 — Declare formatting settings or commands
 
-Category: Maintainability. Base maximum: 30. Method: content. Version: 2.0.0.
+Category: Maintainability. Base maximum: 30. Method: content. Version: 2.1.0.
 
-Native formatter invocation or supported parsed formatting settings (including pyproject tool sections). Empty native JSON default configuration 1/2; opaque executable JS unknown.
+Native formatter invocation (Python, JS/TS, Rust, Go, Swift, PHP, .NET, Elixir, Dart, C/C++, Scala, Gradle/Maven Spotless/ktlint) or supported formatting settings (pyproject sections, Prettier, EditorConfig, rustfmt, Biome, .swiftformat, .clang-format, .scalafmt.conf, dprint, JVM build plugins). Empty native JSON default configuration 1/2; opaque executable JS/PHP unknown.
 
 Fix: Configure native formatting settings or declare a formatting command. Repository JS configuration is never executed. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 1/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
 ### MNT02 — Declare static analysis settings or commands
 
-Category: Maintainability. Base maximum: 50. Method: content. Version: 2.0.0.
+Category: Maintainability. Base maximum: 50. Method: content. Version: 2.1.0.
 
-Native static-analysis invocation or supported parsed settings, including Ruff/mypy/Python sections, TypeScript tsc --noEmit, go vet and cargo clippy. Opaque JS unknown.
+Native static-analysis invocation or supported settings, including Ruff/mypy/Python sections, ESLint/xo/standard/oxlint, tsc --noEmit, go vet/golangci-lint/staticcheck, cargo clippy, RuboCop, PHPStan/Psalm/PHPCS, SwiftLint, ktlint/detekt, Checkstyle/PMD/SpotBugs/Error Prone build plugins, Dart analyze and Credo. Named make/just/task lint targets count as invocation. Opaque JS unknown.
 
 Fix: Declare applicable lint/static-analysis settings or commands, including native ecosystem tools. Difficulty: Moderate (practice-level estimate, not a code-specific prediction). Priority 3/5. Evidence/applicability/unknown/rounding follow the common contract above.
 
 ### MNT03 — Record ecosystem dependency reproducibility
 
-Category: Maintainability. Base maximum: 50. Method: content. Version: 2.0.0.
+Category: Maintainability. Base maximum: 50. Method: content. Version: 2.1.0.
 
 Ecosystem-specific pins/hashes/checksums in inspected content. Python exact requirements pins 1/2, all declaration hashes full; Rust parsed package version/checksum structure; Go checksum records (not a lockfile); Node declared direct dependency lock entries/integrities. No install or dependency-resolution verification. Unsupported formats/bodies unknown.
 
@@ -185,9 +185,9 @@ Fix: Use ecosystem-appropriate dependency pins/hashes/checksums. Their presence 
 
 ### MNT04 — Record substantive change notes
 
-Category: Maintainability. Base maximum: 20. Method: content. Version: 2.0.0.
+Category: Maintainability. Base maximum: 20. Method: content. Version: 2.1.0.
 
-Root changelog/change notes have substantive nonheading content ≥100 characters; required unread content unknown.
+Root CHANGELOG/CHANGES/HISTORY/NEWS (any case or extension) or .changeset notes have substantive nonheading content ≥100 characters; required unread content unknown.
 
 Fix: Record concrete changes instead of a placeholder. Required unreadable content remains unknown. Difficulty: Easy (practice-level estimate, not a code-specific prediction). Priority 1/5. Evidence/applicability/unknown/rounding follow the common contract above.
 

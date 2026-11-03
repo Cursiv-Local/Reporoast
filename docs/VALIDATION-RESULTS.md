@@ -1,12 +1,12 @@
 # Cross-repository scoring validation
 
-Rules 1.0.0 → 2.0.0. Metadata snapshots are fixed; real references pin exact commits. Synthetic fixtures are not claimed to be real projects. No repository code was run.
+Rules 1.0.0 → 2.1.0. Metadata snapshots are fixed; real references pin exact commits. Synthetic fixtures are not claimed to be real projects. No repository code was run.
 
 | Case | Source | Before | After conditional | Evidence | Possible range |
 |---|---|---:|---:|---:|---|
 | Cursiv (Python desktop application) | real | 671 | 885 | 91.1% | 805–894 |
 | python-library (Python library) | synthetic | 505 | 639 | 100.0% | 639–639 |
-| RepoRoast (TypeScript application) | real | 600 | 580 | 95.0% | 550–600 |
+| RepoRoast (TypeScript application) | real | 600 | 643 | 95.0% | 610–660 |
 | javascript-package (JavaScript package) | synthetic | 509 | 561 | 92.5% | 519–594 |
 | rust-project (Rust project) | synthetic | 545 | 649 | 100.0% | 649–649 |
 | go-application (Go application) | synthetic | 495 | 649 | 100.0% | 649–649 |
@@ -19,7 +19,7 @@ Rules 1.0.0 → 2.0.0. Metadata snapshots are fixed; real references pin exact c
 
 ## Labeled outcomes
 
-Rules 2.0.0:
+Rules 2.1.0:
 
 {
   "tp": 51,
@@ -111,7 +111,7 @@ Commit 587466ebc2cd8ca04b79234f26ea7366f46fc0ae; profiles application → applic
 |---|---|---:|---|
 | DOC01 | pass → pass | -18 | Root README prose was inspected; documentation adequacy is not verified. |
 | DOC02 | pass → fail | -50 | Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim. |
-| DOC03 | pass → fail | -50 | Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim. |
+| DOC03 | pass → pass | +13 | Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim. |
 | TST01 | pass → pass | -18 | Recognizable test declarations inspected. Tests were not run. |
 | TST02 | pass → pass | -18 | GitHub Actions jobs/steps parse; actual execution and success are unverified. |
 | TST03 | pass → pass | +35 | At least one job references a recognized test invocation. Non-test workflows do not enter a test-workflow denominator. No execution outcome verified. |

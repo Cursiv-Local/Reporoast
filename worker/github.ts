@@ -1,7 +1,10 @@
 import { AppError, parseRepository } from '../src/shared/url';
+import { testRank, LICENSE_PATH, CHANGELOG_PATH, TOOL_CONFIG } from '../src/shared/inspection-facts';
 export interface Metadata { id: number; fullName: string; description: string; language: string | null; defaultBranch: string; license: string | null; archived: boolean }
 export interface Entry { path: string; type: string; sha: string; size?: number; mode: string }
-export interface Inspection { metadata: Metadata; sha: string; tree: Entry[]; treeComplete: boolean; files: Record<string, string>; skipped: {path: string; reason: string}[]; unavailable: string[]; bytes: number; requests: number; truncated: boolean }
+/** Default community health files from the owner's `.github` repository (scan-time snapshot, not commit-pinned). */
+export interface InheritedDefaults { repository: string; checked: boolean; unresolved: boolean; files: Record<string, string> }
+export interface Inspection { metadata: Metadata; sha: string; tree: Entry[]; treeComplete: boolean; files: Record<string, string>; skipped: {path: string; reason: string}[]; unavailable: string[]; bytes: number; requests: number; truncated: boolean; inherited?: InheritedDefaults }
 export const LIMITS = { files: 5000, selected: 24, fileBytes: 96000, bytes: 400000, requests: 30, timeout: 20000, responseBytes: 2000000 };
 export interface GitHubResponseInfo { status:number; authenticated:boolean; remaining:number|null; limit:number|null; reset:number|null; retryAfter:string|null; resource:string|null; kind?:'primary'|'secondary'|'unclassified'; retryAt?:number }
 function numberHeader(headers:Headers,name:string){const raw=headers.get(name);return raw!==null&&/^\d+$/.test(raw)&&Number.isSafeInteger(Number(raw))?Number(raw):null;}
@@ -74,7 +77,7 @@ export class GitHub {
       else if (/(^|\/)(node_modules|vendor|dist|build|coverage|\.git|\.venv|venv|__pycache__)\//i.test(entry.path) || /(?:\.min\.[cm]?js|\.map|\.lockb|\.(png|jpe?g|gif|pdf|zip|wasm|svg))$/i.test(entry.path)) reason = 'Dependency, generated, or binary';
       else if ((entry.size ?? LIMITS.fileBytes + 1) > LIMITS.fileBytes) reason = 'Individual file size cap';
       else if (priority(entry.path) === 0 && !referenced.has(entry.path)) reason = 'Outside selected evidence scope';
-      else if (priority(entry.path) === 1 && sampledTests++ >= 4) reason = 'Representative test sample cap';
+      else if (testRank(entry.path) > 0 && priority(entry.path) <= 2 && sampledTests++ >= 4) reason = 'Representative test sample cap';
       else if (Object.keys(inspection.files).length + inspection.unavailable.length >= LIMITS.selected || inspection.bytes + (entry.size || 0) > LIMITS.bytes) reason = 'Inspection budget';
       if (reason) { inspection.skipped.push({path:entry.path,reason}); continue; }
       try {
@@ -100,15 +103,38 @@ export class GitHub {
         }
       } catch (error) { if (this.signal?.aborted || error instanceof AppError && ['RATE_LIMITED','REQUEST_BUDGET','GITHUB_AUTHENTICATION'].includes(error.code)) throw error; inspection.unavailable.push(entry.path); }
     }
+    if (inspection.treeComplete && !inspection.tree.some(e => e.type === 'blob' && SECURITY_PATH.test(e.path))) inspection.inherited = await this.defaults(metadata.fullName.split('/')[0]);
     inspection.requests = this.requests;
     return inspection;
   }
+  // GitHub applies an owner's `.github` repository SECURITY.md to repositories without their own.
+  // Only its root is read; a policy nested in its .github/ or docs/ folders is reported as unresolved.
+  async defaults(owner: string): Promise<InheritedDefaults> {
+    const result: InheritedDefaults = { repository: owner + '/.github', checked: false, unresolved: false, files: {} };
+    if (this.requests > LIMITS.requests - 2) return result;
+    try {
+      const listing = await this.get('/repos/' + owner + '/.github/contents');
+      if (!Array.isArray(listing)) return result;
+      result.checked = true;
+      const policy = listing.find((e: any) => e?.type === 'file' && typeof e.name === 'string' && /^security\.md$/i.test(e.name));
+      if (!policy) { result.unresolved = listing.some((e: any) => e?.type === 'dir' && /^(?:\.github|docs)$/i.test(e.name)); return result; }
+      if (typeof policy.size !== 'number' || policy.size > LIMITS.fileBytes) { result.unresolved = true; return result; }
+      const file = await this.get('/repos/' + owner + '/.github/contents/' + encodeURIComponent(policy.name));
+      if (file?.encoding !== 'base64' || typeof file.content !== 'string') { result.unresolved = true; return result; }
+      result.files['SECURITY.md'] = new TextDecoder('utf-8', { fatal: true }).decode(Uint8Array.from(atob(file.content.replace(/\s/g, '')), c => c.charCodeAt(0)));
+    } catch (error) {
+      if (error instanceof AppError && error.code === 'NOT_FOUND') { result.checked = true; return result; }
+      if (this.signal?.aborted || error instanceof AppError && ['RATE_LIMITED', 'GITHUB_AUTHENTICATION'].includes(error.code)) throw error;
+      result.checked = true; result.unresolved = true;
+    }
+    return result;
+  }
 }
+const SECURITY_PATH = /^(?:\.github\/|docs\/)?security\.md$/i;
 export function priority(path: string) {
-  if (/^(readme(?:\.[\w-]+)?|package\.json|pyproject\.toml|Cargo\.toml|go\.mod|requirements[^/]*\.(?:txt|in))$/i.test(path)) return 6;
-  if (/^\.github\/workflows\/[^/]+\.ya?ml$/.test(path) || /^(?:\.github\/)?(?:contributing|security)(?:\.md)?$/i.test(path) || /^(?:license|licence|copying)(?:\.[\w-]+)?$|^\.gitignore$/i.test(path)) return 5;
-  if (/^(?:requirements[^/]*\.lock|poetry\.lock|uv\.lock|Pipfile\.lock|package-lock\.json|pnpm-lock\.yaml|yarn\.lock|bun\.lock|Cargo\.lock|go\.sum|CHANGELOG\.md|CHANGES\.md|HISTORY\.md|\.prettierrc.*|\.editorconfig|(?:eslint|prettier)\.config\.[cm]?[jt]s|\.eslintrc.*|\.?ruff\.toml|rustfmt\.toml|\.rustfmt\.toml|clippy\.toml|\.golangci\.ya?ml|biome\.jsonc?|mypy\.ini|\.flake8|setup\.cfg|\.renovaterc(?:\.json)?|renovate\.json5?)$/.test(path) || /^\.github\/dependabot\.ya?ml$/.test(path)) return 4;
+  if (/^(readme(?:\.[\w-]+)?|package\.json|pyproject\.toml|Cargo\.toml|go\.mod|composer\.json|requirements[^/]*\.(?:txt|in))$/i.test(path)) return 6;
+  if (/^\.github\/workflows\/[^/]+\.ya?ml$/.test(path) || /^(?:\.github\/|docs\/)?(?:contributing|security)(?:\.[\w-]+)?$/i.test(path) || LICENSE_PATH.test(path) || /^\.gitignore$/.test(path)) return 5;
+  if (/^(?:requirements[^/]*\.lock|poetry\.lock|uv\.lock|Pipfile\.lock|package-lock\.json|pnpm-lock\.yaml|yarn\.lock|bun\.lock|Cargo\.lock|go\.sum|\.prettierrc.*|\.editorconfig|(?:eslint|prettier)\.config\.[cm]?[jt]s|\.eslintrc.*|\.?ruff\.toml|rustfmt\.toml|\.rustfmt\.toml|clippy\.toml|\.golangci\.ya?ml|biome\.jsonc?|mypy\.ini|\.flake8|setup\.cfg|\.renovaterc(?:\.json)?|renovate\.json5?)$/.test(path) || /^\.github\/dependabot\.ya?ml$/.test(path) || CHANGELOG_PATH.test(path) || TOOL_CONFIG.test(path)) return 4;
   if (/^\.github\/ISSUE_TEMPLATE\/[^/]+\.(md|ya?ml)$/.test(path)) return 3;
-  if (/^(?:tests?|spec|__tests__)\/.*\.(py|[cm]?[jt]sx?|go|rs)$|(?:^|\/)test_[^/]+\.py$|[._](?:test|spec)\.[^/]+$|_test\.go$/.test(path)) return 1;
-  return 0;
+  return testRank(path);
 }

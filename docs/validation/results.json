@@ -1,7 +1,7 @@
 {
   "versions": {
     "before": "1.0.0",
-    "after": "2.0.0"
+    "after": "2.1.0"
   },
   "metrics": {
     "tp": 51,
@@ -291,15 +291,15 @@
           "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
           "evidence": [
             {
-              "path": "docs/ARCHITECTURE-PLAN.md",
-              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/docs/ARCHITECTURE-PLAN.md",
+              "path": "bench/scoring.py",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/bench/scoring.py",
               "status": "confirmed condition",
               "confidence": "medium",
               "level": "presence"
             },
             {
-              "path": "docs/ASYNC-ANSWER-REVIEW.md",
-              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/docs/ASYNC-ANSWER-REVIEW.md",
+              "path": "bench/suite_hash.py",
+              "url": "https://github.com/Cursiv-Local/Cursiv/blob/efc2f961049b767f0fe49e38304e9e70f25a6955/bench/suite_hash.py",
               "status": "confirmed condition",
               "confidence": "medium",
               "level": "presence"
@@ -787,12 +787,12 @@
         "profile": "application"
       },
       "after": {
-        "score": 580,
+        "score": 643,
         "coverage": 0.95,
         "profile": "application",
         "range": {
-          "minimum": 550,
-          "maximum": 600
+          "minimum": 610,
+          "maximum": 660
         }
       },
       "changes": [
@@ -839,10 +839,10 @@
         {
           "id": "DOC03",
           "beforeState": "pass",
-          "afterState": "fail",
+          "afterState": "pass",
           "beforePoints": 50,
-          "afterPoints": 0,
-          "delta": -50,
+          "afterPoints": 63,
+          "delta": 13,
           "reason": "Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.",
           "evidence": [
             {
@@ -961,15 +961,15 @@
           "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
           "evidence": [
             {
-              "path": "playwright.config.ts",
-              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/playwright.config.ts",
+              "path": "index.html",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/index.html",
               "status": "confirmed condition",
               "confidence": "medium",
               "level": "presence"
             },
             {
-              "path": "src/main.tsx",
-              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/src/main.tsx",
+              "path": "playwright.config.ts",
+              "url": "https://github.com/Cursiv-Local/Reporoast/blob/587466ebc2cd8ca04b79234f26ea7366f46fc0ae/playwright.config.ts",
               "status": "confirmed condition",
               "confidence": "medium",
               "level": "presence"
@@ -1889,13 +1889,6 @@
               "status": "confirmed condition",
               "confidence": "medium",
               "level": "presence"
-            },
-            {
-              "path": "main_test.go",
-              "url": "https://github.com/validation/go-application/blob/cccccccccccccccccccccccccccccccccccccccc/main_test.go",
-              "status": "confirmed condition",
-              "confidence": "medium",
-              "level": "presence"
             }
           ]
         },
@@ -2397,6 +2390,13 @@
           "delta": -22,
           "reason": "A flat or grouped entry point is discoverable; layout is not proof of quality.",
           "evidence": [
+            {
+              "path": "README.md",
+              "url": "https://github.com/validation/documentation/blob/cccccccccccccccccccccccccccccccccccccccc/README.md",
+              "status": "confirmed condition",
+              "confidence": "medium",
+              "level": "presence"
+            },
             {
               "path": "docs/guide.md",
               "url": "https://github.com/validation/documentation/blob/cccccccccccccccccccccccccccccccccccccccc/docs/guide.md",

@@ -79,12 +79,17 @@ export class Coordinator extends DurableObject<Env>{
     const body=await readBody(request),repo=parseRepository(body.url),profile=body.profile as Profile|undefined;
     if(profile!==undefined&&!PROFILES.includes(profile))throw new AppError('INVALID_PROFILE','Choose a supported repository profile.');
     this.limit('requests:'+day+':'+ip,40,tomorrow);
+    // A report served from the recent-head cache needs no GitHub call, scan slot or quota.
+    const recent=this.recent(repo.fullName,profile);
+    if(recent){this.metric('submissions');this.metric('cacheHits');this.metric('zeroRequestCacheHits');this.put('github:lastScan',{at:new Date().toISOString(),requests:0,retries:0,authenticated:!!this.env.GITHUB_TOKEN},86400000);return json(recent);}
     const key=repo.fullName.toLowerCase()+':'+(profile||'auto');
     if(this.pending.has(key)){this.metric('coalesced');return json(await this.pending.get(key));}
     if(this.pending.size>=bounded(this.env.MAX_CONCURRENT,2,1,4))throw new AppError('CAPACITY','RepoRoast is processing its maximum number of scans. Retry in 10 seconds.',429,Date.now()+10000,'reporoast_concurrency');
-    // No await inside this transaction: quota checks and reservations are atomic.
-    this.ctx.storage.transactionSync(()=>{this.limit('ip:'+day+':'+ip,bounded(this.env.IP_LIMIT,5,1,50),tomorrow);this.limit('global:'+day,bounded(this.env.DAILY_LIMIT,100,1,500),tomorrow);});
-    const promise=this.scan(repo.fullName,profile);this.pending.set(key,promise);
+    const keys=['ip:'+day+':'+ip,'global:'+day];
+    // Scan quota is reserved immediately before the first GitHub call and refunded when an
+    // exact-commit cached report is reused. No await inside the transaction: checks and reservations are atomic.
+    const reserve=()=>{this.ctx.storage.transactionSync(()=>{this.limit(keys[0],bounded(this.env.IP_LIMIT,5,1,50),tomorrow);this.limit(keys[1],bounded(this.env.DAILY_LIMIT,100,1,500),tomorrow);});return ()=>{for(const k of keys)this.ctx.storage.sql.exec('UPDATE quotas SET count=count-1 WHERE key=? AND count>0',k);this.metric('quotaRefunds');};};
+    const promise=this.scan(repo.fullName,profile,reserve);this.pending.set(key,promise);
     try{return json(await promise);}finally{this.pending.delete(key);}
    }
    if(url.pathname==='/api/share'&&request.method==='POST'){
@@ -112,7 +117,9 @@ export class Coordinator extends DurableObject<Env>{
    throw new AppError('NOT_FOUND','Endpoint not found.',404);
   }catch(error){if(error instanceof AppError&&error.status===429)this.metric('rateLimitRejections');return errorResponse(error);}
  }
- private async scan(fullName:string,profile?:Profile):Promise<Report>{
+ private recentKey(fullName:string,profile?:Profile){return 'head:'+fullName.toLowerCase()+':'+ANALYZER_VERSION+':'+RULE_VERSION+':'+(profile||'auto');}
+ private recent(fullName:string,profile?:Profile){const id=this.get<string>(this.recentKey(fullName,profile));return id?this.get<Report>('report:'+id):undefined;}
+ private async scan(fullName:string,profile:Profile|undefined,reserve:()=>()=>void):Promise<Report>{
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),LIMITS.timeout);
   const credential=await digest(this.env.GITHUB_TOKEN||'unauthenticated'),cooldownKey='github:cooldown:'+credential;
   const checkCooldown=()=>{const cooldown=this.get<{retryAt:number;kind:string}>(cooldownKey);if(cooldown&&cooldown.retryAt>Date.now())throw new AppError('RATE_LIMITED','GitHub '+cooldown.kind+' API limit is cooling down. Retry after '+new Date(cooldown.retryAt).toISOString()+'.',429,cooldown.retryAt,'github_'+cooldown.kind);};
@@ -125,11 +132,10 @@ export class Coordinator extends DurableObject<Env>{
    }
    this.put('github:lastResponse',info,86400000);
   },checkCooldown);this.metric('submissions');
-  const recentKey='head:'+fullName.toLowerCase()+':'+ANALYZER_VERSION+':'+RULE_VERSION+':'+(profile||'auto');
+  const recentKey=this.recentKey(fullName,profile);
   try{
-   const recentId=this.get<string>(recentKey),recent=recentId?this.get<Report>('report:'+recentId):undefined;
-   if(recent){this.metric('cacheHits');this.metric('zeroRequestCacheHits');return recent;}
    checkCooldown();
+   const refund=reserve();
    let meta=this.metadata.get(fullName.toLowerCase());
    if(!meta||meta.expires<Date.now()){const value=await github.metadata(fullName);meta={value,expires:Date.now()+60000};if(this.metadata.size>=100)this.metadata.clear();this.metadata.set(fullName.toLowerCase(),meta);}
    const m=meta.value;
@@ -138,7 +144,7 @@ export class Coordinator extends DurableObject<Env>{
    if(!/^[a-f0-9]{40}$/.test(commit.sha))throw new AppError('UNSUPPORTED_STRUCTURE','No exact commit found.',422);
    const cacheKey='scan:'+m.id+':'+commit.sha+':'+ANALYZER_VERSION+':'+RULE_VERSION+':'+(profile||'auto');
    const cached=this.get<Report>(cacheKey);
-   if(cached){this.put(recentKey,cached.id,60000);this.metric('cacheHits');return cached;}
+   if(cached){refund();this.put(recentKey,cached.id,60000);this.metric('cacheHits');return cached;}
    const inspection=await github.inspect(m,commit);
    // Raw file text never enters persistent storage or HTTP responses.
    const report=analyze(inspection,profile);

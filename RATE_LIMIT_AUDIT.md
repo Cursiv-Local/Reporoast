@@ -14,7 +14,7 @@ Production's coordinator namespace is 58e45905254e42159c4058d982fb8ef0; staging'
 
 | Path | Before | After |
 | --- | --- | --- |
-| Cold exact-commit inspection | 3 + N selected files, plus redirects | Unchanged: 3 + N, plus redirects |
+| Cold exact-commit inspection | 3 + N selected files, plus redirects | 3 + N, plus redirects, plus 1–2 owner-default SECURITY.md lookups when the repository has no policy (rules 2.1.0) |
 | Immediate successful repeat | 1 with warm metadata, otherwise 2 | **0** for 60 seconds |
 | Unchanged commit after recent-head expiry | 1–2, then immutable result reuse | 1–2, then immutable result reuse |
 | Attempt during known GitHub cooldown | At least 1 failed request per submission | **0**, unless serving a recent cached report |
@@ -29,7 +29,8 @@ The original live octocat/Hello-World smoke used **4** calls (metadata, commit, 
 - Persistent, credential-scoped upstream cooldowns honor Retry-After and primary reset. Secondary failures back off across submissions from 60 seconds to 32 minutes. No IP/account rotation or delayed automatic retries.
 - Public errors identify GitHub primary/secondary/unclassified, invalid service credentials or local app quotas, with Retry-After and retryAt when available. Missing upstream classification evidence is explicitly unclassified.
 - Protected diagnostics record safe rate headers, authentication presence and actual HTTP counts, never token values, source bodies or upstream messages.
-- All per-IP/global scan quotas, request/byte/file caps, kill switch, sharing protections and payment configuration remain unchanged. Failed/cached submissions continue consuming the existing scan reservations. No paid services were enabled.
+- All per-IP/global scan quotas, request/byte/file caps, kill switch, sharing protections and payment configuration remain unchanged. No paid services were enabled.
+- **Updated 2026-11-02 (rules 2.1.0 branch work):** cached results no longer consume scan quota. Recent-head (zero-request) hits are served before the concurrency check and quota reservation. Scan quota is now reserved immediately before the first GitHub call (after the cooldown check, so cooldown rejections are free), and refunded when an exact-commit cached report is reused. Cold inspections and upstream failures still consume quota; the 40 requests/IP/day submission limit still bounds every path. Previously, five repeat scans of one unchanged repository exhausted a visitor's daily 5-scan allowance, which matched the reported "rate limit after repeated tests" symptom independently of GitHub's quota.
 - Dedicated server-secret setup and verification are documented in DEPLOYMENT.md. The existing broad developer GitHub CLI credential was not copied into the service.
 
 ## Verification status

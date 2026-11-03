@@ -1,6 +1,9 @@
 import type { Rule, Profile, State, Evidence, Check } from './engine';
 import { RULES as V1 } from './legacy/v1';
-import { Facts, meaningful, object, parseConfig, type Ecosystem } from './inspection-facts';
+import { Facts, meaningful, object, parseConfig, testRank, TESTABLE, SOURCE, TEST_DECLARATION, LICENSE_PATH, CHANGELOG_PATH, FORMAT_CONFIG, LINT_CONFIG, JVM_BUILD, type Ecosystem } from './inspection-facts';
+// A fenced README example that does more than install/clone counts as usage evidence for DOC03.
+const SETUP_ONLY=/^\s*(?:[$%>]\s*)?(?:sudo\s+)?(?:pip3?\s+install|python[\d.]*\s+-m\s+pip\s+install|npm\s+(?:i|install)|yarn\s+add|pnpm\s+(?:add|install)|bun\s+add|cargo\s+(?:install|add)|go\s+(?:get|install)|gem\s+install|bundle\s+(?:add|install)|composer\s+(?:require|install)|brew\s+install|apt(?:-get)?\s+install|git\s+clone|cd\s|dotnet\s+add|Install-Package|pod\s|carthage\s|conda\s+install|docker\s+pull|\.package\(|implementation\s|<dependency>|<\/?(?:groupId|artifactId|version)>|\w+\s*=\s*["'^~]?[\d.]+["']?$)/i;
+function usageExample(text:string){return [...text.matchAll(/^\s*(`{3,}|~{3,})[^\n]*\n([\s\S]*?)^\s*\1/gm)].some(m=>m[2].split('\n').some(l=>l.trim()&&!SETUP_ONLY.test(l)&&!/^\s*[#/]/.test(l)));}
 import { evidenceUrl } from './url';
 const points=[40,60,60,40,40,30,90,40,80,30,40,40,30,20,60,30,50,50,20,75,25,0,50,0];
 const names=['Provide a substantive root README','Describe concrete setup steps','Explain usage or document navigation','Describe scope or supported requirements','Include recognizable test declarations','Provide parseable CI job configuration','Reference a test invocation in CI','Document verification commands','Publish substantive root license terms','Declare useful ignore entries','Make an implementation entry point discoverable','Explain private vulnerability reporting','Configure applicable dependency updates','Ignore observed local environment files','Declare scoped workflow token policies','Declare formatting settings or commands','Declare static analysis settings or commands','Record ecosystem dependency reproducibility','Record substantive change notes','Explain contributor setup or verification','Provide substantive issue templates','Optional community conduct guidance (unscored)','Provide a repository description snapshot','GitHub license recognition (unscored)'];
@@ -30,7 +33,12 @@ const fixes=[
 'Provide a concise GitHub repository description; this is mutable scan-time metadata.',
 'GitHub license recognition is informational, unscored and not a legal conclusion.'
 ];
-export const V2_RULES:Rule[]=V1.map((r,n)=>({...r,method:r.id.startsWith('MET')?'metadata':r.id==='STR03'||r.id==='CON03'?'tree':'content',pattern:undefined,content:undefined,scope:undefined,max:points[n],title:names[n],fix:fixes[n],version:'2.0.0',steps:[fixes[n],'Run the documented verification yourself, commit the change and rescan.'],roast:[`The evidence for “${names[n]}” needs another commit.`,`“${names[n]}” is waiting for its supporting paperwork.`]}));
+// 2.1.0: multi-language test/lint/format recognition, wrapped and named test runners, package-manager built-ins,
+// unsupported dependency manifests (unknown instead of "no dependencies"), owner-level SECURITY.md defaults,
+// dual-license and case-insensitive changelog names, nested entry points and README usage examples.
+// Profile detection also changed. See docs/REPOROAST-HANDOFF.md for the evidence behind each change.
+const CHANGED_2_1=['DOC03','DOC04','TST01','TST03','TST04','STR01','STR03','SEC01','SEC02','MNT01','MNT02','MNT03','MNT04'];
+export const V2_RULES:Rule[]=V1.map((r,n)=>({...r,method:r.id.startsWith('MET')?'metadata':r.id==='STR03'||r.id==='CON03'?'tree':'content',pattern:undefined,content:undefined,scope:undefined,max:points[n],title:names[n],fix:fixes[n],version:CHANGED_2_1.includes(r.id)?'2.1.0':'2.0.0',steps:[fixes[n],'Run the documented verification yourself, commit the change and rescan.'],roast:[`The evidence for “${names[n]}” needs another commit.`,`“${names[n]}” is waiting for its supporting paperwork.`]}));
 export function evaluateRule(rule:Rule,f:Facts,profile:Profile):Check {
  const i=f.input;let ratio:number|null=null,state:State='unknown',level:NonNullable<Evidence['level']>='configuration';
  let explanation='Required evidence is unavailable or outside supported static interpretation; no failure is inferred.';
@@ -59,10 +67,15 @@ export function evaluateRule(rule:Rule,f:Facts,profile:Profile):Check {
  else switch(rule.id){
  case 'DOC01':content(readmes,t=>meaningful(t,100)?1:meaningful(t,1)?.25:0,'Root README prose was inspected; documentation adequacy is not verified.');break;
  case 'DOC02':case 'DOC03':case 'DOC04':{
-  const heading=rule.id==='DOC02'?/(install|set.?up|get(?:ting)? started|quick.?start|prerequisites|build|run and check)/i:rule.id==='DOC03'?/(usage|examples?|what you can do|how to|navigation|get started|quick.?start)/i:/(scope|limit|support|requirement|platform|privacy)/i;
-  content(rule.id==='DOC02'?guides:readmes,t=>{const sections=[...t.matchAll(/^#{1,6}\s+(.+)\n([\s\S]*?)(?=^#{1,6}\s|$(?![\s\S]))/gm)].filter(m=>heading.test(m[1]));return sections.some(m=>meaningful(m[2],60))?1:sections.length?.25:0;},'Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.');break;
+  const heading=rule.id==='DOC02'?/(install|set.?up|get(?:ting)? started|quick.?start|prerequisites|build|run and check)/i:rule.id==='DOC03'?/(usage|examples?|what you can do|how to|navigation|get started|quick.?start|\busing\b|tutorial|guide|documentation|\bdocs\b|\bapi\b|hello.?world|walkthrough|\bdemo\b)/i:/(scope|limit|support|requirement|platform|privacy|compatib|prerequisite|caveat|known issues|\bfaq\b|^(?:project\s+|development\s+)?status\s*$|stability|philosophy|\bwhy\b|\bgoals\b)/i;
+  content(rule.id==='DOC02'?guides:readmes,t=>{const sections=[...t.matchAll(/^#{1,6}\s+(.+)\n([\s\S]*?)(?=^#{1,6}\s|$(?![\s\S]))/gm)].filter(m=>heading.test(m[1]));return sections.some(m=>meaningful(m[2],60))||rule.id==='DOC03'&&usageExample(t)?1:sections.length?.25:0;},'Recognized section and supporting content inspected; a heading alone earns only outline credit, not an adequacy claim.');break;
  }
- case 'TST01':content(select(/(?:^|\/)(?:tests?|spec|__tests__)\/.*\.(?:py|[cm]?[jt]sx?|rs|go|java|cs)$|(?:^|\/)test_[^/]+\.py$|[._](?:test|spec)\.[^/]+$|_test\.go$/),t=>/^\s*(?:(?:async\s+)?def\s+test_\w+\s*\(|(?:it|test|describe)\s*\(|func\s+Test\w*\s*\(|class\s+\w+\(unittest\.TestCase\)|#\[test\]\s*\n\s*fn\s+|@Test\b)/m.test(t)?1:0,'Recognizable test declarations inspected. Tests were not run.');break;
+ case 'TST01':{
+  const candidates=f.paths.filter(p=>testRank(p)>0);
+  // Absence is only claimable for languages whose test conventions are recognized.
+  if(!candidates.length&&i.treeComplete&&!f.paths.some(p=>TESTABLE.test(p))&&f.paths.some(p=>SOURCE.test(p))){explanation='Source language is outside supported test recognition; absence of tests is not inferred.';break;}
+  content(candidates,t=>TEST_DECLARATION.test(t)?1:0,'Recognizable test declarations inspected. Tests were not run.');break;
+ }
  case 'TST02':{
   if(f.workflows.some(w=>w.data))result(1,'GitHub Actions jobs/steps parse; actual execution and success are unverified.',f.workflows.filter(w=>w.data).slice(0,2).map(w=>w.path));
   else if(!workflows.length)content(select(/^\.gitlab-ci\.ya?ml$|^\.circleci\/config\.ya?ml$/),(_,p)=>{const c=f.config(p);return c?(object(c.jobs)||Object.values(c).some(v=>object(v)&&v.script)?1:0):null;},'Supported provider job structure, not a successful run.');break;
@@ -74,11 +87,26 @@ export function evaluateRule(rule:Rule,f:Facts,profile:Profile):Check {
   if(matched.length)result(1,'At least one job references a recognized test invocation. Non-test workflows do not enter a test-workflow denominator. No execution outcome verified.',[...new Set(matched)].slice(0,6));
   else if(!unresolved)result(0,'No supported test invocation in inspected workflow run steps.',workflows.slice(0,3));break;
  }
- case 'TST04':level='invocation';content(guides,t=>[...t.split('\n'),...Array.from(t.matchAll(/`([^`\n]+)`/g),m=>m[1])].some(l=>f.trace(l.replace(/^\s*(?:[-*]\s+|\d+\.\s+)?/,'').replace(/`/g,''),'test').found)?1:0,'README/contributor guidance references a recognized verification command; it was not executed.');break;
- case 'STR01':content(select(/^(license|licence|copying)(?:\.[\w-]+)?$/i),t=>meaningful(t,150)&&/permission|redistribution|licensed|copyright|public domain/i.test(t)?1:0,'Substantive root license terms inspected; no legal compatibility/identification claim.');break;
+ case 'TST04':level='invocation';content(guides,t=>[...t.split('\n'),...Array.from(t.matchAll(/`([^`\n]+)`/g),m=>m[1])].some(l=>f.trace(l.replace(/^\s*(?:[-*]\s+|\d+\.\s+)?(?:(?:\$|%|PS>|>)\s+)?/,'').replace(/`/g,''),'test').found)?1:0,'README/contributor guidance references a recognized verification command; it was not executed.');break;
+ case 'STR01':content(select(LICENSE_PATH),t=>meaningful(t,150)&&/permission|redistribution|licensed|copyright|public domain/i.test(t)?1:0,'Substantive root license terms inspected; no legal compatibility/identification claim.');break;
  case 'STR02':content(select(/^\.gitignore$/),t=>t.split('\n').some(l=>l.trim()&&!l.trim().startsWith('#'))?1:0,'Noncomment ignore entries exist; completeness is not established.');break;
- case 'STR03':{level='presence';const paths=select(/^(?:[^/]+\.(?:py|[cm]?[jt]sx?|go|rs|c|cpp)|(?:src|lib|app|cmd|internal|packages|docs|content)\/[^/].*)$/);if(paths.length)result(1,'A flat or grouped entry point is discoverable; layout is not proof of quality.',paths.slice(0,2));else if(i.treeComplete)result(0,'No supported implementation/document entry point observed.');break;}
- case 'SEC01':content(select(/^(?:security\.md|\.github\/security\.md|docs\/security\.md)$/i),t=>meaningful(t,100)&&/(?:[\w.+-]+@[\w.-]+\.[a-z]{2,}|security\/advisories|private vulnerability reporting|privately.{0,80}report|report.{0,80}privately)/is.test(t)?1:0,'Private reporting contact/instructions inspected; responsiveness and security unverified.');break;
+ case 'STR03':{level='presence';
+  // Any non-test project source (flat or nested) or, for documentation, any document is a discoverable entry point.
+  const byDepth=(a:string,b:string)=>a.split('/').length-b.split('/').length||(a<b?-1:1);
+  const paths=(profile==='documentation'?f.paths.filter(p=>/\.(?:md|rst|adoc|txt)$/i.test(p)&&!p.startsWith('.github/')):[...f.sources.filter(p=>testRank(p)===0),...select(/^(?:docs|content)\/[^/].*$/)]).sort(byDepth);if(paths.length)result(1,'A flat or grouped entry point is discoverable; layout is not proof of quality.',paths.slice(0,2));else if(i.treeComplete)result(0,'No supported implementation/document entry point observed.');break;}
+ case 'SEC01':{
+  const local=select(/^(?:\.github\/|docs\/)?security\.md$/i),inherited=i.inherited;
+  const policy=(t:string)=>meaningful(t,100)&&/(?:[\w.+-]+@[\w.-]+\.[a-z]{2,}|security\/advisories|private vulnerability reporting|privately.{0,80}report|report.{0,80}privately)/is.test(t)?1:0;
+  // GitHub applies an owner's .github SECURITY.md to repositories without their own policy.
+  if(!local.length&&i.treeComplete&&inherited?.checked){
+   const text=inherited.files['SECURITY.md'];
+   if(text!==undefined){level='metadata';result(policy(text),'Owner-level default policy from '+inherited.repository+' (scan-time snapshot, not commit-pinned) inspected; responsiveness and security unverified.');evidence.push({path:inherited.repository+'/SECURITY.md',url:'https://github.com/'+inherited.repository+'/blob/HEAD/SECURITY.md',status:'confirmed condition',confidence:'medium',level});}
+   else if(inherited.unresolved)explanation='No repository policy; the owner-level default policy location could not be fully resolved. No failure is inferred.';
+   else result(0,'No repository or owner-level ('+inherited.repository+') security policy observed.');
+   break;
+  }
+  content(local,policy,'Private reporting contact/instructions inspected; responsiveness and security unverified.');break;
+ }
  case 'SEC02':content(select(/^\.github\/dependabot\.ya?ml$|^(?:renovate\.json5?|\.renovaterc(?:\.json)?)$/),(_,p)=>{const c=f.config(p);if(!c)return null;if(p.includes('dependabot')){if(c.version!==2||!Array.isArray(c.updates))return 0;const names:Record<Ecosystem,string>={node:'npm',python:'pip',rust:'cargo',go:'gomod'};const covered=f.ecosystems.filter(e=>c.updates.some((u:any)=>u?.['package-ecosystem']===names[e]&&typeof u.directory==='string'&&object(u.schedule)&&typeof u.schedule.interval==='string'));return f.ecosystems.length?covered.length/f.ecosystems.length:null;}return c.enabled===false?0:Array.isArray(c.extends)&&c.extends.length>0?1:null;},'Supported update configuration covers observed ecosystems; service activity is not verified.');break;
  case 'SEC03':{
   const tracked=select(/(^|\/)\.env(?:\.[^/]+)?$/).filter(p=>!/(?:example|sample|template|dist)$/.test(p)),examples=select(/(^|\/)\.env\.(?:example|sample|template)$/);
@@ -99,9 +127,10 @@ export function evaluateRule(rule:Rule,f:Facts,profile:Profile):Check {
   if(commands.length){level='invocation';result(1,'Recognized native tool invocation declared, not executed.',[...new Set(commands.flatMap(c=>[c.path,...c.r.paths]))].slice(0,4));break;}
   const py=f.config('pyproject.toml'),tools=kind==='format'?['ruff','black','isort']:['ruff','mypy','pylint','flake8'];
   if(tools.some(t=>object(py?.tool?.[t]))){result(1,'Supported tool settings parsed from pyproject.toml; execution unverified.',['pyproject.toml']);break;}
-  const paths=select(kind==='format'?/^(?:\.prettierrc(?:\.json5?)?|prettier\.config\.[cm]?js|\.editorconfig|rustfmt\.toml|\.rustfmt\.toml|biome\.jsonc?)$/:/^(?:eslint\.config\.[cm]?[jt]s|\.eslintrc(?:\.[\w-]+)?|ruff\.toml|\.ruff\.toml|mypy\.ini|\.flake8|setup\.cfg|\.golangci\.ya?ml|clippy\.toml|biome\.jsonc?)$/);
+  const paths=[...select(kind==='format'?FORMAT_CONFIG:LINT_CONFIG),...select(JVM_BUILD)];
+  const plugin=kind==='format'?/spotless|fmt-maven-plugin|google-?java-?format|ktlint|ktfmt|scalafmt/i:/checkstyle|maven-pmd-plugin|\bpmd\b|spotbugs|error_?prone|detekt|ktlint/i;
   if(f.paths.includes('pyproject.toml')&&!py&&!paths.length)break;
-  content(paths,(t,p)=>{if(/\.[cm]?[jt]s$/.test(p))return null;if(/(?:editorconfig|\.ini|\.cfg|flake8)$/.test(p))return /\[[^\]]+\]/.test(t)&&/^[\w-]+\s*=/m.test(t)?1:0;const c=f.config(p);return c?Object.keys(c).length?1:.5:null;},'Supported tool configuration inspected; opaque executable configuration is unknown and never run.');break;
+  content(paths,(t,p)=>{if(/\.(?:[cm]?[jt]s|php)$/.test(p))return null;if(JVM_BUILD.test(p))return plugin.test(t)?1:0;if(/(?:\.xml|\.neon|\.conf|\.dist|\.exs|swiftformat|clang-format|clang-tidy)$/.test(p))return meaningful(t,1)?1:0;if(/(?:editorconfig|\.ini|\.cfg|flake8)$/.test(p))return /\[[^\]]+\]/.test(t)&&/^[\w-]+\s*=/m.test(t)?1:0;const c=f.config(p);return c?Object.keys(c).length?1:.5:null;},'Supported tool configuration inspected; opaque executable configuration is unknown and never run.');break;
  }
  case 'MNT03':{
   if(profile==='library'){na('Library publication lock conventions vary; no universal lockfile requirement.');break;}
@@ -123,7 +152,7 @@ export function evaluateRule(rule:Rule,f:Facts,profile:Profile):Check {
   if(outcomes.length&&outcomes.every(o=>o.v===1))result(1,'Ecosystem pin/hash/checksum structure inspected; Go checksums are not a lockfile. No install/test executed.',outcomes.flatMap(o=>o.paths));
   else if(!unresolved)result(outcomes.length?outcomes.reduce((s,o)=>s+o.v,0)/outcomes.length:0,'Observed ecosystem reproducibility structure; exact pins without hashes earn partial credit.',outcomes.flatMap(o=>o.paths));break;
  }
- case 'MNT04':content(select(/^(?:changelog|changes|history)(?:\.[\w-]+)?$|^\.changeset\/[^/]+\.md$/i),t=>meaningful(t,100)?1:0,'Substantive change notes inspected, not release correctness.');break;
+ case 'MNT04':content(select(CHANGELOG_PATH),t=>meaningful(t,100)?1:0,'Substantive change notes inspected, not release correctness.');break;
  case 'CON01':content(guides,t=>meaningful(t,150)&&/(contribut|pull request|before committing|development|run and check)/i.test(t)?1:0,'Substantive contributor process/setup guidance inspected; onboarding success not verified.');break;
  case 'CON02':content(select(/^\.github\/ISSUE_TEMPLATE\/[^/]+\.(?:md|ya?ml)$/i),(t,p)=>{if(/\.md$/.test(p))return meaningful(t,100)&&/[?#]/.test(t)?1:0;const c=f.config(p);return c&&typeof c.name==='string'&&Array.isArray(c.body)&&c.body.some((b:any)=>['input','textarea','dropdown','checkboxes'].includes(b.type)&&b.attributes?.label)?1:c?0:null;},'Issue questions/form structure inspected; availability/community response unverified.');break;
  case 'MET01':level='metadata';result(i.metadata.description.trim().length>=12?1:0,'Scan-time GitHub description snapshot, not a commit-pinned technical-quality fact.');break;
